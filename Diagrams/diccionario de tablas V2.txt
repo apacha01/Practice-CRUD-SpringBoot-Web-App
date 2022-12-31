@@ -1,0 +1,11 @@
+species: esta tabla almacenaría la información de las especies del zoológico. Los campos de esta tabla podrían incluir id (identificador único de la especie), name (nombre en español), scientific_name (nombre científico), y description (descripción general).
+
+habitat: esta tabla almacenaría la información de los hábitats naturales del zoológico. Los campos de esta tabla podrían incluir id (identificador único del hábitat), name (nombre del hábitat), climate (clima predominante), vegetation (tipo de vegetación predominante), y continent (continente o continentes en los que se encuentra).
+
+zone: esta tabla almacenaría la información de las zonas del zoológico. Los campos de esta tabla podrían incluir id (identificador único de la zona), name (nombre de la zona), y extension (extensión que ocupa).
+
+itinerary: esta tabla almacenaría la información de los itinerarios del zoológico. Los campos de esta tabla podrían incluir id (identificador único del itinerario), code (código del itinerario), duration (duración del recorrido), length (longitud del itinerario), max_visitors (máximo número de visitantes autorizado), y species_count (número de distintas especies que visita).
+
+guide: esta tabla almacenaría la información de los guías del zoológico. Los campos de esta tabla podrían incluir id (identificador único del guía), name (nombre del guía), address (dirección), phone (teléfono), y hiring_date (fecha en la que comenzó a trabajar en el zoológico).
+
+specieskeeper: esta tabla almacenaría la información de los cuidadores del zoológico. Los campos de esta tabla podrían incluir id (identificador único del cuidador), name (nombre del cuidador), address (dirección), phone (teléfono), y hiring_date (fecha de ingreso en el zoológico).

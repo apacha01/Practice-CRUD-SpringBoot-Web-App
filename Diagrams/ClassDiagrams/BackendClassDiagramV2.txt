@@ -1,0 +1,58 @@
+@startuml
+hide circle
+hide attributes
+hide method
+
+
+class ZooBackendApplication
+
+package java.io {
+  class Serializable <<interface>>
+}
+class JpaRepository <<interface>>
+
+package entities {
+  class Employee
+  class Itinerary
+  class Species
+  class Habitat
+  class Zone
+  Employee ..> Serializable
+  Itinerary ..> Serializable
+  Species ..> Serializable
+  Habitat ..> Serializable
+  Zone ..> Serializable
+}
+
+package repositories {
+  class EmployeeRepo <<interface>>
+  class ItineraryRepo <<interface>>
+  class SpeciesRepo <<interface>>
+  class HabitatRepo <<interface>>
+  class ZoneRepo <<interface>>
+  EmployeeRepo ---> Employee
+  ItineraryRepo ---> Itinerary
+  SpeciesRepo ---> Species
+  HabitatRepo ---> Habitat
+  ZoneRepo ---> Zone
+  EmployeeRepo ..|> JpaRepository
+  ItineraryRepo ..|> JpaRepository
+  SpeciesRepo ..|> JpaRepository
+  HabitatRepo ..|> JpaRepository
+  ZoneRepo ..|> JpaRepository
+}
+
+package controllers{
+  class EmployeeController
+  class ItineraryController
+  class SpeciesController
+  class HabitatController
+  class ZoneController
+  EmployeeController --> EmployeeRepo
+  ItineraryController --> ItineraryRepo
+  SpeciesController --> SpeciesRepo
+  HabitatController --> HabitatRepo
+  ZoneController --> ZoneRepo
+}
+
+@enduml

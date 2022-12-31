@@ -1,0 +1,78 @@
+@startuml
+hide circle
+hide attributes
+hide method
+
+
+class ZooBackendApplication
+
+package java.io {
+  class Serializable <<interface>>
+}
+class JpaRepository <<interface>>
+
+package entities {
+  class Employee
+  class NonAdmin
+  class Admin
+  class Guide
+  class AnimKeeper
+  class Itinerary
+  class Species
+  class Habitat
+  class Zone
+  Admin --|> Employee
+  NonAdmin --|> Employee
+  Guide --|> NonAdmin
+  AnimKeeper --|> NonAdmin
+  Admin ..> Serializable
+  Guide ..> Serializable
+  AnimKeeper ..> Serializable
+  Itinerary ..> Serializable
+  Species ..> Serializable
+  Habitat ..> Serializable
+  Zone ..> Serializable
+}
+
+package repositories {
+  class AdminRepo <<interface>>
+  class GuideRepo <<interface>>
+  class AnimKeeperRepo <<interface>>
+  class ItineraryRepo <<interface>>
+  class SpeciesRepo <<interface>>
+  class HabitatRepo <<interface>>
+  class ZoneRepo <<interface>>
+  AdminRepo ---> Admin
+  GuideRepo ---> Guide
+  AnimKeeperRepo ---> AnimKeeper
+  ItineraryRepo ---> Itinerary
+  SpeciesRepo ---> Species
+  HabitatRepo ---> Habitat
+  ZoneRepo ---> Zone
+  AdminRepo ..|> JpaRepository
+  GuideRepo ..|> JpaRepository
+  AnimKeeperRepo ..|> JpaRepository
+  ItineraryRepo ..|> JpaRepository
+  SpeciesRepo ..|> JpaRepository
+  HabitatRepo ..|> JpaRepository
+  ZoneRepo ..|> JpaRepository
+}
+
+package controllers{
+  class AdminController
+  class GuideController
+  class AnimKeeperController
+  class ItineraryController
+  class SpeciesController
+  class HabitatController
+  class ZoneController
+  AdminController --> AdminRepo
+  GuideController --> GuideRepo
+  AnimKeeperController --> AnimKeeperRepo
+  ItineraryController --> ItineraryRepo
+  SpeciesController --> SpeciesRepo
+  HabitatController --> HabitatRepo
+  ZoneController --> ZoneRepo
+}
+
+@enduml
