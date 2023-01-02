@@ -31,7 +31,7 @@ USE `zoo`;
 
 CREATE TABLE `continents` (
   `id_continent` int(11) NOT NULL,
-  `name` varchar(20) COLLATE utf8_spanish2_ci NOT NULL
+  `name` enum('AFRICA','AMERICA','ANTARTIDA','ASIA','EUROPA','OCEANIA') COLLATE utf8_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 -- --------------------------------------------------------
@@ -42,7 +42,7 @@ CREATE TABLE `continents` (
 
 CREATE TABLE `employees` (
   `id_employee` int(11) NOT NULL,
-  `id_type` int(11) NOT NULL,
+  `type` enum('ADMIN','CUIDADOR','GUIA') NOT NULL,
   `user_name` varchar(16) COLLATE utf8_spanish2_ci NOT NULL,
   `password` varchar(16) COLLATE utf8_spanish2_ci NOT NULL,
   `name` varchar(30) COLLATE utf8_spanish2_ci NOT NULL,
@@ -151,19 +151,6 @@ CREATE TABLE `species_keepers` (
   `assignedDate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `types`
---
-
-CREATE TABLE `types` (
-  `id_type` int(11) NOT NULL,
-  `name` varchar(15) COLLATE utf8_spanish2_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
-
--- --------------------------------------------------------
-
 --
 -- Estructura de tabla para la tabla `zones`
 --
@@ -173,6 +160,18 @@ CREATE TABLE `zones` (
   `name` varchar(20) COLLATE utf8_spanish2_ci NOT NULL,
   `extension` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `continents`
+--
+
+INSERT INTO `continents` (`id_continent`, `name`) VALUES
+(1, 'AFRICA'),
+(2, 'AMERICA'),
+(3, 'ANTARTIDA'),
+(4, 'ASIA'),
+(5, 'EUROPA'),
+(6, 'OCEANIA');
 
 --
 -- Índices para tablas volcadas
@@ -209,12 +208,6 @@ ALTER TABLE `species`
   ADD PRIMARY KEY (`id_species`);
 
 --
--- Indices de la tabla `types`
---
-ALTER TABLE `types`
-  ADD PRIMARY KEY (`id_type`);
-
---
 -- Indices de la tabla `zones`
 --
 ALTER TABLE `zones`
@@ -228,7 +221,7 @@ ALTER TABLE `zones`
 -- AUTO_INCREMENT de la tabla `continents`
 --
 ALTER TABLE `continents`
-  MODIFY `id_continent` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_continent` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `employees`
@@ -253,12 +246,6 @@ ALTER TABLE `itineraries`
 --
 ALTER TABLE `species`
   MODIFY `id_species` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `types`
---
-ALTER TABLE `types`
-  MODIFY `id_type` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `zones`
