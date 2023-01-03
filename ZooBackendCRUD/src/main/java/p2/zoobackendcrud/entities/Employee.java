@@ -51,10 +51,20 @@ public class Employee implements Serializable{
     
     @Column(name = "first_day", nullable = false)
     private Date firstDay;
+
+    public Employee(TYPE_ENUM type, String userName, String password, String name, String address, String phone, Date firstDay) {
+        this.type = type;
+        this.userName = userName;
+        this.password = password;
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.firstDay = firstDay;
+    }
     
 }
 
-enum TYPE_ENUM {
+public enum TYPE_ENUM {
     ADMIN,
     CUIDADOR,
     GUIA
