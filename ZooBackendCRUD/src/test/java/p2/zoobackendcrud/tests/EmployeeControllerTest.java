@@ -61,7 +61,7 @@ public class EmployeeControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(employee)));
 
-        // then - verify the result or output using assert statements
+        // then - verify the result or output using assert statements        
         response.andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.type",
@@ -75,6 +75,8 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$.address",
                         is(employee.getAddress())))
                 .andExpect(jsonPath("$.phone",
-                        is(employee.getPhone())));
+                        is(employee.getPhone())))
+                .andExpect(jsonPath("$.first_day",
+                        is(employee.getFormatedFirstDayAsString())));
     }
 }
