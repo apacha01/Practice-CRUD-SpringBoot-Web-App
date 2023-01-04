@@ -71,7 +71,7 @@ public class Employee implements Serializable{
         this.firstDay = firstDay;
     }
     
-    public String stringFormatedFirstDay(){
+    public String formatedFirstDayAsString(){
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         df.setTimeZone(TimeZone.getTimeZone("UTC"));
         return df.format(this.firstDay);

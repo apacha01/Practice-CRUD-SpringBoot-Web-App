@@ -77,7 +77,7 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$.phone",
                         is(employee.getPhone())))
                 .andExpect(jsonPath("$.first_day",
-                        is(employee.stringFormatedFirstDay())));
+                        is(employee.formatedFirstDayAsString())));
     }
     
     @Test
@@ -100,6 +100,37 @@ public class EmployeeControllerTest {
                 .andDo(print())
                 .andExpect(jsonPath("$.size()",
                         is(listOfEmployees.size())));
+
+    }
+    
+    @Test
+    public void givenEmployeeId_GetEmployeeById_thenReturnEmployee() throws Exception{
+        // given - precondition or setup
+        Integer employeeId = 1;
+        Employee employee = new Employee(TYPE_ENUM.ADMIN, "username1", "password1",
+                "name1", "address1", "phone1", new Date());
+        given(empRepo.findById(employeeId)).willReturn(Optional.of(employee));
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/empleado/{id}", employeeId));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.type",
+                        is(employee.getType().toString())))
+                .andExpect(jsonPath("$.user_name",
+                        is(employee.getUserName())))
+                .andExpect(jsonPath("$.password",
+                        is(employee.getPassword())))
+                .andExpect(jsonPath("$.name",
+                        is(employee.getName())))
+                .andExpect(jsonPath("$.address",
+                        is(employee.getAddress())))
+                .andExpect(jsonPath("$.phone",
+                        is(employee.getPhone())))
+                .andExpect(jsonPath("$.first_day",
+                        is(employee.formatedFirstDayAsString())));
 
     }
 }
