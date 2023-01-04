@@ -63,7 +63,7 @@ public class EmployeeControllerTest {
 
         // then - verify the result or output using assert statements        
         response.andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.type",
                         is(employee.getType().toString())))
                 .andExpect(jsonPath("$.user_name",

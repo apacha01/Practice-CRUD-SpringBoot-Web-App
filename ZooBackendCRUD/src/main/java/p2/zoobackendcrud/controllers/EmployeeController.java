@@ -6,10 +6,12 @@ package p2.zoobackendcrud.controllers;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import p2.zoobackendcrud.repositories.EmployeeRepository;
 import p2.zoobackendcrud.entities.Employee;
@@ -26,6 +28,7 @@ public class EmployeeController {
     private EmployeeRepository empRepo;
     
     @PostMapping("/crear")
+    @ResponseStatus(HttpStatus.CREATED)
     public Employee create(@RequestBody Employee e) {
         if (e == null)
             return null;
