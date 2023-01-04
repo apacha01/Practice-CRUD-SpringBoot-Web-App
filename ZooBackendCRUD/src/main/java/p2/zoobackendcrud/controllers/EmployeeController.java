@@ -5,6 +5,7 @@
 package p2.zoobackendcrud.controllers;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,10 +43,19 @@ public class EmployeeController {
         return empRepo.findAll();
     }
     
-    @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") Integer employeeId){
-        return empRepo.findById(employeeId)
-                .map(ResponseEntity::ok)                                //Found -> status ok
-                .orElseGet(() -> ResponseEntity.notFound().build());    //Not found
+//    @GetMapping("/obtenerporid/{id}")
+//    public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") Integer employeeId){
+//        return empRepo.findById(employeeId)
+//                .map(ResponseEntity::ok)                                //Found -> status ok
+//                .orElseGet(() -> ResponseEntity.notFound().build());    //Not found
+//    }
+    
+    @GetMapping("/obtenerpoid/{id}")
+    public Employee getEmployeeById(@PathVariable("id") Integer employeeId){
+        Optional<Employee> optEmp = empRepo.findById(employeeId);
+        if (optEmp.isPresent()){
+            return optEmp.get();
+        }
+        else return null;
     }
 }

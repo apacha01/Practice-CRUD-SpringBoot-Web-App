@@ -103,6 +103,7 @@ public class EmployeeControllerTest {
 
     }
     
+    //positive scenario (existing id)
     @Test
     public void givenEmployeeId_GetEmployeeById_thenReturnEmployee() throws Exception{
         // given - precondition or setup
@@ -131,6 +132,24 @@ public class EmployeeControllerTest {
                         is(employee.getPhone())))
                 .andExpect(jsonPath("$.first_day",
                         is(employee.formatedFirstDayAsString())));
+
+    }
+    
+    // negative scenario (unexisting id)
+    @Test
+    public void givenInvalidEmployeeId_GetEmployeeById_thenReturnEmpty() throws Exception{
+        // given - precondition or setup
+        Integer employeeId = 2;
+        Employee employee = new Employee(TYPE_ENUM.ADMIN, "username1", "password1",
+                "name1", "address1", "phone1", new Date());
+        given(empRepo.findById(employeeId)).willReturn(Optional.empty());
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/empleado/{id}", employeeId));
+
+        // then - verify the output
+        response.andExpect(status().isNotFound())
+                .andDo(print());
 
     }
 }
