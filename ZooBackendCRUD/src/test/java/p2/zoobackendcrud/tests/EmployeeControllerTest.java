@@ -113,7 +113,7 @@ public class EmployeeControllerTest {
         given(empRepo.findById(employeeId)).willReturn(Optional.of(employee));
 
         // when -  action or the behaviour that we are going test
-        ResultActions response = mockMvc.perform(get("/empleado/{id}", employeeId));
+        ResultActions response = mockMvc.perform(get("/empleado/obtenerporid/{id}", employeeId));
 
         // then - verify the output
         response.andExpect(status().isOk())
@@ -135,7 +135,7 @@ public class EmployeeControllerTest {
 
     }
     
-    // negative scenario (unexisting id)
+    // negative scenario (non-existing id)
     @Test
     public void givenInvalidEmployeeId_GetEmployeeById_thenReturnEmpty() throws Exception{
         // given - precondition or setup
@@ -145,11 +145,63 @@ public class EmployeeControllerTest {
         given(empRepo.findById(employeeId)).willReturn(Optional.empty());
 
         // when -  action or the behaviour that we are going test
-        ResultActions response = mockMvc.perform(get("/empleado/{id}", employeeId));
+        ResultActions response = mockMvc.perform(get("/empleado/obtenerporid/{id}", employeeId));
 
         // then - verify the output
         response.andExpect(status().isNotFound())
                 .andDo(print());
+
+    }
+    
+    //positive scenario (existing name)
+    @Test
+    public void givenEmployeeName_GetEmployeeByName_thenReturnEmployeeList() throws Exception{
+        // given - precondition or setup
+        String employeeName = "name1";
+        List<Employee> listOfEmployees = new ArrayList<>();
+        Employee e1 = new Employee(TYPE_ENUM.ADMIN, "username1", "password1",
+                "name1", "address1", "phone1", new Date());
+        Employee e2 = new Employee(TYPE_ENUM.ADMIN, "username2", "password2",
+                "name2", "address2", "phone2", new Date(1500000));
+        Employee e3 = new Employee(TYPE_ENUM.ADMIN, "username3", "password3",
+                "name1", "address3", "phone3", new Date(20000000));
+        listOfEmployees.add(e1);
+        listOfEmployees.add(e3);
+        given(empRepo.findByNameContaining(employeeName)).willReturn(listOfEmployees);
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/empleado/obtenerpornombre/{nombre}", employeeName));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.size()",
+                        is(listOfEmployees.size())));
+
+    }
+    
+    //positive scenario (non-existing name)
+    @Test
+    public void givenInvalidEmployeeName_GetEmployeeByName_thenReturnEmployeeList() throws Exception{
+        // given - precondition or setup
+        String employeeName = "name4";
+        List<Employee> listOfEmployees = new ArrayList<>();
+        Employee e1 = new Employee(TYPE_ENUM.ADMIN, "username1", "password1",
+                "name1", "address1", "phone1", new Date());
+        Employee e2 = new Employee(TYPE_ENUM.ADMIN, "username2", "password2",
+                "name2", "address2", "phone2", new Date(1500000));
+        Employee e3 = new Employee(TYPE_ENUM.ADMIN, "username3", "password3",
+                "name1", "address3", "phone3", new Date(20000000));
+        given(empRepo.findByNameContaining(employeeName)).willReturn(listOfEmployees);
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/empleado/obtenerpornombre/{nombre}", employeeName));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.size()",
+                        is(0)));
 
     }
 }
