@@ -132,7 +132,7 @@ public class EmployeeControllerTest {
                         is(employee.getPhone())))
                 .andExpect(jsonPath("$.first_day",
                         is(employee.formatedFirstDayAsString())));
-        
+
     }
 
     // negative scenario (non-existing id)
@@ -264,7 +264,43 @@ public class EmployeeControllerTest {
         ResultActions response = mockMvc.perform(put("/empleado/modificarporid/{id}", employeeId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updatedEmployee)));
-        
+
+        // then - verify the output
+        response.andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    //positive scenario (existing id)
+    @Test
+    public void givenEmployeeId_DeleteEmployee_thenReturn200() throws Exception {
+        // given - precondition or setup
+        Integer employeeId = 1;
+        Employee e1 = new Employee(TYPE_ENUM.ADMIN, "username1", "password1",
+                "name1", "address1", "phone1", new Date());
+        given(empRepo.findById(employeeId)).willReturn(Optional.of(e1));
+        willDoNothing().given(empRepo).deleteById(employeeId);
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(delete("/empleado/borrar/{id}", employeeId));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print());
+    }
+    
+    //negative scenario (nonexisting id)
+    @Test
+    public void givenInvalidEmployeeId_DeleteEmployee_thenReturn404() throws Exception {
+        // given - precondition or setup
+        Integer employeeId = 2;
+        Employee e1 = new Employee(TYPE_ENUM.ADMIN, "username1", "password1",
+                "name1", "address1", "phone1", new Date());
+        given(empRepo.findById(employeeId)).willReturn(Optional.empty());
+        willDoNothing().given(empRepo).deleteById(employeeId);
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(delete("/empleado/borrar/{id}", employeeId));
+
         // then - verify the output
         response.andExpect(status().isNotFound())
                 .andDo(print());

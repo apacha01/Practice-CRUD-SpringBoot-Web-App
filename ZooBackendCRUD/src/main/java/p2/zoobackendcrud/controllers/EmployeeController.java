@@ -12,6 +12,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -78,5 +79,17 @@ public class EmployeeController {
                     return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    
+    @DeleteMapping("/borrar/{id}")
+    public ResponseEntity<Employee> deleteById(@PathVariable("id") Integer employeeId){
+        Optional<Employee> optEmp = empRepo.findById(employeeId);
+        if (optEmp.isEmpty())
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        else {
+            empRepo.deleteById(employeeId);
+            return new ResponseEntity<>(optEmp.get(), HttpStatus.OK);
+        }
+
     }
 }
