@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -46,20 +47,11 @@ public class EmployeeController {
         return empRepo.findAll();
     }
     
-//    @GetMapping("/obtenerporid/{id}")
-//    public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") Integer employeeId){
-//        return empRepo.findById(employeeId)
-//                .map(ResponseEntity::ok)                                //Found -> status ok
-//                .orElseGet(() -> ResponseEntity.notFound().build());    //Not found
-//    }
-    
     @GetMapping("/obtenerporid/{id}")
-    public Employee getEmployeeById(@PathVariable("id") Integer employeeId){
-        Optional<Employee> optEmp = empRepo.findById(employeeId);
-        if (optEmp.isPresent()){
-            return optEmp.get();
-        }
-        else return null;
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") Integer employeeId){
+        return empRepo.findById(employeeId)
+                .map(ResponseEntity::ok)                                //Found -> status ok
+                .orElseGet(() -> ResponseEntity.notFound().build());    //Not found
     }
     
     @GetMapping("/obtenerpornombre/{nombre}")
@@ -69,5 +61,22 @@ public class EmployeeController {
         } catch (UnsupportedEncodingException ex) {
             return new ArrayList<>();
         }
+    }
+    
+    @PutMapping("/modificarporid/{id}")
+    public ResponseEntity<Employee> updateEmployeeById(@PathVariable("id") Integer employeeId, @RequestBody Employee e){
+        return empRepo.findById(employeeId)
+                .map(savedEmployee -> {
+                    if (e.getType() != null) savedEmployee.setType(e.getType());
+                    if (e.getUserName() != null) savedEmployee.setUserName(e.getUserName());
+                    if (e.getPassword() != null) savedEmployee.setPassword(e.getPassword());
+                    if (e.getName() != null) savedEmployee.setName(e.getName());
+                    if (e.getAddress() != null) savedEmployee.setAddress(e.getAddress());
+                    if (e.getPhone() != null) savedEmployee.setPhone(e.getPhone());
+                    if (e.getFirstDay() != null) savedEmployee.setFirstDay(e.getFirstDay());
+                    Employee updatedEmployee = empRepo.save(savedEmployee);
+                    return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

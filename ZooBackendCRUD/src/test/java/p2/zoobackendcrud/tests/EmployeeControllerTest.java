@@ -47,11 +47,11 @@ public class EmployeeControllerTest {
 
     @Test
     public void givenEmployee_CreateEmployee_thenReturnSavedEmployee() throws Exception {
-        
+
         Date d = new Date();
         Employee employee = new Employee(TYPE_ENUM.ADMIN, "username", "password",
                 "name", "address", "phone", d);
-        
+
         // given - precondition or setup
         given(empRepo.save(any(Employee.class)))
                 .willAnswer((invocation) -> invocation.getArgument(0));
@@ -79,9 +79,9 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$.first_day",
                         is(employee.formatedFirstDayAsString())));
     }
-    
+
     @Test
-    public void givenListOfEmployees_GetAllEmployees_thenReturnEmployeesList() throws Exception{
+    public void givenListOfEmployees_GetAllEmployees_thenReturnEmployeesList() throws Exception {
         // given - precondition or setup
         List<Employee> listOfEmployees = new ArrayList<>();
         Employee e1 = new Employee(TYPE_ENUM.ADMIN, "username1", "password1",
@@ -102,10 +102,10 @@ public class EmployeeControllerTest {
                         is(listOfEmployees.size())));
 
     }
-    
+
     //positive scenario (existing id)
     @Test
-    public void givenEmployeeId_GetEmployeeById_thenReturnEmployee() throws Exception{
+    public void givenEmployeeId_GetEmployeeById_thenReturnEmployee() throws Exception {
         // given - precondition or setup
         Integer employeeId = 1;
         Employee employee = new Employee(TYPE_ENUM.ADMIN, "username1", "password1",
@@ -132,12 +132,12 @@ public class EmployeeControllerTest {
                         is(employee.getPhone())))
                 .andExpect(jsonPath("$.first_day",
                         is(employee.formatedFirstDayAsString())));
-
+        
     }
-    
+
     // negative scenario (non-existing id)
     @Test
-    public void givenInvalidEmployeeId_GetEmployeeById_thenReturnEmpty() throws Exception{
+    public void givenInvalidEmployeeId_GetEmployeeById_thenReturn404() throws Exception {
         // given - precondition or setup
         Integer employeeId = 2;
         Employee employee = new Employee(TYPE_ENUM.ADMIN, "username1", "password1",
@@ -152,10 +152,10 @@ public class EmployeeControllerTest {
                 .andDo(print());
 
     }
-    
+
     //positive scenario (existing name)
     @Test
-    public void givenEmployeeName_GetEmployeeByName_thenReturnEmployeeList() throws Exception{
+    public void givenEmployeeName_GetEmployeeByName_thenReturnEmployeeList() throws Exception {
         // given - precondition or setup
         String employeeName = "name1";
         List<Employee> listOfEmployees = new ArrayList<>();
@@ -179,10 +179,10 @@ public class EmployeeControllerTest {
                         is(listOfEmployees.size())));
 
     }
-    
+
     //positive scenario (non-existing name)
     @Test
-    public void givenInvalidEmployeeName_GetEmployeeByName_thenReturnEmployeeList() throws Exception{
+    public void givenInvalidEmployeeName_GetEmployeeByName_thenReturnEmployeeList() throws Exception {
         // given - precondition or setup
         String employeeName = "name4";
         List<Employee> listOfEmployees = new ArrayList<>();
@@ -203,5 +203,70 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$.size()",
                         is(0)));
 
+    }
+
+    //positive scenario (existing id)
+    @Test
+    public void givenEmployeeId_UpdateEmployee_thenReturnUpdatedEmployee() throws Exception {
+        // given - precondition or setup
+        Integer employeeId = 1;
+        Employee savedEmp = new Employee(TYPE_ENUM.ADMIN, "username1", "password1",
+                "name1", "address1", "phone1", new Date());
+        Employee updatedEmp = new Employee(TYPE_ENUM.CUIDADOR, "username2", "password2",
+                "name2", "address2", "phone2", new Date(1500000));
+        given(empRepo.findById(employeeId)).willReturn(Optional.of(savedEmp));  //find employee with id
+        given(empRepo.save(any(Employee.class)))
+                .willAnswer((invocation) -> invocation.getArgument(0));         //then (after update) save
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(put("/empleado/modificarporid/{id}", employeeId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updatedEmp)));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.type",
+                        is(updatedEmp.getType().toString())))
+                .andExpect(jsonPath("$.user_name",
+                        is(updatedEmp.getUserName())))
+                .andExpect(jsonPath("$.password",
+                        is(updatedEmp.getPassword())))
+                .andExpect(jsonPath("$.name",
+                        is(updatedEmp.getName())))
+                .andExpect(jsonPath("$.address",
+                        is(updatedEmp.getAddress())))
+                .andExpect(jsonPath("$.phone",
+                        is(updatedEmp.getPhone())))
+                .andExpect(jsonPath("$.first_day",
+                        is(updatedEmp.formatedFirstDayAsString())));
+    }
+
+    //negative scenario (nonexisting id)
+    @Test
+    public void givenInvalidEmployeeId_UpdateEmployee_thenReturn404() throws Exception {
+        // given - precondition or setup
+        Integer employeeId = 2;
+        Employee savedEmployee = new Employee(TYPE_ENUM.ADMIN, "username1", "password1",
+                "name1", "address1", "phone1", new Date());
+
+        Employee updatedEmployee = new Employee(TYPE_ENUM.CUIDADOR, "username2", "password2",
+                "name2", "address2", "phone2", new Date(1500000));
+
+        given(empRepo.findById(employeeId)).willReturn(Optional.empty());
+        given(empRepo.save(any(Employee.class)))
+                .willAnswer((invocation) -> {
+                    System.out.println(invocation.getArgument(0).toString());
+                    return invocation.getArgument(0);
+                });
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(put("/empleado/modificarporid/{id}", employeeId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updatedEmployee)));
+        
+        // then - verify the output
+        response.andExpect(status().isNotFound())
+                .andDo(print());
     }
 }
