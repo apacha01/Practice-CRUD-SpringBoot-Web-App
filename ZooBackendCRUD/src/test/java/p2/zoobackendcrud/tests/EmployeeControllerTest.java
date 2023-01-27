@@ -212,7 +212,7 @@ public class EmployeeControllerTest {
         Integer employeeId = 1;
         Employee savedEmp = new Employee(TYPE_ENUM.ADMIN, "username1", "password1",
                 "name1", "address1", "phone1", new Date());
-        Employee updatedEmp = new Employee(TYPE_ENUM.CUIDADOR, "username2", "password2",
+        Employee updatedEmp = new Employee(TYPE_ENUM.KEEPER, "username2", "password2",
                 "name2", "address2", "phone2", new Date(1500000));
         given(empRepo.findById(employeeId)).willReturn(Optional.of(savedEmp));  //find employee with id
         given(empRepo.save(any(Employee.class)))
@@ -250,7 +250,7 @@ public class EmployeeControllerTest {
         Employee savedEmployee = new Employee(TYPE_ENUM.ADMIN, "username1", "password1",
                 "name1", "address1", "phone1", new Date());
 
-        Employee updatedEmployee = new Employee(TYPE_ENUM.CUIDADOR, "username2", "password2",
+        Employee updatedEmployee = new Employee(TYPE_ENUM.KEEPER, "username2", "password2",
                 "name2", "address2", "phone2", new Date(1500000));
 
         given(empRepo.findById(employeeId)).willReturn(Optional.empty());

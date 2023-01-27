@@ -16,6 +16,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import lombok.Data;
@@ -29,6 +30,7 @@ import p2.zoobackendcrud.auxiliar.TYPE_ENUM;
 @Entity
 @Data
 @NoArgsConstructor
+@Table(name = "employees")
 public class Employee implements Serializable{
 
     @Id

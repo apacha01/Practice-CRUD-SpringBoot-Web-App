@@ -9,7 +9,13 @@ package p2.zoobackendcrud.auxiliar;
  * @author Agustín Pacheco
  */
 public enum TYPE_ENUM {
-    ADMIN,
-    CUIDADOR,
-    GUIA
+    ADMIN ("Administrator"),
+    KEEPER ("Species Keeper"),
+    GUIDE ("Guide");
+    
+    private final String name;
+    
+    TYPE_ENUM(String name){
+        this.name = name;
+    }
 }
