@@ -5,6 +5,9 @@
 package p2.zoobackendcrud.controllers;
 
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import p2.zoobackendcrud.entities.Employee;
 import p2.zoobackendcrud.repositories.ItineraryRepository;
 import p2.zoobackendcrud.entities.Itinerary;
 
@@ -44,9 +48,18 @@ public class ItineraryController {
     }
     
     @GetMapping("/obtenerporid/{id}")
-    public ResponseEntity<Itinerary> getEmployeeById(@PathVariable("id") Integer itineraryId){
+    public ResponseEntity<Itinerary> getItineraryById(@PathVariable("id") Integer itineraryId){
         return itRepo.findById(itineraryId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    
+    @GetMapping("/obtenerporcodigo/{codigo}")
+    public List<Itinerary> getItineraryByCode(@PathVariable("codigo") String code){
+        try{
+            return itRepo.findByCode(URLDecoder.decode(code, "UTF-8"));
+        } catch (UnsupportedEncodingException ex) {
+            return new ArrayList<>();
+        }
     }
 }
