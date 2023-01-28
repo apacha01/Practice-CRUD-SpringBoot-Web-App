@@ -15,11 +15,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import p2.zoobackendcrud.entities.Employee;
 import p2.zoobackendcrud.repositories.ItineraryRepository;
 import p2.zoobackendcrud.entities.Itinerary;
 
@@ -61,5 +61,21 @@ public class ItineraryController {
         } catch (UnsupportedEncodingException ex) {
             return new ArrayList<>();
         }
+    }
+    
+    @PutMapping("/modificarporid/{id}")
+    public ResponseEntity<Itinerary> updateItineraryById(@PathVariable("id") Integer itineraryId, @RequestBody Itinerary i){
+        return itRepo.findById(itineraryId)
+                .map(savedItinerary -> {
+                    if (i.getCode() != null) savedItinerary.setCode(i.getCode());
+                    if (i.getDuration() != null) savedItinerary.setDuration(i.getDuration());
+                    if (i.getRouteLength() != null) savedItinerary.setRouteLength(i.getRouteLength());
+                    if (i.getMaxPeople() != null) savedItinerary.setMaxPeople(i.getMaxPeople());
+                    if (i.getNumSpeciesVisited() != null) savedItinerary.setNumSpeciesVisited(i.getNumSpeciesVisited());
+                    if (i.getAssigned() != null) savedItinerary.setAssigned(i.getAssigned());
+                    Itinerary updatedItinerary = itRepo.save(savedItinerary);
+                    return new ResponseEntity<>(updatedItinerary, HttpStatus.OK);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
