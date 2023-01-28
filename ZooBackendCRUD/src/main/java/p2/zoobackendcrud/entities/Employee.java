@@ -58,7 +58,7 @@ public class Employee implements Serializable{
     private String phone;
     
     @Column(name = "first_day", nullable = false)
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy HH:mm:ss", timezone="UTC")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = "UTC")
     @Temporal(TemporalType.DATE)
     private Date firstDay;
 
