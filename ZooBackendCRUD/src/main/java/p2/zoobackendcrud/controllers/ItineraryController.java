@@ -8,7 +8,9 @@ package p2.zoobackendcrud.controllers;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,5 +41,12 @@ public class ItineraryController {
     @GetMapping("/obtenertodos")
     public List<Itinerary> getAllItineraries() {
         return itRepo.findAll();
+    }
+    
+    @GetMapping("/obtenerporid/{id}")
+    public ResponseEntity<Itinerary> getEmployeeById(@PathVariable("id") Integer itineraryId){
+        return itRepo.findById(itineraryId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
