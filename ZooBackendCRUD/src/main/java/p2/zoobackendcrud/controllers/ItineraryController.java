@@ -4,14 +4,15 @@
  */
 package p2.zoobackendcrud.controllers;
 
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,7 +37,7 @@ public class ItineraryController {
     
     @PostMapping("/crear")
     @ResponseStatus(HttpStatus.CREATED)
-    public Itinerary create(@RequestBody Itinerary i) {
+    public Itinerary createItinerary(@RequestBody Itinerary i) {
         if (i == null)
             return null;
         return itRepo.save(i);
@@ -77,5 +78,17 @@ public class ItineraryController {
                     return new ResponseEntity<>(updatedItinerary, HttpStatus.OK);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    
+    @DeleteMapping("/borrar/{id}")
+    public ResponseEntity<Itinerary> deleteItineraryById(@PathVariable("id") Integer itineraryId){
+        Optional<Itinerary> optItn = itRepo.findById(itineraryId);
+        if (optItn.isEmpty())
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        else {
+            itRepo.deleteById(itineraryId);
+            return new ResponseEntity<>(optItn.get(), HttpStatus.OK);
+        }
+
     }
 }

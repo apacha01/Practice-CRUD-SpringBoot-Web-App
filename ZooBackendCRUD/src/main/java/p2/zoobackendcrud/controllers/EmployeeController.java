@@ -37,7 +37,7 @@ public class EmployeeController {
     
     @PostMapping("/crear")
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee create(@RequestBody Employee e) {
+    public Employee createEmployee(@RequestBody Employee e) {
         if (e == null)
             return null;
         return empRepo.save(e);
@@ -82,7 +82,7 @@ public class EmployeeController {
     }
     
     @DeleteMapping("/borrar/{id}")
-    public ResponseEntity<Employee> deleteById(@PathVariable("id") Integer employeeId){
+    public ResponseEntity<Employee> deleteEmployeeById(@PathVariable("id") Integer employeeId){
         Optional<Employee> optEmp = empRepo.findById(employeeId);
         if (optEmp.isEmpty())
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
