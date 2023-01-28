@@ -38,7 +38,7 @@ public class Employee implements Serializable{
     @Column(name = "id_employee", nullable = false)
     private Integer id;
     
-    @Column(name = "type", nullable = false)
+    @Column(name = "type", nullable = false, columnDefinition = "enum")
     @Enumerated(EnumType.STRING)
     private TYPE_ENUM type;
     

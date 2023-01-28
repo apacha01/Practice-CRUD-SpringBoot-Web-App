@@ -4,6 +4,7 @@
  */
 package p2.zoobackendcrud.entities;
 
+import java.io.Serializable;
 import java.sql.Time;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Table(name = "itineraries")
-public class Itinerary {
+public class Itinerary implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
