@@ -89,6 +89,5 @@ public class ItineraryController {
             itRepo.deleteById(itineraryId);
             return new ResponseEntity<>(optItn.get(), HttpStatus.OK);
         }
-
     }
 }

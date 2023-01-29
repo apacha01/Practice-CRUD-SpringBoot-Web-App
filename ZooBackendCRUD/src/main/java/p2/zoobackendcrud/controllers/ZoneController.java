@@ -75,4 +75,15 @@ public class ZoneController {
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+    
+    @DeleteMapping("/borrar/{id}")
+    public ResponseEntity<Zone> deleteZoneById(@PathVariable("id") Integer zoneId){
+        Optional<Zone> optZn = znRepo.findById(zoneId);
+        if (optZn.isEmpty())
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        else {
+            znRepo.deleteById(zoneId);
+            return new ResponseEntity<>(optZn.get(), HttpStatus.OK);
+        }
+    }
 }
