@@ -42,4 +42,25 @@ public class ZoneController {
             return null;
         return znRepo.save(z);
     }
+    
+    @GetMapping("/obtenertodos")
+    public List<Zone> getAllZones() {
+        return znRepo.findAll();
+    }
+    
+    @GetMapping("/obtenerporid/{id}")
+    public ResponseEntity<Zone> getZoneById(@PathVariable("id") Integer zoneId){
+        return znRepo.findById(zoneId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    
+    @GetMapping("/obtenerpornombre/{nombre}")
+    public List<Zone> getZoneByName(@PathVariable("nombre") String name){
+        try{
+            return znRepo.findByNameContaining(URLDecoder.decode(name, "UTF-8"));
+        } catch (UnsupportedEncodingException ex) {
+            return new ArrayList<>();
+        }
+    }
 }
