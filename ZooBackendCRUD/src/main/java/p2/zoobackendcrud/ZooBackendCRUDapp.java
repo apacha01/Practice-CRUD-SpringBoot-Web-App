@@ -25,6 +25,7 @@ public class ZooBackendCRUDapp implements CommandLineRunner {
 
     private final EmployeeRepository empr;
     private final ItineraryRepository itir;
+    private final ZoneRepository zonr;
 
     public static void main(String[] args) {
         SpringApplication.run(ZooBackendCRUDapp.class, args);
@@ -117,6 +118,7 @@ public class ZooBackendCRUDapp implements CommandLineRunner {
         if (e.getFirstDay() != null)    savedEmployee.setFirstDay(e.getFirstDay());
         return empr.save(savedEmployee);
     }
+    
     private Itinerary makeIt(){
         Scanner inp = new Scanner(System.in);
         Itinerary i = new Itinerary();
@@ -145,6 +147,23 @@ public class ZooBackendCRUDapp implements CommandLineRunner {
         return itir.save(savedItinerary);
     }
     
+    private Zone makeZn(){
+        Scanner inp = new Scanner(System.in);
+        Zone z = new Zone();
+        System.out.print("Name: ");
+        z.setName(inp.next());
+        System.out.print("\nExtension: ");
+        z.setExtension(Double.parseDouble(inp.next()));
+        return z;
+    }
+    private Zone updateZn(Integer id){
+        Zone z = makeZn();
+        Zone savedZone = zonr.findById(id).orElse(null);
+        if (z.getName() != null) savedZone.setName(z.getName());
+        if (z.getExtension() != null) savedZone.setExtension(z.getExtension());
+        return z;
+    }
+    
     private void create() {
         Scanner inp = new Scanner(System.in);
         
@@ -152,6 +171,7 @@ public class ZooBackendCRUDapp implements CommandLineRunner {
         switch(menuTypes()){
             case 1: Employee e = makeEmpl(); empr.save(e); break;
             case 2: Itinerary i = makeIt(); itir.save(i); break;
+            case 3: Zone z = makeZn(); zonr.save(z); break;
             case 6: break;
             default: System.err.println("Not implemented yet");
         }
@@ -178,6 +198,13 @@ public class ZooBackendCRUDapp implements CommandLineRunner {
                 System.out.println("**************************ALL ITINERARIES:*************************");
                 System.out.print(itir.findAll());
                 break;
+            case 3:
+                System.out.println("Id to read: ");
+                id = Integer.parseInt(inp.next());
+
+                System.out.println("Zone of id \"" + id + "\": " + zonr.findById(id));
+                System.out.println("**************************ALL ZONES:*************************");
+                System.out.print(zonr.findAll());
             case 6: break;
             default: System.err.println("Not implemented yet");
         }
@@ -205,6 +232,13 @@ public class ZooBackendCRUDapp implements CommandLineRunner {
                 Itinerary updatedItinerary = updateIt(id);
                 System.out.println(updatedItinerary.toString());
                 break;
+            case 3:
+                System.out.println(zonr.findAll());
+                System.out.println("Id to update: ");
+                id = Integer.parseInt(inp.next());
+                Zone updatedZone = updateZn(id);
+                System.out.println(updatedZone.toString());
+                break;
             case 6: break;
             default: System.err.println("Not implemented yet");
         }
@@ -227,6 +261,12 @@ public class ZooBackendCRUDapp implements CommandLineRunner {
                 System.out.println("Id to delete: ");
                 i = Integer.parseInt(inp.next());
                 if (itir.existsById(i)) itir.deleteById(i);
+                break;
+            case 3:
+                System.out.println(zonr.findAll());
+                System.out.println("Id to delete: ");
+                i = Integer.parseInt(inp.next());
+                if (zonr.existsById(i)) zonr.deleteById(i);
                 break;
             case 6: break;
             default: System.err.println("Not implemented yet");
