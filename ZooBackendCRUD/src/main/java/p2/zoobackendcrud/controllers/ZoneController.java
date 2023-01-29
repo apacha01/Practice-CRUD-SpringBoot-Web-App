@@ -63,4 +63,16 @@ public class ZoneController {
             return new ArrayList<>();
         }
     }
+    
+    @PutMapping("/modificarporid/{id}")
+    public ResponseEntity<Zone> updateZoneById(@PathVariable("id") Integer zoneId, @RequestBody Zone z){
+        return znRepo.findById(zoneId)
+                .map(savedZone -> {
+                    if (z.getName() != null) savedZone.setName(z.getName());
+                    if (z.getExtension() != null) savedZone.setExtension(z.getExtension());
+                    Zone updatedZone = znRepo.save(savedZone);
+                    return new ResponseEntity<>(updatedZone, HttpStatus.OK);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }
