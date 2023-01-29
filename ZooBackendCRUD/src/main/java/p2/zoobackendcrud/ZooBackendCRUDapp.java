@@ -5,7 +5,9 @@
 package p2.zoobackendcrud;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -122,6 +124,9 @@ public class ZooBackendCRUDapp implements CommandLineRunner {
     private Itinerary makeIt(){
         Scanner inp = new Scanner(System.in);
         Itinerary i = new Itinerary();
+        Integer idZones;
+        char ans = 's';
+        List<Zone> zones = new ArrayList<>();
         System.out.print("Code: ");
         i.setCode(inp.next());
         i.setDuration(new Time(15,35,10));
@@ -133,6 +138,16 @@ public class ZooBackendCRUDapp implements CommandLineRunner {
         i.setNumSpeciesVisited(Integer.parseInt(inp.next()));
         System.out.print("\nIs assigned? (true / false): ");
         i.setAssigned(Boolean.parseBoolean(inp.next()));
+        System.out.println(zonr.findAll());
+        while(ans != 'n' && ans != 'N'){
+            System.out.print("What zones does the itinerary go through? (enter only one id): ");
+            idZones = Integer.parseInt(inp.next());
+            if(zonr.existsById(idZones)) zones.add(zonr.findById(idZones).orElse(null));
+            else System.out.println("That zone doesnt exists.");
+            System.out.println("Are there more zones? (s/n):");
+            ans = inp.next().charAt(0);
+        }
+        i.setCoveredZones(zones);
         return i;
     }
     private Itinerary updateIt(Integer id){
@@ -144,16 +159,30 @@ public class ZooBackendCRUDapp implements CommandLineRunner {
         if (i.getMaxPeople() != null) savedItinerary.setMaxPeople(i.getMaxPeople());
         if (i.getNumSpeciesVisited() != null) savedItinerary.setNumSpeciesVisited(i.getNumSpeciesVisited());
         if (i.getAssigned() != null) savedItinerary.setAssigned(i.getAssigned());
+        savedItinerary.setCoveredZones(i.getCoveredZones());
         return itir.save(savedItinerary);
     }
     
     private Zone makeZn(){
         Scanner inp = new Scanner(System.in);
         Zone z = new Zone();
+        ArrayList<Itinerary> its = new ArrayList<>();
+        Integer idItineraries;
+        char ans = 's';
         System.out.print("Name: ");
         z.setName(inp.next());
         System.out.print("\nExtension: ");
         z.setExtension(Double.parseDouble(inp.next()));
+        System.out.println(itir.findAll());
+        while(ans != 'n' && ans != 'N'){
+            System.out.print("What itineraries does the zone get covered by? (enter only one id): ");
+            idItineraries = Integer.parseInt(inp.next());
+            if(itir.existsById(idItineraries)) its.add(itir.findById(idItineraries).orElse(null));
+            else System.out.println("That itinerary doesnt exists.");
+            System.out.println("Are there more itineraries? (s/n):");
+            ans = inp.next().charAt(0);
+        }
+        z.setCoveredItineraries(its);
         return z;
     }
     private Zone updateZn(Integer id){
@@ -161,7 +190,8 @@ public class ZooBackendCRUDapp implements CommandLineRunner {
         Zone savedZone = zonr.findById(id).orElse(null);
         if (z.getName() != null) savedZone.setName(z.getName());
         if (z.getExtension() != null) savedZone.setExtension(z.getExtension());
-        return z;
+        savedZone.setCoveredItineraries(z.getCoveredItineraries());
+        return zonr.save(savedZone);
     }
     
     private void create() {
