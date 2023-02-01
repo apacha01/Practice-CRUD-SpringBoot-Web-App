@@ -54,7 +54,7 @@ public class Zone implements Serializable{
         coveredItineraries = new HashSet<>();
     }
     
-    public void setCoveredItineraries(Collection itineraries){
+    public void setCoveredItineraries(Collection<Itinerary> itineraries){
         if (itineraries == null) return;
         for (var i : itineraries.toArray()){
             System.out.println(i);
@@ -87,6 +87,7 @@ public class Zone implements Serializable{
         if (this == obj)    return true;
         if (obj == null)    return false;
         if (getClass() != obj.getClass())   return false;
+        
         final Zone other = (Zone) obj;
         if (!Objects.equals(this.coveredItineraries, other.coveredItineraries)) return false;
         if (Objects.equals(this.id, other.getId()) 

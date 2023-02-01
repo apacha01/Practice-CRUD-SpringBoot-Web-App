@@ -90,6 +90,5 @@ public class EmployeeController {
             empRepo.deleteById(employeeId);
             return new ResponseEntity<>(optEmp.get(), HttpStatus.OK);
         }
-
     }
 }

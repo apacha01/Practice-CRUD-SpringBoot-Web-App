@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -58,7 +57,7 @@ public class Employee implements Serializable{
     private String phone;
     
     @Column(name = "first_day", nullable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = "UTC")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @Temporal(TemporalType.DATE)
     private Date firstDay;
 
@@ -74,8 +73,7 @@ public class Employee implements Serializable{
     }
     
     public String formatedFirstDayAsString(){
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         return df.format(this.firstDay);
     }
     
