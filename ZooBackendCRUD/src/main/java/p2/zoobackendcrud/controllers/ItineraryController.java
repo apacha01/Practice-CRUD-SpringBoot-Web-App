@@ -162,6 +162,20 @@ public class ItineraryController {
         return new ResponseEntity(i, HttpStatus.OK);
     }
     
+    @PutMapping("/{itinId}/removerzonas/todas")
+    public ResponseEntity<Itinerary> removeAllZones(@PathVariable("itinId") Integer itinId){
+        Itinerary i = itRepo.findById(itinId).orElse(null);
+        
+        if(i == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        
+        i.getCoveredZones().clear();
+        
+        itRepo.save(i);
+        
+        return new ResponseEntity(i, HttpStatus.OK);
+    }
+    
     @DeleteMapping("/borrar/{id}")
     public ResponseEntity<Itinerary> deleteItineraryById(@PathVariable("id") Integer itineraryId){
         Optional<Itinerary> optItn = itRepo.findById(itineraryId);
