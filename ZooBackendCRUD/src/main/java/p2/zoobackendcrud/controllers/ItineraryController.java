@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import p2.zoobackendcrud.repositories.ItineraryRepository;
 import p2.zoobackendcrud.entities.Itinerary;
+import p2.zoobackendcrud.entities.Zone;
 
 /**
  *
@@ -38,14 +39,24 @@ public class ItineraryController {
     @PostMapping("/crear")
     @ResponseStatus(HttpStatus.CREATED)
     public Itinerary createItinerary(@RequestBody Itinerary i) {
-        if (i == null)
+        if (!isItinerarySavable(i))
             return null;
+        System.out.println(i.toString());
         return itRepo.save(i);
     }
     
     @GetMapping("/obtenertodos")
     public List<Itinerary> getAllItineraries() {
         return itRepo.findAll();
+    }
+    
+    @GetMapping("/obtenerzonas/{id}")
+    public List<Zone> getZonesFromItinerary(@PathVariable("id") Integer itineraryId){
+        Itinerary i = itRepo.findById(itineraryId).orElse(null);
+        List<Zone> zones = new ArrayList<>();
+        if (i != null)
+            zones.addAll(i.getCoveredZones());
+        return zones;
     }
     
     @GetMapping("/obtenerporid/{id}")
@@ -89,5 +100,16 @@ public class ItineraryController {
             itRepo.deleteById(itineraryId);
             return new ResponseEntity<>(optItn.get(), HttpStatus.OK);
         }
+    }
+    
+    private boolean isItinerarySavable(Itinerary i){
+        if (i == null)
+            return false;
+        
+        if(i.getCode() == null || i.getDuration() == null || i.getMaxPeople() == null 
+                || i.getNumSpeciesVisited() == null || i.getRouteLength() == null || i.getAssigned() == null)
+            return false;
+        
+        return true;
     }
 }

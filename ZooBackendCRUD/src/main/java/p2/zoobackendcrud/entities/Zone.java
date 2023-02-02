@@ -4,6 +4,7 @@
  */
 package p2.zoobackendcrud.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
@@ -39,7 +40,8 @@ public class Zone implements Serializable{
     @Column(name = "extension", nullable = false)
     private Double extension;
     
-    @ManyToMany(mappedBy = "coveredZones", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "coveredZones", fetch = FetchType.LAZY)
+    @JsonIgnore
     Set<Itinerary> coveredItineraries;
     
     //null safe contructor
@@ -60,6 +62,11 @@ public class Zone implements Serializable{
             System.out.println(i);
             coveredItineraries.add((Itinerary) i);
         }
+    }
+    
+    public void addItinerary(Itinerary i){
+        coveredItineraries.add(i);
+        if(!(i.getCoveredZones().contains(this))) i.addZone(this);
     }
     
     @Override

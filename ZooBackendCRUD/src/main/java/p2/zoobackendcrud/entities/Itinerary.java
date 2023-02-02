@@ -4,12 +4,15 @@
  */
 package p2.zoobackendcrud.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -54,7 +57,7 @@ public class Itinerary implements Serializable{
     @Column(name = "assigned", nullable = false)
     private Boolean assigned;
     
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(
         name = "itineraries_route",
         joinColumns = @JoinColumn(name = "id_itinerary"),
@@ -83,6 +86,11 @@ public class Itinerary implements Serializable{
             System.out.println(z);
             coveredZones.add((Zone)z);
         }
+    }
+    
+    public void addZone(Zone z){
+        coveredZones.add(z);
+        if(!(z.getCoveredItineraries().contains(this))) z.addItinerary(this);
     }
     
     @Override

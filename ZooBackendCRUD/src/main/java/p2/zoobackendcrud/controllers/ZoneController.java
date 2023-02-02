@@ -9,6 +9,7 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import p2.zoobackendcrud.entities.Itinerary;
 import p2.zoobackendcrud.repositories.ZoneRepository;
 import p2.zoobackendcrud.entities.Zone;
+import p2.zoobackendcrud.repositories.ItineraryRepository;
 
 /**
  *
@@ -35,11 +38,15 @@ public class ZoneController {
     @Autowired
     private ZoneRepository znRepo;
     
+    @Autowired
+    private ItineraryRepository itRepo;
+    
     @PostMapping("/crear")
     @ResponseStatus(HttpStatus.CREATED)
     public Zone createZone(@RequestBody Zone z) {
         if (z == null)
             return null;
+        System.out.println(z.toString());
         return znRepo.save(z);
     }
     
@@ -73,7 +80,24 @@ public class ZoneController {
                     Zone updatedZone = znRepo.save(savedZone);
                     return new ResponseEntity<>(updatedZone, HttpStatus.OK);
                 })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElse(new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
+    }
+    
+    @PutMapping("/{zoneId}/asignaritinerario/{itinId}")
+    public ResponseEntity<Zone> assignItineraryToZone(@PathVariable("zoneId") Integer zoneId, 
+            @PathVariable("itinId") Integer itinId){
+        Zone z = znRepo.findById(zoneId).orElse(null);
+        Itinerary i = itRepo.findById(itinId).orElse(null);
+        Set<Itinerary> itsSet = null;
+        
+        if(z == null || i == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        
+        z.addItinerary(i);
+        
+        znRepo.save(z);
+        
+        return new ResponseEntity(z, HttpStatus.OK);
     }
     
     @DeleteMapping("/borrar/{id}")
