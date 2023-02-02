@@ -69,6 +69,13 @@ public class Zone implements Serializable{
         if(!(i.getCoveredZones().contains(this))) i.addZone(this);
     }
     
+    public void removeItinerary(Itinerary i){
+        if (coveredItineraries.contains(i)) {
+            coveredItineraries.remove(i);
+            if (i.getCoveredZones().contains(this)) i.removeZone(this);
+        }
+    }
+    
     @Override
     public String toString(){
         String s = "Zone id: " + id + ", name: " + name + ", Zone Extension: " + extension + " m2. ";

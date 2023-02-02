@@ -46,7 +46,6 @@ public class ZoneController {
     public Zone createZone(@RequestBody Zone z) {
         if (z == null)
             return null;
-        System.out.println(z.toString());
         return znRepo.save(z);
     }
     
@@ -83,17 +82,32 @@ public class ZoneController {
                 .orElse(new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
     }
     
-    @PutMapping("/{zoneId}/asignaritinerario/{itinId}")
-    public ResponseEntity<Zone> assignItineraryToZone(@PathVariable("zoneId") Integer zoneId, 
+    @PutMapping("/{zoneId}/agregaritinerario/{itinId}")
+    public ResponseEntity<Zone> addItineraryToZone(@PathVariable("zoneId") Integer zoneId, 
             @PathVariable("itinId") Integer itinId){
         Zone z = znRepo.findById(zoneId).orElse(null);
         Itinerary i = itRepo.findById(itinId).orElse(null);
-        Set<Itinerary> itsSet = null;
         
         if(z == null || i == null)
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         
         z.addItinerary(i);
+        
+        znRepo.save(z);
+        
+        return new ResponseEntity(z, HttpStatus.OK);
+    }
+    
+    @PutMapping("/{zoneId}/removeritinerario/{itinId}")
+    public ResponseEntity<Zone> removeItineraryFromZone(@PathVariable("zoneId") Integer zoneId, 
+            @PathVariable("itinId") Integer itinId){
+        Zone z = znRepo.findById(zoneId).orElse(null);
+        Itinerary i = itRepo.findById(itinId).orElse(null);
+        
+        if(z == null || i == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        
+        z.removeItinerary(i);
         
         znRepo.save(z);
         

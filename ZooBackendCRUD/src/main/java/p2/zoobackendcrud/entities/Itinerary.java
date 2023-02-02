@@ -93,6 +93,13 @@ public class Itinerary implements Serializable{
         if(!(z.getCoveredItineraries().contains(this))) z.addItinerary(this);
     }
     
+    public void removeZone(Zone z){
+        if (coveredZones.contains(z)) {
+            coveredZones.remove(z);
+            if(z.getCoveredItineraries().contains(this)) z.removeItinerary(this);
+        }
+    }
+    
     @Override
     public String toString(){
         String s = "Itinerary id: " + id + ", code: " + code + ", duration: " + duration + ", Route length: " + routeLength

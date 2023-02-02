@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import p2.zoobackendcrud.repositories.ItineraryRepository;
 import p2.zoobackendcrud.entities.Itinerary;
 import p2.zoobackendcrud.entities.Zone;
+import p2.zoobackendcrud.repositories.ZoneRepository;
 
 /**
  *
@@ -36,12 +37,14 @@ public class ItineraryController {
     @Autowired
     private ItineraryRepository itRepo;
     
+    @Autowired
+    private ZoneRepository znRepo;
+    
     @PostMapping("/crear")
     @ResponseStatus(HttpStatus.CREATED)
     public Itinerary createItinerary(@RequestBody Itinerary i) {
         if (!isItinerarySavable(i))
             return null;
-        System.out.println(i.toString());
         return itRepo.save(i);
     }
     
@@ -89,6 +92,38 @@ public class ItineraryController {
                     return new ResponseEntity<>(updatedItinerary, HttpStatus.OK);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    
+    @PutMapping("/{itinId}/agregarzona/{zoneId}")
+    public ResponseEntity<Itinerary> addZoneToItinerary(@PathVariable("zoneId") Integer zoneId, 
+            @PathVariable("itinId") Integer itinId){
+        Zone z = znRepo.findById(zoneId).orElse(null);
+        Itinerary i = itRepo.findById(itinId).orElse(null);
+        
+        if(z == null || i == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        
+        i.addZone(z);
+        
+        itRepo.save(i);
+        
+        return new ResponseEntity(i, HttpStatus.OK);
+    }
+    
+    @PutMapping("/{itinId}/removerzona/{zoneId}")
+    public ResponseEntity<Itinerary> removeZoneFromItinerary(@PathVariable("zoneId") Integer zoneId, 
+            @PathVariable("itinId") Integer itinId){
+        Zone z = znRepo.findById(zoneId).orElse(null);
+        Itinerary i = itRepo.findById(itinId).orElse(null);
+        
+        if(z == null || i == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        
+        i.removeZone(z);
+        
+        itRepo.save(i);
+        
+        return new ResponseEntity(i, HttpStatus.OK);
     }
     
     @DeleteMapping("/borrar/{id}")
