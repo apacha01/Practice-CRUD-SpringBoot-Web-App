@@ -126,6 +126,24 @@ public class ItineraryController {
         return new ResponseEntity(i, HttpStatus.OK);
     }
     
+    @PutMapping("/{itinId}/agregarzonas")
+    public ResponseEntity<Itinerary> addZonesToItinerary(@PathVariable("itinId") Integer itinId,
+            @RequestBody List<Integer> zonesId){
+        Itinerary i = itRepo.findById(itinId).orElse(null);
+        
+        if(i == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        
+        for (Integer zoneId : zonesId) {
+            Zone z = znRepo.findById(zoneId).orElse(null);
+            if (z != null) i.addZone(z);
+        }
+        
+        itRepo.save(i);
+        
+        return new ResponseEntity(i, HttpStatus.OK);
+    }
+    
     @DeleteMapping("/borrar/{id}")
     public ResponseEntity<Itinerary> deleteItineraryById(@PathVariable("id") Integer itineraryId){
         Optional<Itinerary> optItn = itRepo.findById(itineraryId);
