@@ -8,8 +8,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -40,7 +42,7 @@ public class Zone implements Serializable{
     @Column(name = "extension", nullable = false)
     private Double extension;
     
-    @ManyToMany(mappedBy = "coveredZones", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "coveredZones", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JsonIgnore
     Set<Itinerary> coveredItineraries;
     
@@ -73,6 +75,14 @@ public class Zone implements Serializable{
         if (coveredItineraries.contains(i)) {
             coveredItineraries.remove(i);
             if (i.getCoveredZones().contains(this)) i.removeZone(this);
+        }
+    }
+    
+    public void removeAllItineraries(){
+        List<Itinerary> its = coveredItineraries.stream().toList();
+        for (Itinerary it : its) {
+            coveredItineraries.remove(it);
+            it.removeZone(this);
         }
     }
     

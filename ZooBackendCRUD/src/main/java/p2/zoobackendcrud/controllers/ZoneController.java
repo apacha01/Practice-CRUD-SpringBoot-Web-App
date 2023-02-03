@@ -114,6 +114,56 @@ public class ZoneController {
         return new ResponseEntity(z, HttpStatus.OK);
     }
     
+    @PutMapping("/{zoneId}/agregaritinerarios")
+    public ResponseEntity<Zone> addItinerariesToZone(@PathVariable("zoneId") Integer zoneId,
+            @RequestBody List<Integer> itinsId){
+        Zone z = znRepo.findById(zoneId).orElse(null);
+        
+        if(z == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        
+        for (Integer itId : itinsId) {
+            Itinerary i = itRepo.findById(itId).orElse(null);
+            if (i != null) z.addItinerary(i);
+        }
+        
+        znRepo.save(z);
+        
+        return new ResponseEntity(z, HttpStatus.OK);
+    }
+    
+    @PutMapping("/{zoneId}/removeritinerarios")
+    public ResponseEntity<Zone> removeItinerariesFromZone(@PathVariable("zoneId") Integer zoneId,
+            @RequestBody List<Integer> itinsId){
+        Zone z = znRepo.findById(zoneId).orElse(null);
+        
+        if(z == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        
+        for (Integer itId : itinsId) {
+            Itinerary i = itRepo.findById(itId).orElse(null);
+            if (i != null) z.removeItinerary(i);
+        }
+        
+        znRepo.save(z);
+        
+        return new ResponseEntity(z, HttpStatus.OK);
+    }
+    
+    @PutMapping("/{zoneId}/removeritinerarios/todos")
+    public ResponseEntity<Zone> removeAllItinerarios(@PathVariable("zoneId") Integer zoneId){
+        Zone z = znRepo.findById(zoneId).orElse(null);
+        
+        if(z == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        
+        z.removeAllItineraries();
+        
+        znRepo.save(z);
+        
+        return new ResponseEntity(z, HttpStatus.OK);
+    }
+    
     @DeleteMapping("/borrar/{id}")
     public ResponseEntity<Zone> deleteZoneById(@PathVariable("id") Integer zoneId){
         Optional<Zone> optZn = znRepo.findById(zoneId);

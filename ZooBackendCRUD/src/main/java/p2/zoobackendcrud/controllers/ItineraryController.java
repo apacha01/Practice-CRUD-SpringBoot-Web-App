@@ -145,7 +145,7 @@ public class ItineraryController {
     }
     
     @PutMapping("/{itinId}/removerzonas")
-    public ResponseEntity<Itinerary> removeZonesToItinerary(@PathVariable("itinId") Integer itinId,
+    public ResponseEntity<Itinerary> removeZonesFromItinerary(@PathVariable("itinId") Integer itinId,
             @RequestBody List<Integer> zonesId){
         Itinerary i = itRepo.findById(itinId).orElse(null);
         
@@ -169,7 +169,7 @@ public class ItineraryController {
         if(i == null)
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         
-        i.getCoveredZones().clear();
+        i.removeAllZones();
         
         itRepo.save(i);
         

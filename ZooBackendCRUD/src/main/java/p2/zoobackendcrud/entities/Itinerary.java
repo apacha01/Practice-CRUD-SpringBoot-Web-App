@@ -100,6 +100,10 @@ public class Itinerary implements Serializable{
         }
     }
     
+    public void removeAllZones(){
+        coveredZones.clear();
+    }
+    
     @Override
     public String toString(){
         String s = "Itinerary id: " + id + ", code: " + code + ", duration: " + duration + ", Route length: " + routeLength
