@@ -9,6 +9,7 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -94,7 +95,7 @@ public class EmployeeController {
     }
     
     @PutMapping("/{empId}/asignaritinerario/{itinId}")
-    public ResponseEntity<Employee> assignItineraryToGuide(@PathVariable("empId") Integer empId, 
+    public ResponseEntity<GuideItinerary> assignItineraryToGuide(@PathVariable("empId") Integer empId, 
             @PathVariable("itinId") Integer itinId){
         Employee e = empRepo.findById(empId).orElse(null);
         Itinerary i = itiRepo.findById(itinId).orElse(null);
@@ -107,6 +108,32 @@ public class EmployeeController {
         
         i.setAssigned(true);
         GuideItinerary gi = giRepo.save(new GuideItinerary(e,i,new Date()));
+        
+        return new ResponseEntity(gi, HttpStatus.OK);
+    }
+    
+    @PutMapping("/{empId}/quitaritinerario/{itinId}")
+    public ResponseEntity<GuideItinerary> removeItineraryFromGuide(@PathVariable("empId") Integer empId, 
+            @PathVariable("itinId") Integer itinId){
+        Employee e = empRepo.findById(empId).orElse(null);
+        Itinerary i = itiRepo.findById(itinId).orElse(null);
+        GuideItinerary gi = null;
+        
+        if (e == null || i == null)
+            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+        
+        if(e.getType() != TYPE_ENUM.GUIDE)
+            return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
+        
+        for (GuideItinerary g : giRepo.findByEmployeeId(empId)) {
+            if (Objects.equals(g.getItinerary().getId(), i.getId()))
+                gi = g;
+        }
+        
+        if(gi != null){
+            i.setAssigned(false);
+            giRepo.delete(gi);
+        }
         
         return new ResponseEntity(gi, HttpStatus.OK);
     }
