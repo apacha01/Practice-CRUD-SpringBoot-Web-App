@@ -82,6 +82,20 @@ public class SpeciesController {
                 .orElse(new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
     }
     
+    @PutMapping("/{speciesId}/asignarzona/{zoneId}")
+    public ResponseEntity<Species> assignZoneToSpecies(@PathVariable("speciesId") Integer speciesId, 
+            @PathVariable("zoneId") Integer zoneId){
+        Species s = spRepo.findById(speciesId).orElse(null);
+        Zone z = znRepo.findById(zoneId).orElse(null);
+        
+        if (s == null || z == null)
+            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+        
+        s.setZone(z);
+        
+        return new ResponseEntity(spRepo.save(s), HttpStatus.OK);
+    }
+    
     @DeleteMapping("/borrar/{id}")
     public ResponseEntity<Species> deleteSpeciesById(@PathVariable("id") Integer speciesId){
         Species s = spRepo.findById(speciesId).orElse(null);

@@ -96,14 +96,14 @@ public class Zone implements Serializable{
     
     public void addSpecies(Species s){
         if (s == null) return;
-        species.add(s);
-        s.setZone(this);
+        if (!species.contains(s)) species.add(s);
+        if (s.getZone() != this) s.setZone(this);
     }
     
     public void removeSpecies(Species s){
         if (s == null) return;
         species.remove(s);
-        s.setZone(null);
+        if (s.getZone() == this) s.setZone(null);
     }
     
     @Override

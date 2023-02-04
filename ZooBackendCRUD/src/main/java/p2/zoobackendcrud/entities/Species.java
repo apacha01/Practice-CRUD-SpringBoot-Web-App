@@ -56,10 +56,10 @@ public class Species implements Serializable{
     }
     
     public void setZone(Zone z){
-        //z.removeSpecies(this);    // throws exception, cant modify and access at the same time
-        Zone zaux = zone;
+        if (zone != null)
+            zone.removeSpecies(this);
         zone = z;
-        if (zaux != null) zaux.removeSpecies(this);
+        z.addSpecies(this);
     }
     
     @Override
