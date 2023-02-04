@@ -4,6 +4,7 @@
  */
 package p2.zoobackendcrud.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import java.io.Serializable;
@@ -67,6 +68,7 @@ public class Itinerary implements Serializable{
     Set<Zone> coveredZones;
     
     @OneToMany(mappedBy = "itinerary", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnore
     Set<GuideItinerary> guidesItineraries;
     
     //avoid null pointer excpt.

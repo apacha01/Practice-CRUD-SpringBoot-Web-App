@@ -91,7 +91,7 @@ public class ItineraryController {
                     Itinerary updatedItinerary = itRepo.save(savedItinerary);
                     return new ResponseEntity<>(updatedItinerary, HttpStatus.OK);
                 })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElse(new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
     }
     
     @PutMapping("/{itinId}/agregarzona/{zoneId}")

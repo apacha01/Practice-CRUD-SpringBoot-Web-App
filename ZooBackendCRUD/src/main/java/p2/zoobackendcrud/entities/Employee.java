@@ -5,6 +5,7 @@
 package p2.zoobackendcrud.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -64,6 +65,7 @@ public class Employee implements Serializable{
     private Date firstDay;
     
     @OneToMany(mappedBy = "guide", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnore
     Set<GuideItinerary> guidesItineraries;
 
     //null safe constructor

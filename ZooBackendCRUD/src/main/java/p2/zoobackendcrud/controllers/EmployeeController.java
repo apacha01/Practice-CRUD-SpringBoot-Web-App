@@ -7,6 +7,7 @@ package p2.zoobackendcrud.controllers;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import p2.zoobackendcrud.auxiliar.TYPE_ENUM;
 import p2.zoobackendcrud.repositories.EmployeeRepository;
 import p2.zoobackendcrud.entities.Employee;
+import p2.zoobackendcrud.entities.GuideItinerary;
+import p2.zoobackendcrud.entities.Itinerary;
+import p2.zoobackendcrud.repositories.GuideItineraryRepository;
+import p2.zoobackendcrud.repositories.ItineraryRepository;
 
 /**
  *
@@ -34,6 +40,12 @@ public class EmployeeController {
     
     @Autowired
     private EmployeeRepository empRepo;
+    
+    @Autowired
+    private ItineraryRepository itiRepo;
+    
+    @Autowired
+    private GuideItineraryRepository giRepo;
     
     @PostMapping("/crear")
     @ResponseStatus(HttpStatus.CREATED)
@@ -78,7 +90,25 @@ public class EmployeeController {
                     Employee updatedEmployee = empRepo.save(savedEmployee);
                     return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
                 })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElse(new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
+    }
+    
+    @PutMapping("/{empId}/asignaritinerario/{itinId}")
+    public ResponseEntity<Employee> assignItineraryToGuide(@PathVariable("empId") Integer empId, 
+            @PathVariable("itinId") Integer itinId){
+        Employee e = empRepo.findById(empId).orElse(null);
+        Itinerary i = itiRepo.findById(itinId).orElse(null);
+        
+        if (e == null || i == null)
+            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+        
+        if(e.getType() != TYPE_ENUM.GUIDE)
+            return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
+        
+        i.setAssigned(true);
+        GuideItinerary gi = giRepo.save(new GuideItinerary(e,i,new Date()));
+        
+        return new ResponseEntity(gi, HttpStatus.OK);
     }
     
     @DeleteMapping("/borrar/{id}")
