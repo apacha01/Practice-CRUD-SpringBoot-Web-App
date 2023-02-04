@@ -7,13 +7,13 @@ package p2.zoobackendcrud.repositories;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import p2.zoobackendcrud.entities.Zone;
+import p2.zoobackendcrud.entities.Species;
 
 /**
  *
  * @author Agustín Pacheco
  */
 @Repository
-public interface ZoneRepository extends JpaRepository<Zone, Integer>{
-    public List<Zone> findByNameContaining(String name);
+public interface SpeciesRepository extends JpaRepository<Species, Integer>{
+    public List<Species> findByNameContaining(String name);
 }
