@@ -128,10 +128,7 @@ public class EmployeeController {
         if(e.getType() != TYPE_ENUM.GUIDE)
             return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
         
-        for (GuideItinerary g : giRepo.findByEmployeeId(empId)) {
-            if (Objects.equals(g.getItinerary().getId(), i.getId()))
-                gi = g;
-        }
+        gi = giRepo.findByIds(itinId, empId);
         
         if(gi != null){
             i.setAssigned(false);
@@ -184,6 +181,7 @@ public class EmployeeController {
         for (Integer itinId : itinsId) {
             Itinerary i = itiRepo.findById(itinId).orElse(null);
             if (i != null) {
+                i.setAssigned(false);
                 GuideItinerary gi = giRepo.findByIds(itinId, empId);
                 giRepo.delete(gi);
             }
