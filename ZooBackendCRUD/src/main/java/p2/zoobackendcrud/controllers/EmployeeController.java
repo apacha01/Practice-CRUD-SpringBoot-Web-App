@@ -170,6 +170,28 @@ public class EmployeeController {
         return (assigned ? new ResponseEntity(e, HttpStatus.PARTIAL_CONTENT) : new ResponseEntity(e, HttpStatus.OK));
     }
     
+    @PutMapping("/{empId}/removeritinerarios")
+    public ResponseEntity<Employee> removeItinerariesFromGuide(@PathVariable("empId") Integer empId, 
+           @RequestBody List<Integer> itinsId){
+        Employee e = empRepo.findById(empId).orElse(null);
+        
+        if (e == null)
+            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+        
+        if(e.getType() != TYPE_ENUM.GUIDE)
+            return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
+        
+        for (Integer itinId : itinsId) {
+            Itinerary i = itiRepo.findById(itinId).orElse(null);
+            if (i != null) {
+                GuideItinerary gi = giRepo.findByIds(itinId, empId);
+                giRepo.delete(gi);
+            }
+        }
+        
+        return new ResponseEntity(e, HttpStatus.OK);
+    }
+    
     @DeleteMapping("/borrar/{id}")
     public ResponseEntity<Employee> deleteEmployeeById(@PathVariable("id") Integer employeeId){
         Optional<Employee> optEmp = empRepo.findById(employeeId);
