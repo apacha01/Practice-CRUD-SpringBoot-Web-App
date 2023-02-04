@@ -8,12 +8,15 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -63,6 +66,30 @@ public class SpeciesController {
             return spRepo.findByNameContaining(URLDecoder.decode(name, "UTF-8"));
         } catch (UnsupportedEncodingException ex) {
             return new ArrayList<>();
+        }
+    }
+    
+    @PutMapping("/modificarporid/{id}")
+    public ResponseEntity<Species> updateSpeciesById(@PathVariable("id") Integer speciesId, @RequestBody Species s){
+        return spRepo.findById(speciesId)
+                .map(savedSpecies -> {
+                    if (s.getName() != null) savedSpecies.setName(s.getName());
+                    if (s.getScientificName() != null) savedSpecies.setScientificName(s.getScientificName());
+                    savedSpecies.setZone(s.getZone());
+                    Species updatedSpecies = spRepo.save(savedSpecies);
+                    return new ResponseEntity<>(updatedSpecies, HttpStatus.OK);
+                })
+                .orElse(new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
+    }
+    
+    @DeleteMapping("/borrar/{id}")
+    public ResponseEntity<Species> deleteSpeciesById(@PathVariable("id") Integer speciesId){
+        Species s = spRepo.findById(speciesId).orElse(null);
+        if (s == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        else {
+            spRepo.deleteById(speciesId);
+            return new ResponseEntity<>(s, HttpStatus.OK);
         }
     }
 }
