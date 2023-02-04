@@ -8,7 +8,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -96,17 +95,14 @@ public class SpeciesController {
         return new ResponseEntity(spRepo.save(s), HttpStatus.OK);
     }
     
-    @PutMapping("/{speciesId}/removerzona/{zoneId}")
-    public ResponseEntity<Species> removeZoneFromSpecies(@PathVariable("speciesId") Integer speciesId, 
-            @PathVariable("zoneId") Integer zoneId){
+    @PutMapping("/{speciesId}/removerzona/")
+    public ResponseEntity<Species> removeZoneFromSpecies(@PathVariable("speciesId") Integer speciesId){
         Species s = spRepo.findById(speciesId).orElse(null);
-        Zone z = znRepo.findById(zoneId).orElse(null);
         
-        if (s == null || z == null)
+        if (s == null)
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         
         s.setZone(null);
-        z.removeSpecies(s);
         
         return new ResponseEntity(spRepo.save(s), HttpStatus.OK);
     }

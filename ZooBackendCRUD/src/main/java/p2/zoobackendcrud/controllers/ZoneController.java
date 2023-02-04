@@ -22,9 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import p2.zoobackendcrud.entities.Itinerary;
+import p2.zoobackendcrud.entities.Species;
 import p2.zoobackendcrud.repositories.ZoneRepository;
 import p2.zoobackendcrud.entities.Zone;
 import p2.zoobackendcrud.repositories.ItineraryRepository;
+import p2.zoobackendcrud.repositories.SpeciesRepository;
 
 /**
  *
@@ -39,6 +41,9 @@ public class ZoneController {
     
     @Autowired
     private ItineraryRepository itRepo;
+    
+    @Autowired
+    private SpeciesRepository spRepo;
     
     @PostMapping("/crear")
     @ResponseStatus(HttpStatus.CREATED)
@@ -161,6 +166,36 @@ public class ZoneController {
         znRepo.save(z);
         
         return new ResponseEntity(z, HttpStatus.OK);
+    }
+    
+    @PutMapping("/{zoneId}/asignarespecie/{speciesId}")
+    public ResponseEntity<Zone> assignSpeciesToZone(@PathVariable("speciesId") Integer speciesId, 
+            @PathVariable("zoneId") Integer zoneId){
+        Species s = spRepo.findById(speciesId).orElse(null);
+        Zone z = znRepo.findById(zoneId).orElse(null);
+        
+        if (s == null || z == null)
+            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+        
+        z.addSpecies(s);
+        
+        return new ResponseEntity(znRepo.save(z), HttpStatus.OK);
+    }
+    
+    @PutMapping("/{zoneId}/removerespecie/{speciesId}")
+    public ResponseEntity<Zone> removeSpeciesFromZone(@PathVariable("speciesId") Integer speciesId, 
+            @PathVariable("zoneId") Integer zoneId){
+        Species s = spRepo.findById(speciesId).orElse(null);
+        Zone z = znRepo.findById(zoneId).orElse(null);
+        
+        if (s == null || z == null)
+            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+        
+        s.setZone(null);
+        
+        spRepo.save(s);
+        
+        return new ResponseEntity(znRepo.save(z), HttpStatus.OK);
     }
     
     @DeleteMapping("/borrar/{id}")
