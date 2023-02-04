@@ -7,7 +7,6 @@ package p2.zoobackendcrud.entities;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -59,7 +58,8 @@ public class Species implements Serializable{
         if (zone != null)
             zone.removeSpecies(this);
         zone = z;
-        z.addSpecies(this);
+        if (z != null)
+            z.addSpecies(this);
     }
     
     @Override
