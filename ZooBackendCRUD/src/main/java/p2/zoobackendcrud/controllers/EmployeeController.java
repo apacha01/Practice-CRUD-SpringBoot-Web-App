@@ -103,7 +103,7 @@ public class EmployeeController {
         if (e == null || i == null)
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         
-        if(e.getType() != TYPE_ENUM.GUIDE)
+        if(e.getType() != TYPE_ENUM.GUIDE || i.getAssigned())
             return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
         
         i.setAssigned(true);
