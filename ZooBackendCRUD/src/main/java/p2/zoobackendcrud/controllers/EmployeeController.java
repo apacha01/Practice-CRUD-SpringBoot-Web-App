@@ -103,8 +103,11 @@ public class EmployeeController {
         if (e == null || i == null)
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         
-        if(e.getType() != TYPE_ENUM.GUIDE || i.getAssigned())
+        if(e.getType() != TYPE_ENUM.GUIDE)
             return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
+        
+        if (i.getAssigned())
+            return new ResponseEntity<>(null, HttpStatus.IM_USED);
         
         i.setAssigned(true);
         GuideItinerary gi = giRepo.save(new GuideItinerary(e,i,new Date()));
@@ -136,6 +139,35 @@ public class EmployeeController {
         }
         
         return new ResponseEntity(gi, HttpStatus.OK);
+    }
+    
+    @PutMapping("/{empId}/asignaritinerarios")
+    public ResponseEntity<Employee> assignItinerariesToGuide(@PathVariable("empId") Integer empId, 
+           @RequestBody List<Integer> itinsId){
+        Employee e = empRepo.findById(empId).orElse(null);
+        Boolean assigned = false;
+        
+        if (e == null)
+            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+        
+        if(e.getType() != TYPE_ENUM.GUIDE)
+            return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
+        
+        for (Integer itinId : itinsId) {
+            Itinerary i = itiRepo.findById(itinId).orElse(null);
+            if (i != null) {
+                if (i.getAssigned())
+                    assigned = true;
+                
+                if(!i.getAssigned()){
+                    i.setAssigned(true);
+                    giRepo.save(new GuideItinerary(e,i,new Date()));
+                }
+            }
+        }
+        
+        //If one was assigned give warning so user knows not all itineraries were assigned
+        return (assigned ? new ResponseEntity(e, HttpStatus.PARTIAL_CONTENT) : new ResponseEntity(e, HttpStatus.OK));
     }
     
     @DeleteMapping("/borrar/{id}")
