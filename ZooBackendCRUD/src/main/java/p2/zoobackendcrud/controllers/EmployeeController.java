@@ -218,6 +218,26 @@ public class EmployeeController {
         return new ResponseEntity(sk, HttpStatus.OK);
     }
     
+    @PutMapping("/{empId}/removerespecie/{spcId}")
+    public ResponseEntity<SpeciesKeeper> removeSpeciesToKeeper(@PathVariable("empId") Integer empId, 
+            @PathVariable("spcId") Integer spcId){
+        Employee e = empRepo.findById(empId).orElse(null);
+        Species s = spRepo.findById(spcId).orElse(null);
+        
+        if (e == null || s == null)
+            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+        
+        if(!e.isKeeper())
+            return new ResponseEntity(null, HttpStatus.UNPROCESSABLE_ENTITY);
+        
+        SpeciesKeeper sk = skRepo.findByIds(empId, spcId);
+        
+        if (sk != null)
+            skRepo.delete(sk);
+        
+        return new ResponseEntity(sk, HttpStatus.OK);
+    }
+    
     @DeleteMapping("/borrar/{id}")
     public ResponseEntity<Employee> deleteEmployeeById(@PathVariable("id") Integer employeeId){
         Optional<Employee> optEmp = empRepo.findById(employeeId);
