@@ -96,4 +96,16 @@ public class Employee implements Serializable{
         return df.format(this.firstDay);
     }
     
+    public boolean isGuide(){
+        return type == TYPE_ENUM.GUIDE;
+    }
+    
+    public boolean isKeeper(){
+        return type == TYPE_ENUM.KEEPER;
+    }
+    
+    public boolean isAdmin(){
+        return type == TYPE_ENUM.ADMIN;
+    }
+    
 }

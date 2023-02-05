@@ -22,13 +22,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import p2.zoobackendcrud.auxiliar.TYPE_ENUM;
 import p2.zoobackendcrud.repositories.EmployeeRepository;
 import p2.zoobackendcrud.entities.Employee;
 import p2.zoobackendcrud.entities.GuideItinerary;
 import p2.zoobackendcrud.entities.Itinerary;
 import p2.zoobackendcrud.repositories.GuideItineraryRepository;
 import p2.zoobackendcrud.repositories.ItineraryRepository;
+import p2.zoobackendcrud.repositories.SpeciesKeeperRepository;
+import p2.zoobackendcrud.repositories.SpeciesRepository;
 
 /**
  *
@@ -102,7 +103,7 @@ public class EmployeeController {
         if (e == null || i == null)
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         
-        if(e.getType() != TYPE_ENUM.GUIDE)
+        if(e.isGuide())
             return new ResponseEntity(null, HttpStatus.UNPROCESSABLE_ENTITY);
         
         if (i.getAssigned())
@@ -124,7 +125,7 @@ public class EmployeeController {
         if (e == null || i == null)
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         
-        if(e.getType() != TYPE_ENUM.GUIDE)
+        if(e.isGuide())
             return new ResponseEntity(null, HttpStatus.UNPROCESSABLE_ENTITY);
         
         gi = giRepo.findByIds(itinId, empId);
@@ -146,7 +147,7 @@ public class EmployeeController {
         if (e == null)
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         
-        if(e.getType() != TYPE_ENUM.GUIDE)
+        if(e.isGuide())
             return new ResponseEntity(null, HttpStatus.UNPROCESSABLE_ENTITY);
         
         for (Integer itinId : itinsId) {
@@ -174,7 +175,7 @@ public class EmployeeController {
         if (e == null)
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         
-        if(e.getType() != TYPE_ENUM.GUIDE)
+        if(e.isGuide())
             return new ResponseEntity(null, HttpStatus.UNPROCESSABLE_ENTITY);
         
         for (Integer itinId : itinsId) {
