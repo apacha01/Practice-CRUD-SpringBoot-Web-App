@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -106,6 +107,14 @@ public class Employee implements Serializable{
     
     public boolean isAdmin(){
         return type == TYPE_ENUM.ADMIN;
+    }
+    
+    public boolean hasSpecies(Species s){
+        for (SpeciesKeeper speciesKeeper : speciesKeepers) {
+            if (Objects.equals(speciesKeeper.getSpecies().getId(), s.getId()))
+                return true;
+        }
+        return false;
     }
     
 }

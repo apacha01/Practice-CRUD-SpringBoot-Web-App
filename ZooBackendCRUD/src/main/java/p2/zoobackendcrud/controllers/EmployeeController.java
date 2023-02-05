@@ -26,6 +26,8 @@ import p2.zoobackendcrud.repositories.EmployeeRepository;
 import p2.zoobackendcrud.entities.Employee;
 import p2.zoobackendcrud.entities.GuideItinerary;
 import p2.zoobackendcrud.entities.Itinerary;
+import p2.zoobackendcrud.entities.Species;
+import p2.zoobackendcrud.entities.SpeciesKeeper;
 import p2.zoobackendcrud.repositories.GuideItineraryRepository;
 import p2.zoobackendcrud.repositories.ItineraryRepository;
 import p2.zoobackendcrud.repositories.SpeciesKeeperRepository;
@@ -47,6 +49,12 @@ public class EmployeeController {
     
     @Autowired
     private GuideItineraryRepository giRepo;
+    
+    @Autowired
+    private SpeciesRepository spRepo;
+    
+    @Autowired
+    private SpeciesKeeperRepository skRepo;
     
     @PostMapping("/crear")
     @ResponseStatus(HttpStatus.CREATED)
@@ -103,7 +111,7 @@ public class EmployeeController {
         if (e == null || i == null)
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         
-        if(e.isGuide())
+        if(!e.isGuide())
             return new ResponseEntity(null, HttpStatus.UNPROCESSABLE_ENTITY);
         
         if (i.getAssigned())
@@ -125,7 +133,7 @@ public class EmployeeController {
         if (e == null || i == null)
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         
-        if(e.isGuide())
+        if(!e.isGuide())
             return new ResponseEntity(null, HttpStatus.UNPROCESSABLE_ENTITY);
         
         gi = giRepo.findByIds(itinId, empId);
@@ -147,7 +155,7 @@ public class EmployeeController {
         if (e == null)
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         
-        if(e.isGuide())
+        if(!e.isGuide())
             return new ResponseEntity(null, HttpStatus.UNPROCESSABLE_ENTITY);
         
         for (Integer itinId : itinsId) {
@@ -175,7 +183,7 @@ public class EmployeeController {
         if (e == null)
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         
-        if(e.isGuide())
+        if(!e.isGuide())
             return new ResponseEntity(null, HttpStatus.UNPROCESSABLE_ENTITY);
         
         for (Integer itinId : itinsId) {
@@ -188,6 +196,26 @@ public class EmployeeController {
         }
         
         return new ResponseEntity(e, HttpStatus.OK);
+    }
+    
+    @PutMapping("/{empId}/asignarespecie/{spcId}")
+    public ResponseEntity<SpeciesKeeper> assignSpeciesToKeeper(@PathVariable("empId") Integer empId, 
+            @PathVariable("spcId") Integer spcId){
+        Employee e = empRepo.findById(empId).orElse(null);
+        Species s = spRepo.findById(spcId).orElse(null);
+        
+        if (e == null || s == null)
+            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+        
+        if(!e.isKeeper())
+            return new ResponseEntity(null, HttpStatus.UNPROCESSABLE_ENTITY);
+        
+        if(e.hasSpecies(s))
+            return new ResponseEntity(null, HttpStatus.NOT_MODIFIED);
+        
+        SpeciesKeeper sk = skRepo.save(new SpeciesKeeper(e,s,new Date()));
+        
+        return new ResponseEntity(sk, HttpStatus.OK);
     }
     
     @DeleteMapping("/borrar/{id}")
