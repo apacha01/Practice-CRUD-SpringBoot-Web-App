@@ -55,7 +55,7 @@ public class Species implements Serializable{
     }
     
     public void setZone(Zone z){
-        if (zone != null)
+        if (zone != null && zone.getSpecies().contains(this))
             zone.removeSpecies(this);
         zone = z;
         if (z != null)

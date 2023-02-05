@@ -7,8 +7,10 @@ package p2.zoobackendcrud.controllers;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -191,9 +193,35 @@ public class ZoneController {
         if (s == null || z == null)
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         
-        s.setZone(null);
+        z.removeSpecies(s);
         
-        spRepo.save(s);
+        return new ResponseEntity(znRepo.save(z), HttpStatus.OK);
+    }
+    
+    @PutMapping("/{zoneId}/asignarespecies")
+    public ResponseEntity<Zone> assignMultipleSpeciesToZone(@PathVariable("zoneId") Integer zoneId,
+            @RequestBody List<Integer> spsId){
+        Zone z = znRepo.findById(zoneId).orElse(null);
+        
+        if (z == null)
+            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+        
+        for (Integer spId : spsId) {
+            Species s = spRepo.findById(spId).orElse(null);
+            if (s != null) z.addSpecies(s);
+        }
+        
+        return new ResponseEntity(znRepo.save(z), HttpStatus.OK);
+    }
+    
+    @PutMapping("/{zoneId}/removerespecies")
+    public ResponseEntity<Zone> removeAllSpeciesFromZone(@PathVariable("zoneId") Integer zoneId){
+        Zone z = znRepo.findById(zoneId).orElse(null);
+        
+        if (z == null)
+            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+        
+        z.removeAllSpecies();
         
         return new ResponseEntity(znRepo.save(z), HttpStatus.OK);
     }

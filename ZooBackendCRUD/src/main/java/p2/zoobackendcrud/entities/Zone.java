@@ -103,7 +103,14 @@ public class Zone implements Serializable{
     public void removeSpecies(Species s){
         if (s == null) return;
         species.remove(s);
-        if (s.getZone() == this) s.setZone(null);
+        s.setZone(null);
+    }
+    
+    public void removeAllSpecies(){
+        Set<Species> sps = new HashSet<>(species); 
+        for (Species sp : sps) {
+            sp.setZone(null);
+        }
     }
     
     @Override
