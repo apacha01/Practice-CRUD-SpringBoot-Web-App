@@ -238,6 +238,54 @@ public class EmployeeController {
         return new ResponseEntity(sk, HttpStatus.OK);
     }
     
+    @PutMapping("/{empId}/asignarespecies")
+    public ResponseEntity<Employee> assignMultipleSpeciesToKeeper(@PathVariable("empId") Integer empId, 
+            @RequestBody List<Integer> spcId){
+        Employee e = empRepo.findById(empId).orElse(null);
+        Boolean assigned = false;
+        
+        if (e == null)
+            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+        
+        if(!e.isKeeper())
+            return new ResponseEntity(null, HttpStatus.UNPROCESSABLE_ENTITY);
+        
+        
+        for (Integer spId : spcId) {
+            Species s = spRepo.findById(spId).orElse(null);
+            if (s != null){
+                if(e.hasSpecies(s))
+                    assigned = true;
+                else skRepo.save(new SpeciesKeeper(e,s,new Date()));
+            }
+        }
+        
+        //If employee already had species dont asigned again and notify
+        return (assigned ? new ResponseEntity(e, HttpStatus.PARTIAL_CONTENT) : new ResponseEntity(e, HttpStatus.OK));
+    }
+    
+    @PutMapping("/{empId}/removerespecies")
+    public ResponseEntity<Employee> removeMultipleSpeciesToKeeper(@PathVariable("empId") Integer empId, 
+            @RequestBody List<Integer> spcId){
+        Employee e = empRepo.findById(empId).orElse(null);
+        
+        if (e == null)
+            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+        
+        if(!e.isKeeper())
+            return new ResponseEntity(null, HttpStatus.UNPROCESSABLE_ENTITY);
+        
+        
+        for (Integer spId : spcId) {
+            SpeciesKeeper sk = skRepo.findByIds(empId, spId);
+            if (sk != null)
+                skRepo.delete(sk);
+        }
+        
+        //If employee already had species dont asigned again and notify
+        return new ResponseEntity(e, HttpStatus.OK);
+    }
+    
     @DeleteMapping("/borrar/{id}")
     public ResponseEntity<Employee> deleteEmployeeById(@PathVariable("id") Integer employeeId){
         Optional<Employee> optEmp = empRepo.findById(employeeId);
