@@ -9,7 +9,6 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import p2.zoobackendcrud.auxiliar.TYPE_ENUM;
 import p2.zoobackendcrud.entities.Employee;
 import p2.zoobackendcrud.entities.GuideItinerary;
 import p2.zoobackendcrud.repositories.ItineraryRepository;
@@ -198,7 +196,7 @@ public class ItineraryController {
         if (e == null || i == null)
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         
-        if(e.getType() != TYPE_ENUM.GUIDE)
+        if(!e.isGuide())
             return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
         
         if (i.getAssigned())
@@ -220,7 +218,7 @@ public class ItineraryController {
         if (e == null || i == null)
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         
-        if(e.getType() != TYPE_ENUM.GUIDE)
+        if(!e.isGuide())
             return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
         
         gi = giRepo.findByIds(itinId, empId);
