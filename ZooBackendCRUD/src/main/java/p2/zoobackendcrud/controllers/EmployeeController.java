@@ -9,7 +9,6 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -91,7 +90,7 @@ public class EmployeeController {
                     Employee updatedEmployee = empRepo.save(savedEmployee);
                     return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
                 })
-                .orElse(new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
+                .orElse(new ResponseEntity(null, HttpStatus.NOT_FOUND));
     }
     
     @PutMapping("/{empId}/asignaritinerario/{itinId}")
@@ -104,10 +103,10 @@ public class EmployeeController {
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         
         if(e.getType() != TYPE_ENUM.GUIDE)
-            return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity(null, HttpStatus.UNPROCESSABLE_ENTITY);
         
         if (i.getAssigned())
-            return new ResponseEntity<>(null, HttpStatus.IM_USED);
+            return new ResponseEntity(null, HttpStatus.IM_USED);
         
         i.setAssigned(true);
         GuideItinerary gi = giRepo.save(new GuideItinerary(e,i,new Date()));
@@ -126,7 +125,7 @@ public class EmployeeController {
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         
         if(e.getType() != TYPE_ENUM.GUIDE)
-            return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity(null, HttpStatus.UNPROCESSABLE_ENTITY);
         
         gi = giRepo.findByIds(itinId, empId);
         
@@ -148,7 +147,7 @@ public class EmployeeController {
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         
         if(e.getType() != TYPE_ENUM.GUIDE)
-            return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity(null, HttpStatus.UNPROCESSABLE_ENTITY);
         
         for (Integer itinId : itinsId) {
             Itinerary i = itiRepo.findById(itinId).orElse(null);
@@ -176,7 +175,7 @@ public class EmployeeController {
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         
         if(e.getType() != TYPE_ENUM.GUIDE)
-            return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity(null, HttpStatus.UNPROCESSABLE_ENTITY);
         
         for (Integer itinId : itinsId) {
             Itinerary i = itiRepo.findById(itinId).orElse(null);
@@ -194,10 +193,10 @@ public class EmployeeController {
     public ResponseEntity<Employee> deleteEmployeeById(@PathVariable("id") Integer employeeId){
         Optional<Employee> optEmp = empRepo.findById(employeeId);
         if (optEmp.isEmpty())
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         else {
             empRepo.deleteById(employeeId);
-            return new ResponseEntity<>(optEmp.get(), HttpStatus.OK);
+            return new ResponseEntity(optEmp.get(), HttpStatus.OK);
         }
     }
 }

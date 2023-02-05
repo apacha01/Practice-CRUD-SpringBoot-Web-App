@@ -31,8 +31,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "guides")
-public class GuideItinerary implements Serializable{
+@Table(name = "species_keepers")
+public class SpeciesKeeper implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,20 +41,20 @@ public class GuideItinerary implements Serializable{
     
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_employee")
-    Employee guide;
+    Employee keeper;
     
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_itinerary")
-    Itinerary itinerary;
+    @JoinColumn(name = "id_species")
+    Species species;
     
     @Column(name = "assigned_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = "UTC")
     @Temporal(TemporalType.TIMESTAMP)
     Date assignedDate;
 
-    public GuideItinerary(Employee guide, Itinerary itinerary, Date assignedDate) {
-        this.guide = guide;
-        this.itinerary = itinerary;
+    public SpeciesKeeper(Employee keeper, Species species, Date assignedDate) {
+        this.keeper = keeper;
+        this.species = species;
         this.assignedDate = assignedDate;
     }
     
@@ -65,19 +65,24 @@ public class GuideItinerary implements Serializable{
     }
     
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (this.getClass() != obj.getClass()) return false;
-        
-        GuideItinerary other = (GuideItinerary) obj;
-        return Objects.equals(guide,other.getGuide()) &&
-                Objects.equals(itinerary,other.getItinerary()) &&
-                Objects.equals(assignedDate,other.getAssignedDate());
+    public int hashCode(){
+        return Objects.hash(this.id, this.assignedDate);
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(guide.getId(), itinerary.getId(), assignedDate);
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        
+        final SpeciesKeeper other = (SpeciesKeeper) obj;
+        if (!Objects.equals(this.id, other.id) || !Objects.equals(this.keeper, other.keeper) || 
+                !Objects.equals(this.species, other.species) || !Objects.equals(this.assignedDate, other.assignedDate))
+            return false;
+        
+        return true;
     }
 }
