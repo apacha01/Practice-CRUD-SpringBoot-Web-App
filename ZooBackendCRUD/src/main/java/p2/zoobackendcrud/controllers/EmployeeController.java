@@ -126,15 +126,8 @@ public class EmployeeController {
     @PutMapping("/{empId}/quitaritinerario/{itinId}")
     public ResponseEntity<GuideItinerary> removeItineraryFromGuide(@PathVariable("empId") Integer empId, 
             @PathVariable("itinId") Integer itinId){
-        Employee e = empRepo.findById(empId).orElse(null);
         Itinerary i = itiRepo.findById(itinId).orElse(null);
         GuideItinerary gi = null;
-        
-        if (e == null || i == null)
-            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
-        
-        if(!e.isGuide())
-            return new ResponseEntity(null, HttpStatus.UNPROCESSABLE_ENTITY);
         
         gi = giRepo.findByIds(itinId, empId);
         
@@ -143,7 +136,7 @@ public class EmployeeController {
             giRepo.delete(gi);
         }
         
-        return new ResponseEntity(gi, HttpStatus.OK);
+        return new ResponseEntity(null, HttpStatus.OK);
     }
     
     @PutMapping("/{empId}/asignaritinerarios")
@@ -178,13 +171,6 @@ public class EmployeeController {
     @PutMapping("/{empId}/removeritinerarios")
     public ResponseEntity<Employee> removeItinerariesFromGuide(@PathVariable("empId") Integer empId, 
            @RequestBody List<Integer> itinsId){
-        Employee e = empRepo.findById(empId).orElse(null);
-        
-        if (e == null)
-            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
-        
-        if(!e.isGuide())
-            return new ResponseEntity(null, HttpStatus.UNPROCESSABLE_ENTITY);
         
         for (Integer itinId : itinsId) {
             Itinerary i = itiRepo.findById(itinId).orElse(null);
@@ -195,25 +181,18 @@ public class EmployeeController {
             }
         }
         
-        return new ResponseEntity(e, HttpStatus.OK);
+        return new ResponseEntity(null, HttpStatus.OK);
     }
     
     @PutMapping("/{empId}/removeritinerarios/todos")
     public ResponseEntity<Employee> removeAllItinerariesFromGuide(@PathVariable("empId") Integer empId){
-        Employee e = empRepo.findById(empId).orElse(null);
-        
-        if (e == null)
-            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
-        
-        if(!e.isGuide())
-            return new ResponseEntity(null, HttpStatus.UNPROCESSABLE_ENTITY);
-        
         List<GuideItinerary> gis = giRepo.findByEmployeeId(empId);
-        for (GuideItinerary gi : gis)
+        for (GuideItinerary gi : gis){
+            gi.getItinerary().setAssigned(false);
             giRepo.delete(gi);
+        }
         
-        //If employee already had species dont asigned again and notify
-        return new ResponseEntity(e, HttpStatus.OK);
+        return new ResponseEntity(null, HttpStatus.OK);
     }
     
     @PutMapping("/{empId}/asignarespecie/{spcId}")
@@ -239,21 +218,12 @@ public class EmployeeController {
     @PutMapping("/{empId}/removerespecie/{spcId}")
     public ResponseEntity<SpeciesKeeper> removeSpeciesFromKeeper(@PathVariable("empId") Integer empId, 
             @PathVariable("spcId") Integer spcId){
-        Employee e = empRepo.findById(empId).orElse(null);
-        Species s = spRepo.findById(spcId).orElse(null);
-        
-        if (e == null || s == null)
-            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
-        
-        if(!e.isKeeper())
-            return new ResponseEntity(null, HttpStatus.UNPROCESSABLE_ENTITY);
-        
         SpeciesKeeper sk = skRepo.findByIds(empId, spcId);
         
         if (sk != null)
             skRepo.delete(sk);
         
-        return new ResponseEntity(sk, HttpStatus.OK);
+        return new ResponseEntity(null, HttpStatus.OK);
     }
     
     @PutMapping("/{empId}/asignarespecies")
@@ -278,21 +248,13 @@ public class EmployeeController {
             }
         }
         
-        //If employee already had species dont asigned again and notify
+        //If employee already had species dont asign again and notify
         return (assigned ? new ResponseEntity(e, HttpStatus.PARTIAL_CONTENT) : new ResponseEntity(e, HttpStatus.OK));
     }
     
     @PutMapping("/{empId}/removerespecies")
     public ResponseEntity<Employee> removeMultipleSpeciesFromKeeper(@PathVariable("empId") Integer empId, 
             @RequestBody List<Integer> spcId){
-        Employee e = empRepo.findById(empId).orElse(null);
-        
-        if (e == null)
-            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
-        
-        if(!e.isKeeper())
-            return new ResponseEntity(null, HttpStatus.UNPROCESSABLE_ENTITY);
-        
         
         for (Integer spId : spcId) {
             SpeciesKeeper sk = skRepo.findByIds(empId, spId);
@@ -300,26 +262,16 @@ public class EmployeeController {
                 skRepo.delete(sk);
         }
         
-        //If employee already had species dont asigned again and notify
-        return new ResponseEntity(e, HttpStatus.OK);
+        return new ResponseEntity(null, HttpStatus.OK);
     }
     
     @PutMapping("/{empId}/removerespecies/todas")
     public ResponseEntity<Employee> removeAllSpeciesFromKeeper(@PathVariable("empId") Integer empId){
-        Employee e = empRepo.findById(empId).orElse(null);
-        
-        if (e == null)
-            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
-        
-        if(!e.isKeeper())
-            return new ResponseEntity(null, HttpStatus.UNPROCESSABLE_ENTITY);
-        
         List<SpeciesKeeper> sks = skRepo.findByEmployeeId(empId);
         for (SpeciesKeeper sk : sks)
             skRepo.delete(sk);
         
-        //If employee already had species dont asigned again and notify
-        return new ResponseEntity(e, HttpStatus.OK);
+        return new ResponseEntity(null, HttpStatus.OK);
     }
     
     @DeleteMapping("/borrar/{id}")

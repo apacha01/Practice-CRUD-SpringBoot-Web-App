@@ -22,7 +22,7 @@ public interface SpeciesKeeperRepository extends JpaRepository<SpeciesKeeper, In
     List<SpeciesKeeper> findByEmployeeId(@Param("idEmployee") Integer idEmployee);
     
     @Query("SELECT k FROM SpeciesKeeper k WHERE k.species.id = :idSpecies")
-    List<SpeciesKeeper> findByItineraryId(@Param("idSpecies") Integer idSpecies);
+    List<SpeciesKeeper> findBySpeciesId(@Param("idSpecies") Integer idSpecies);
     
     @Query("SELECT k FROM SpeciesKeeper k WHERE k.keeper.id = :idEmp AND k.species.id = :idSpc")
     SpeciesKeeper findByIds(@Param("idEmp") Integer idEmp, @Param("idSpc") Integer idSpc);

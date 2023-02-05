@@ -7,6 +7,7 @@ package p2.zoobackendcrud.controllers;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,8 +21,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import p2.zoobackendcrud.entities.Employee;
 import p2.zoobackendcrud.entities.Species;
+import p2.zoobackendcrud.entities.SpeciesKeeper;
 import p2.zoobackendcrud.entities.Zone;
+import p2.zoobackendcrud.repositories.EmployeeRepository;
+import p2.zoobackendcrud.repositories.SpeciesKeeperRepository;
 import p2.zoobackendcrud.repositories.SpeciesRepository;
 import p2.zoobackendcrud.repositories.ZoneRepository;
 
@@ -38,6 +43,12 @@ public class SpeciesController {
 
     @Autowired
     private ZoneRepository znRepo;
+    
+    @Autowired
+    private EmployeeRepository empRepo;
+    
+    @Autowired
+    private SpeciesKeeperRepository skRepo;
     
     @PostMapping("/crear")
     @ResponseStatus(HttpStatus.CREATED)
@@ -105,6 +116,81 @@ public class SpeciesController {
         s.setZone(null);
         
         return new ResponseEntity(spRepo.save(s), HttpStatus.OK);
+    }
+    
+    @PutMapping("/{spcId}/asignarcuidador/{empId}")
+    public ResponseEntity<SpeciesKeeper> assignKeeperToSpecies(@PathVariable("empId") Integer empId, 
+            @PathVariable("spcId") Integer spcId){
+        Employee e = empRepo.findById(empId).orElse(null);
+        Species s = spRepo.findById(spcId).orElse(null);
+        
+        if (e == null || s == null)
+            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+        
+        if(!e.isKeeper())
+            return new ResponseEntity(null, HttpStatus.UNPROCESSABLE_ENTITY);
+        
+        if(e.hasSpecies(s))
+            return new ResponseEntity(null, HttpStatus.NOT_MODIFIED);
+        
+        SpeciesKeeper sk = skRepo.save(new SpeciesKeeper(e,s,new Date()));
+        
+        return new ResponseEntity(sk, HttpStatus.OK);
+    }
+    
+    @PutMapping("/{spcId}/removercuidador/{empId}")
+    public ResponseEntity<SpeciesKeeper> removeKeeperFromSpecies(@PathVariable("empId") Integer empId, 
+            @PathVariable("spcId") Integer spcId){
+        SpeciesKeeper sk = skRepo.findByIds(empId, spcId);
+        
+        if (sk != null)
+            skRepo.delete(sk);
+        
+        return new ResponseEntity(null, HttpStatus.OK);
+    }
+    
+    @PutMapping("/{spcId}/asignarcuidadores")
+    public ResponseEntity<Species> assignKeepersToSpecies(@PathVariable("spcId") Integer spcId, 
+            @RequestBody List<Integer> empIds){
+        Species s = spRepo.findById(spcId).orElse(null);
+        Boolean assigned = false;
+        
+        if (s == null)
+            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+        
+        for (Integer empId : empIds) {
+            Employee e = empRepo.findById(empId).orElse(null);
+            if (e != null && e.isKeeper()){
+                if(e.hasSpecies(s))
+                    assigned = true;
+                else skRepo.save(new SpeciesKeeper(e,s,new Date()));
+            }
+        }
+        
+        //If species was already assigned to employee dont asign again and notify
+        return (assigned ? new ResponseEntity(s, HttpStatus.PARTIAL_CONTENT) : new ResponseEntity(s, HttpStatus.OK));
+    }
+    
+    @PutMapping("/{empId}/removercuidadores")
+    public ResponseEntity<Species> removeKeepersFromSpecies(@PathVariable("empId") Integer spcId, 
+            @RequestBody List<Integer> empIds){
+        
+        for (Integer empId : empIds) {
+            SpeciesKeeper sk = skRepo.findByIds(empId, spcId);
+            if (sk != null)
+                skRepo.delete(sk);
+        }
+        
+        return new ResponseEntity(null, HttpStatus.OK);
+    }
+    
+    @PutMapping("/{spcId}/removercuidadores/todos")
+    public ResponseEntity<Employee> removeAllKeepersFromSpecies(@PathVariable("spcId") Integer spcId){
+        List<SpeciesKeeper> sks = skRepo.findBySpeciesId(spcId);
+        for (SpeciesKeeper sk : sks)
+            skRepo.delete(sk);
+        
+        return new ResponseEntity(null, HttpStatus.OK);
     }
     
     @DeleteMapping("/borrar/{id}")
