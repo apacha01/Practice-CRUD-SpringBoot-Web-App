@@ -5,8 +5,10 @@
 package p2.zoobackendcrud.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -43,7 +45,7 @@ public class Habitat implements Serializable{
     private String vegetation;
     
     @ManyToMany(mappedBy = "habitats", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Set<Species> species;
 
     public Habitat(){
@@ -66,6 +68,14 @@ public class Habitat implements Serializable{
     public void removeSpecies(Species s){
         species.remove(s);
         if(s.getHabitats().contains(this)) s.removeHabitat(this);
+    }
+    
+    public void removeAllSpecies(){
+        List<Species> sps = species.stream().toList();
+        for (Species sp : sps) {
+            species.remove(sp);
+            sp.removeHabitat(this);
+        }
     }
     
     @Override

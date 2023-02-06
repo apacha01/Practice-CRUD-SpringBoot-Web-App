@@ -108,6 +108,50 @@ public class HabitatController {
         return new ResponseEntity(hbRepo.save(h), HttpStatus.OK);
     }
     
+    @PutMapping("/{habId}/agregarespecies")
+    public ResponseEntity<Habitat> addMultipleSpeciesToHabitat(@PathVariable("habId") Integer habId,
+            @RequestBody List<Integer> spsId){
+        Habitat h = hbRepo.findById(habId).orElse(null);
+        
+        if(h == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        
+        for (Integer spId : spsId) {
+            Species s = spRepo.findById(spId).orElse(null);
+            if (s != null) h.addSpecies(s);
+        }
+        
+        return new ResponseEntity(hbRepo.save(h), HttpStatus.OK);
+    }
+    
+    @PutMapping("/{habId}/removerespecies")
+    public ResponseEntity<Habitat> removeMultipleSpeciesFromHabitat(@PathVariable("habId") Integer habId,
+            @RequestBody List<Integer> spsId){
+        Habitat h = hbRepo.findById(habId).orElse(null);
+        
+        if(h == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        
+        for (Integer spId : spsId) {
+            Species s = spRepo.findById(spId).orElse(null);
+            if (s != null) h.removeSpecies(s);
+        }
+        
+        return new ResponseEntity(hbRepo.save(h), HttpStatus.OK);
+    }
+    
+    @PutMapping("/{habId}/removerespecies/todas")
+    public ResponseEntity<Habitat> removeAllSpecies(@PathVariable("habId") Integer habId){
+        Habitat h = hbRepo.findById(habId).orElse(null);
+        
+        if(h == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        
+        h.removeAllSpecies();
+        
+        return new ResponseEntity(hbRepo.save(h), HttpStatus.OK);
+    }
+    
     @DeleteMapping("/borrar/{id}")
     public ResponseEntity<Habitat> deleteHabitatById(@PathVariable("id") Integer habitatId){
         Habitat h = hbRepo.findById(habitatId).orElse(null);
