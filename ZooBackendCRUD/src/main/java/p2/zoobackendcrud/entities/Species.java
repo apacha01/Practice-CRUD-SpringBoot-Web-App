@@ -7,6 +7,7 @@ package p2.zoobackendcrud.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -17,11 +18,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  *
@@ -30,7 +32,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @Table(name = "species")
-@NoArgsConstructor
 public class Species implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -54,12 +55,27 @@ public class Species implements Serializable{
     @OneToMany(mappedBy = "species", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonIgnore
     Set<SpeciesKeeper> speciesKeepers;
+    
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "species_habitats",
+        joinColumns = @JoinColumn(name = "id_species"),
+        inverseJoinColumns = @JoinColumn(name = "id_habitat"))
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    Set<Habitat> habitats;
 
+    public Species(){
+        speciesKeepers = new HashSet<>();
+        habitats = new HashSet<>();
+    }
+    
     public Species(String name, String scientificName, String description, Zone zone) {
         this.name = name;
         this.scientificName = scientificName;
         this.description = description;
         this.zone = zone;
+        speciesKeepers = new HashSet<>();
+        habitats = new HashSet<>();
     }
     
     public void setZone(Zone z){
@@ -68,6 +84,16 @@ public class Species implements Serializable{
         zone = z;
         if (z != null)
             z.addSpecies(this);
+    }
+    
+    public void addHabitat(Habitat h){
+        habitats.add(h);
+        if(!h.getSpecies().contains(this)) h.addSpecies(this);
+    }
+    
+    public void removeHabitat(Habitat h){
+        habitats.remove(h);
+        if(h.getSpecies().contains(this)) h.removeSpecies(this);
     }
     
     @Override
