@@ -36,7 +36,7 @@ public class Continent implements Serializable {
     @Column(name = "id_habitat", nullable = false)
     private Integer id;
     
-    @Column(name = "name", nullable = false, length = 20, columnDefinition = "enum")
+    @Column(name = "name", nullable = false, length = 20, columnDefinition = "enum", unique = true)
     @Enumerated(EnumType.STRING)
     private CONTINENTS_ENUM name;
     
