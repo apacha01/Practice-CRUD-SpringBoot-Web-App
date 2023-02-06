@@ -22,10 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import p2.zoobackendcrud.entities.Employee;
+import p2.zoobackendcrud.entities.Habitat;
 import p2.zoobackendcrud.entities.Species;
 import p2.zoobackendcrud.entities.SpeciesKeeper;
 import p2.zoobackendcrud.entities.Zone;
 import p2.zoobackendcrud.repositories.EmployeeRepository;
+import p2.zoobackendcrud.repositories.HabitatRepository;
 import p2.zoobackendcrud.repositories.SpeciesKeeperRepository;
 import p2.zoobackendcrud.repositories.SpeciesRepository;
 import p2.zoobackendcrud.repositories.ZoneRepository;
@@ -49,6 +51,9 @@ public class SpeciesController {
     
     @Autowired
     private SpeciesKeeperRepository skRepo;
+    
+    @Autowired
+    private HabitatRepository hbRepo;
     
     @PostMapping("/crear")
     @ResponseStatus(HttpStatus.CREATED)
@@ -190,6 +195,88 @@ public class SpeciesController {
         List<SpeciesKeeper> sks = skRepo.findBySpeciesId(spcId);
         for (SpeciesKeeper sk : sks)
             skRepo.delete(sk);
+        
+        return new ResponseEntity(null, HttpStatus.OK);
+    }
+    
+    @PutMapping("/{speciesId}/agregarhabitat/{habId}")
+    public ResponseEntity<Species> addHabitatToSpecies(@PathVariable("speciesId") Integer spcId, 
+            @PathVariable("habId") Integer habId){
+        Species s = spRepo.findById(spcId).orElse(null);
+        Habitat h = hbRepo.findById(habId).orElse(null);
+          
+        if(s == null || h == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        
+        s.addHabitat(h);
+        
+        spRepo.save(s);
+        
+        return new ResponseEntity(null, HttpStatus.OK);
+    }
+    
+    @PutMapping("/{speciesId}/removerhabitat/{habId}")
+    public ResponseEntity<Species> removeHabitatFromSpecies(@PathVariable("speciesId") Integer spcId, 
+            @PathVariable("habId") Integer habId){
+        Species s = spRepo.findById(spcId).orElse(null);
+        Habitat h = hbRepo.findById(habId).orElse(null);
+          
+        if(s == null || h == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        
+        s.removeHabitat(h);
+        
+        spRepo.save(s);
+        
+        return new ResponseEntity(null, HttpStatus.OK);
+    }
+    
+    @PutMapping("/{speciesId}/agregarhabitats")
+    public ResponseEntity<Species> addHabitatsToSpecies(@PathVariable("speciesId") Integer spId,
+            @RequestBody List<Integer> habsId){
+        Species s = spRepo.findById(spId).orElse(null);
+        
+        if(s == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        
+        for (Integer hbId : habsId) {
+            Habitat h = hbRepo.findById(hbId).orElse(null);
+            if (h != null) s.addHabitat(h);
+        }
+        
+        spRepo.save(s);
+        
+        return new ResponseEntity(null, HttpStatus.OK);
+    }
+    
+    @PutMapping("/{speciesId}/removerhabitats")
+    public ResponseEntity<Species> removeHabitatsFromSpecies(@PathVariable("speciesId") Integer spId,
+            @RequestBody List<Integer> habsId){
+        Species s = spRepo.findById(spId).orElse(null);
+        
+        if(s == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        
+        for (Integer hbId : habsId) {
+            Habitat h = hbRepo.findById(hbId).orElse(null);
+            if (h != null) s.removeHabitat(h);
+        }
+        
+        spRepo.save(s);
+        
+        return new ResponseEntity(null, HttpStatus.OK);
+    }
+    
+    @PutMapping("/{speciesId}/removerhabitats/todos")
+    public ResponseEntity<Species> removeAllSpecies(@PathVariable("speciesId") Integer spId){
+        Species s = spRepo.findById(spId).orElse(null);
+        
+        if(s == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        
+        s.removeAllHabitats();
+        
+        spRepo.save(s);
         
         return new ResponseEntity(null, HttpStatus.OK);
     }

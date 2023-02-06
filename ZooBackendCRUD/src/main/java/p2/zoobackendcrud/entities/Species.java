@@ -94,6 +94,10 @@ public class Species implements Serializable{
         if(h.getSpecies().contains(this)) h.removeSpecies(this);
     }
     
+    public void removeAllHabitats(){
+        habitats.clear();
+    }
+    
     @Override
     public String toString(){
         String s = "Id: " + id + ". Name: " + name + ". Scientifi Name: " + scientificName +
