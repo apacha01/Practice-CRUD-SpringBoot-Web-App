@@ -71,7 +71,7 @@ public class SpeciesController {
     }
     
     @GetMapping("/obtenerpornombre/{nombre}")
-    public List<Species> getSpeciesByScientificName(@PathVariable("nombre") String name){
+    public List<Species> getSpeciesByName(@PathVariable("nombre") String name){
         try{
             return spRepo.findByNameContaining(URLDecoder.decode(name, "UTF-8"));
         } catch (UnsupportedEncodingException ex) {
