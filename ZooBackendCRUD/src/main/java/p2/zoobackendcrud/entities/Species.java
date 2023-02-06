@@ -49,7 +49,6 @@ public class Species implements Serializable{
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_zone", nullable = true)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Zone zone;
     
     @OneToMany(mappedBy = "species", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -61,7 +60,6 @@ public class Species implements Serializable{
         name = "species_habitats",
         joinColumns = @JoinColumn(name = "id_species"),
         inverseJoinColumns = @JoinColumn(name = "id_habitat"))
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Set<Habitat> habitats;
 
     public Species(){
@@ -87,6 +85,7 @@ public class Species implements Serializable{
     }
     
     public void addHabitat(Habitat h){
+        if(h == null) return;
         habitats.add(h);
         if(!h.getSpecies().contains(this)) h.addSpecies(this);
     }

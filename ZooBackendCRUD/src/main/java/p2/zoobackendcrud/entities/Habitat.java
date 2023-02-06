@@ -58,6 +58,7 @@ public class Habitat implements Serializable{
     }
     
     public void addSpecies(Species s){
+        if(s == null) return;
         species.add(s);
         if(!s.getHabitats().contains(this)) s.addHabitat(this);
     }

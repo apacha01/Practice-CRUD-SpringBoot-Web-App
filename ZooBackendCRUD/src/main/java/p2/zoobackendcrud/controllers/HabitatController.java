@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import p2.zoobackendcrud.entities.Habitat;
+import p2.zoobackendcrud.entities.Species;
 import p2.zoobackendcrud.repositories.HabitatRepository;
 import p2.zoobackendcrud.repositories.SpeciesRepository;
 
@@ -33,6 +34,9 @@ import p2.zoobackendcrud.repositories.SpeciesRepository;
 public class HabitatController {
     @Autowired
     private HabitatRepository hbRepo;
+    
+    @Autowired
+    private SpeciesRepository spRepo;
     
     @PostMapping("/crear")
     @ResponseStatus(HttpStatus.CREATED)
@@ -74,6 +78,34 @@ public class HabitatController {
                     return new ResponseEntity<>(updatedHabitat, HttpStatus.OK);
                 })
                 .orElse(new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
+    }
+    
+    @PutMapping("/{habId}/agregarespecie/{speciesId}")
+    public ResponseEntity<Habitat> addSpeciesToHabitat(@PathVariable("speciesId") Integer spcId, 
+            @PathVariable("habId") Integer habId){
+        Species s = spRepo.findById(spcId).orElse(null);
+        Habitat h = hbRepo.findById(habId).orElse(null);
+          
+        if(s == null || h == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        
+        h.addSpecies(s);
+        
+        return new ResponseEntity(hbRepo.save(h), HttpStatus.OK);
+    }
+    
+    @PutMapping("/{habId}/removerespecie/{speciesId}")
+    public ResponseEntity<Habitat> removeSpeciesFromHabitat(@PathVariable("speciesId") Integer spcId, 
+            @PathVariable("habId") Integer habId){
+        Species s = spRepo.findById(spcId).orElse(null);
+        Habitat h = hbRepo.findById(habId).orElse(null);
+          
+        if(s == null || h == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        
+        h.removeSpecies(s);
+        
+        return new ResponseEntity(hbRepo.save(h), HttpStatus.OK);
     }
     
     @DeleteMapping("/borrar/{id}")

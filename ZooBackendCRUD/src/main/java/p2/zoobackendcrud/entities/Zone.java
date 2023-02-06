@@ -5,6 +5,7 @@
 package p2.zoobackendcrud.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
@@ -48,6 +49,7 @@ public class Zone implements Serializable{
     Set<Itinerary> coveredItineraries;
     
     @OneToMany(mappedBy = "zone", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Set<Species> species;
     
     //null safe contructor
@@ -96,7 +98,7 @@ public class Zone implements Serializable{
     
     public void addSpecies(Species s){
         if (s == null) return;
-        if (!species.contains(s)) species.add(s);
+        species.add(s);
         if (s.getZone() != this) s.setZone(this);
     }
     
