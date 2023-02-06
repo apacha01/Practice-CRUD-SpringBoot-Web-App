@@ -4,7 +4,6 @@
  */
 package p2.zoobackendcrud.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -18,6 +17,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import lombok.Data;
@@ -32,7 +33,7 @@ import lombok.Data;
 public class Habitat implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_habitat",nullable = false)
+    @Column(name = "id_habitat", nullable = false)
     private Integer id;
     
     @Column(name = "name", nullable = false, length = 20)
@@ -47,6 +48,14 @@ public class Habitat implements Serializable{
     @ManyToMany(mappedBy = "habitats", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Set<Species> species;
+    
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "habitats_continents",
+        joinColumns = @JoinColumn(name = "id_habitat"),
+        inverseJoinColumns = @JoinColumn(name = "id_continent"))
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    Set<Continent> continents;
 
     public Habitat(){
         species = new HashSet<>();
