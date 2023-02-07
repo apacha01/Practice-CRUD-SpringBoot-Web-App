@@ -14,7 +14,8 @@ import org.springframework.data.repository.Repository;
  * @author Agustín Pacheco
  */
 @NoRepositoryBean
-public interface ReadOnlyRepository<T, ID> extends Repository<T, ID> {
+public interface ReadUpdateOnlyRepository<T, ID> extends Repository<T, ID> {
     Optional<T> findById(ID id);
     List<T> findAll();
+    Optional<T> save(T entity);
 }

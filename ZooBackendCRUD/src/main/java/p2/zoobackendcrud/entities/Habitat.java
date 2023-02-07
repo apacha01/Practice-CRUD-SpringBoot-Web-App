@@ -59,6 +59,7 @@ public class Habitat implements Serializable{
 
     public Habitat(){
         species = new HashSet<>();
+        continents = new HashSet<>();
     }
     
     public Habitat(String name, String weather, String vegetation) {
@@ -66,6 +67,7 @@ public class Habitat implements Serializable{
         this.weather = weather;
         this.vegetation = vegetation;
         species = new HashSet<>();
+        continents = new HashSet<>();
     }
     
     public void addSpecies(Species s){
@@ -85,6 +87,21 @@ public class Habitat implements Serializable{
             species.remove(sp);
             sp.removeHabitat(this);
         }
+    }
+    
+    public void addContinent(Continent c){
+        if(c == null) return;
+        continents.add(c);
+        if(!c.getHabitats().contains(this)) c.addHabitat(this);
+    }
+    
+    public void removeContinent(Continent c){
+        continents.remove(c);
+        if(c.getHabitats().contains(this)) c.removeHabitat(this);
+    }
+    
+    public void removeAllContinents(){
+        continents.clear();
     }
     
     @Override

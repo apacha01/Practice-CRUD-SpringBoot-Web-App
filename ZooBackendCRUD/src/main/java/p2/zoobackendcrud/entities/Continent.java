@@ -7,6 +7,7 @@ package p2.zoobackendcrud.entities;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -33,14 +34,14 @@ import p2.zoobackendcrud.auxiliar.CONTINENTS_ENUM;
 public class Continent implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_habitat", nullable = false)
+    @Column(name = "id_continent", nullable = false)
     private Integer id;
     
     @Column(name = "name", nullable = false, length = 20, columnDefinition = "enum", unique = true)
     @Enumerated(EnumType.STRING)
     private CONTINENTS_ENUM name;
     
-    @ManyToMany(mappedBy = "habitats", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "continents", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Set<Habitat> habitats;
 
@@ -51,6 +52,25 @@ public class Continent implements Serializable {
     public Continent(CONTINENTS_ENUM name) {
         this.name = name;
         habitats = new HashSet<>();
+    }
+    
+    public void addHabitat(Habitat h){
+        if(h == null) return;
+        habitats.add(h);
+        if(!h.getContinents().contains(this)) h.addContinent(this);
+    }
+    
+    public void removeHabitat(Habitat h){
+        habitats.remove(h);
+        if(h.getContinents().contains(this)) h.removeContinent(this);
+    }
+    
+    public void removeAllHabitats(){
+        List<Habitat> habs = habitats.stream().toList();
+        for (Habitat hab : habs) {
+            habitats.remove(hab);
+            hab.removeContinent(this);
+        }
     }
     
     @Override

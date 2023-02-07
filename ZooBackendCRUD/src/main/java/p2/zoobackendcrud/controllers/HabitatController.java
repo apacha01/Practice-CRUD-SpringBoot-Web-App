@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import p2.zoobackendcrud.entities.Continent;
 import p2.zoobackendcrud.entities.Habitat;
 import p2.zoobackendcrud.entities.Species;
 import p2.zoobackendcrud.repositories.HabitatRepository;
 import p2.zoobackendcrud.repositories.SpeciesRepository;
+import p2.zoobackendcrud.repositories.ContinentReadUpdateOnlyRepository;
 
 /**
  *
@@ -37,6 +39,9 @@ public class HabitatController {
     
     @Autowired
     private SpeciesRepository spRepo;
+    
+    @Autowired
+    private ContinentReadUpdateOnlyRepository conRepo;
     
     @PostMapping("/crear")
     @ResponseStatus(HttpStatus.CREATED)
@@ -148,6 +153,78 @@ public class HabitatController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         
         h.removeAllSpecies();
+        
+        return new ResponseEntity(hbRepo.save(h), HttpStatus.OK);
+    }
+    
+    @PutMapping("/{habId}/agregarcontinente/{contId}")
+    public ResponseEntity<Habitat> addContinentToHabitat(@PathVariable("contId") Integer contId, 
+            @PathVariable("habId") Integer habId){
+        Continent c = conRepo.findById(contId).orElse(null);
+        Habitat h = hbRepo.findById(habId).orElse(null);
+          
+        if(c == null || h == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        
+        h.addContinent(c);
+        
+        return new ResponseEntity(hbRepo.save(h), HttpStatus.OK);
+    }
+    
+    @PutMapping("/{habId}/removercontinente/{contId}")
+    public ResponseEntity<Habitat> removeContinentFromHabitat(@PathVariable("contId") Integer contId, 
+            @PathVariable("habId") Integer habId){
+        Continent c = conRepo.findById(contId).orElse(null);
+        Habitat h = hbRepo.findById(habId).orElse(null);
+          
+        if(c == null || h == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        
+        h.removeContinent(c);
+        
+        return new ResponseEntity(hbRepo.save(h), HttpStatus.OK);
+    }
+    
+    @PutMapping("/{habId}/agregarcontinentes")
+    public ResponseEntity<Habitat> addContinentsToHabitat(@PathVariable("habId") Integer habId,
+            @RequestBody List<Integer> consId){
+        Habitat h = hbRepo.findById(habId).orElse(null);
+        
+        if(h == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        
+        for (Integer conId : consId) {
+            Continent c = conRepo.findById(conId).orElse(null);
+            if (c != null) h.addContinent(c);
+        }
+        
+        return new ResponseEntity(hbRepo.save(h), HttpStatus.OK);
+    }
+    
+    @PutMapping("/{habId}/removercontinentes")
+    public ResponseEntity<Habitat> removeContinentsFromHabitat(@PathVariable("habId") Integer habId,
+            @RequestBody List<Integer> consId){
+        Habitat h = hbRepo.findById(habId).orElse(null);
+        
+        if(h == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        
+        for (Integer conId : consId) {
+            Continent c = conRepo.findById(conId).orElse(null);
+            if (c != null) h.removeContinent(c);
+        }
+        
+        return new ResponseEntity(hbRepo.save(h), HttpStatus.OK);
+    }
+    
+    @PutMapping("/{habId}/removercontinentes/todos")
+    public ResponseEntity<Habitat> removeAllContinents(@PathVariable("habId") Integer habId){
+        Habitat h = hbRepo.findById(habId).orElse(null);
+        
+        if(h == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        
+        h.removeAllContinents();
         
         return new ResponseEntity(hbRepo.save(h), HttpStatus.OK);
     }
