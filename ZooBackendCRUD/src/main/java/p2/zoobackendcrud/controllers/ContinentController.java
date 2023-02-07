@@ -51,7 +51,7 @@ public class ContinentController {
     @GetMapping("/obtenerpornombre/{nombre}")
     public List<Continent> getContinentByName(@PathVariable("nombre") String name){
         try{
-            return conRepo.findByNameContaining(CONTINENTS_ENUM.valueOf(URLDecoder.decode(name, "UTF-8")));
+            return conRepo.findByNameContaining(CONTINENTS_ENUM.valueOf(URLDecoder.decode(name, "UTF-8").toUpperCase()));
         } catch (UnsupportedEncodingException ex) {
             return new ArrayList<>();
         }

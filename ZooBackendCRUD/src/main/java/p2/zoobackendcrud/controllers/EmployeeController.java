@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import p2.zoobackendcrud.auxiliar.TYPE_ENUM;
 import p2.zoobackendcrud.repositories.EmployeeRepository;
 import p2.zoobackendcrud.entities.Employee;
 import p2.zoobackendcrud.entities.GuideItinerary;
@@ -80,6 +81,15 @@ public class EmployeeController {
     public List<Employee> getEmployeeByName(@PathVariable("nombre") String employeeName){
         try{
             return empRepo.findByNameContaining(URLDecoder.decode(employeeName, "UTF-8"));
+        } catch (UnsupportedEncodingException ex) {
+            return new ArrayList<>();
+        }
+    }
+    
+    @GetMapping("/obtenerportipo/{tipo}")
+    public List<Employee> getEmployeeByType(@PathVariable("tipo") String employeeType){
+        try{
+            return empRepo.findByType(TYPE_ENUM.valueOf(URLDecoder.decode(employeeType, "UTF-8").toUpperCase()));
         } catch (UnsupportedEncodingException ex) {
             return new ArrayList<>();
         }
