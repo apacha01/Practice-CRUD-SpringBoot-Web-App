@@ -1,0 +1,88 @@
+@startuml
+hide circle
+hide attributes
+hide method
+
+
+class ZooBackendApp
+
+package java.io {
+  class Serializable <<interface>>
+}
+class JpaRepository <<interface>>
+
+note bottom of JpaRepository : Every repository \nextends from here,\nunless specified otherwise
+note "This controllers have to many dependencies and confuse when conected properly." as N1
+note "Repositories are kept \nwith short name to \ncompact the diagram, but \nfull name is EntityRepository." as N2
+
+package entities {
+  class Employee
+  class Itinerary
+  class Species
+  class Habitat
+  class Zone
+  class GuideItinerary
+  class SpeciesKeeper
+  class Continent
+  Employee ..> Serializable
+  Itinerary ..> Serializable
+  Species ..> Serializable
+  Habitat ..> Serializable
+  Zone ..> Serializable
+  GuideItinerary ..> Serializable
+  SpeciesKeeper ..> Serializable
+  Continent ..> Serializable
+}
+
+package repositories {
+  class EmployeeRepo <<interface>>
+  class ItineraryRepo <<interface>>
+  class SpeciesRepo <<interface>>
+  class HabitatRepo <<interface>>
+  class ZoneRepo <<interface>>
+  class GuideItineraryRepo <<interface>>
+  class SpeciesKeeperRepo <<interface>>
+  class ReadUpdateOnlyRepo <<interface>>
+  class ContinentReadUpdateOnlyRepo <<interface>>
+  EmployeeRepo ---> Employee
+  ItineraryRepo ---> Itinerary
+  SpeciesRepo ---> Species
+  HabitatRepo ---> Habitat
+  ZoneRepo ---> Zone
+  GuideItineraryRepo ---> GuideItinerary
+  SpeciesKeeperRepo ---> SpeciesKeeper
+  ContinentReadUpdateOnlyRepo ---> Continent
+  ContinentReadUpdateOnlyRepo .|> ReadUpdateOnlyRepo
+}
+
+package controllers{
+  class EmployeeController
+  class ItineraryController
+  class SpeciesController
+  class HabitatController
+  class ZoneController
+  class ContinentController
+
+  ContinentController --> ContinentReadUpdateOnlyRepo
+  EmployeeController --> EmployeeRepo
+  HabitatController --> HabitatRepo
+  ItineraryController --> ItineraryRepo
+  SpeciesController --> SpeciesRepo
+  ZoneController --> ZoneRepo
+}
+
+package auxiliar {
+  class CONTINENTS_ENUM
+  class TYPE_ENUM
+
+  Employee --> TYPE_ENUM
+  Continent --> CONTINENTS_ENUM
+}
+
+N1 .. EmployeeController
+N1 .. SpeciesController
+N1 .. ItineraryController
+N1 .. HabitatController
+N1 .. ZoneController
+N1 .. ContinentController
+@enduml
