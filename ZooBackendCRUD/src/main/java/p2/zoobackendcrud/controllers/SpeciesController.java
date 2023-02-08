@@ -65,7 +65,6 @@ public class SpeciesController {
     
     @GetMapping("/obtenertodos")
     public List<Species> getAllSpecies() {
-        znRepo.findAll();
         return spRepo.findAll();
     }
     

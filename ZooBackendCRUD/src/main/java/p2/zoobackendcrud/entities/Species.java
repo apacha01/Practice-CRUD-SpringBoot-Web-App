@@ -46,7 +46,7 @@ public class Species implements Serializable{
     @Column(name = "description", nullable = false, length = 100)
     private String description;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_zone", nullable = true)
     private Zone zone;
     
