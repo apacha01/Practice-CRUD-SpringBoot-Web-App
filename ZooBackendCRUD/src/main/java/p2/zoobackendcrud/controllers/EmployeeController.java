@@ -60,7 +60,7 @@ public class EmployeeController {
     @PostMapping("/crear")
     @ResponseStatus(HttpStatus.CREATED)
     public Employee createEmployee(@RequestBody Employee e) {
-        if (e == null)
+        if (!isEmployeeSavable(e))
             return null;
         return empRepo.save(e);
     }
@@ -112,7 +112,7 @@ public class EmployeeController {
                 .orElse(new ResponseEntity(null, HttpStatus.NOT_FOUND));
     }
     
-    @PutMapping("/{empId}/asignaritinerario/{itinId}")
+    @PutMapping("/{empId}/agregaritinerario/{itinId}")
     public ResponseEntity<GuideItinerary> assignItineraryToGuide(@PathVariable("empId") Integer empId, 
             @PathVariable("itinId") Integer itinId){
         Employee e = empRepo.findById(empId).orElse(null);
@@ -133,7 +133,7 @@ public class EmployeeController {
         return new ResponseEntity(gi, HttpStatus.OK);
     }
     
-    @PutMapping("/{empId}/quitaritinerario/{itinId}")
+    @PutMapping("/{empId}/removeritinerario/{itinId}")
     public ResponseEntity<GuideItinerary> removeItineraryFromGuide(@PathVariable("empId") Integer empId, 
             @PathVariable("itinId") Integer itinId){
         Itinerary i = itiRepo.findById(itinId).orElse(null);
@@ -149,7 +149,7 @@ public class EmployeeController {
         return new ResponseEntity(null, HttpStatus.OK);
     }
     
-    @PutMapping("/{empId}/asignaritinerarios")
+    @PutMapping("/{empId}/agregaritinerarios")
     public ResponseEntity<Employee> assignItinerariesToGuide(@PathVariable("empId") Integer empId, 
            @RequestBody List<Integer> itinsId){
         Employee e = empRepo.findById(empId).orElse(null);
@@ -205,7 +205,7 @@ public class EmployeeController {
         return new ResponseEntity(null, HttpStatus.OK);
     }
     
-    @PutMapping("/{empId}/asignarespecie/{spcId}")
+    @PutMapping("/{empId}/agregarespecie/{spcId}")
     public ResponseEntity<SpeciesKeeper> assignSpeciesToKeeper(@PathVariable("empId") Integer empId, 
             @PathVariable("spcId") Integer spcId){
         Employee e = empRepo.findById(empId).orElse(null);
@@ -236,7 +236,7 @@ public class EmployeeController {
         return new ResponseEntity(null, HttpStatus.OK);
     }
     
-    @PutMapping("/{empId}/asignarespecies")
+    @PutMapping("/{empId}/agregarespecies")
     public ResponseEntity<Employee> assignMultipleSpeciesToKeeper(@PathVariable("empId") Integer empId, 
             @RequestBody List<Integer> spcId){
         Employee e = empRepo.findById(empId).orElse(null);
@@ -293,5 +293,10 @@ public class EmployeeController {
             empRepo.deleteById(employeeId);
             return new ResponseEntity(optEmp.get(), HttpStatus.OK);
         }
+    }
+    
+    private boolean isEmployeeSavable(Employee e){
+        return !(e == null || e.getName() == null || e.getUserName() == null || e.getPassword() == null
+                || e.getAddress() == null || e.getPhone() == null || e.getFirstDay() == null);
     }
 }

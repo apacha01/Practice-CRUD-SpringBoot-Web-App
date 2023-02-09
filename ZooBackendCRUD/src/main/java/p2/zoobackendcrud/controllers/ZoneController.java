@@ -48,7 +48,7 @@ public class ZoneController {
     @PostMapping("/crear")
     @ResponseStatus(HttpStatus.CREATED)
     public Zone createZone(@RequestBody Zone z) {
-        if (z == null)
+        if (!isZoneSavable(z))
             return null;
         return znRepo.save(z);
     }
@@ -168,7 +168,7 @@ public class ZoneController {
         return new ResponseEntity(z, HttpStatus.OK);
     }
     
-    @PutMapping("/{zoneId}/asignarespecie/{speciesId}")
+    @PutMapping("/{zoneId}/agregarespecie/{speciesId}")
     public ResponseEntity<Zone> assignSpeciesToZone(@PathVariable("speciesId") Integer speciesId, 
             @PathVariable("zoneId") Integer zoneId){
         Species s = spRepo.findById(speciesId).orElse(null);
@@ -196,7 +196,7 @@ public class ZoneController {
         return new ResponseEntity(znRepo.save(z), HttpStatus.OK);
     }
     
-    @PutMapping("/{zoneId}/asignarespecies")
+    @PutMapping("/{zoneId}/agregarespecies")
     public ResponseEntity<Zone> assignMultipleSpeciesToZone(@PathVariable("zoneId") Integer zoneId,
             @RequestBody List<Integer> spsId){
         Zone z = znRepo.findById(zoneId).orElse(null);
@@ -233,5 +233,9 @@ public class ZoneController {
             znRepo.deleteById(zoneId);
             return new ResponseEntity<>(optZn.get(), HttpStatus.OK);
         }
+    }
+    
+    private boolean isZoneSavable(Zone z){
+        return !(z == null || z.getName() == null || z.getExtension() == null);
     }
 }

@@ -46,7 +46,7 @@ public class HabitatController {
     @PostMapping("/crear")
     @ResponseStatus(HttpStatus.CREATED)
     public Habitat createHabitat(@RequestBody Habitat h) {
-        if (h == null)
+        if (!isHabitatSavable(h))
             return null;
         return hbRepo.save(h);
     }
@@ -238,5 +238,9 @@ public class HabitatController {
             hbRepo.deleteById(habitatId);
             return new ResponseEntity<>(h, HttpStatus.OK);
         }
+    }
+    
+    private boolean isHabitatSavable(Habitat h){
+        return !(h == null || h.getName() == null || h.getWeather() == null || h.getVegetation() == null);
     }
 }

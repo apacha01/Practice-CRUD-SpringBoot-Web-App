@@ -58,7 +58,7 @@ public class SpeciesController {
     @PostMapping("/crear")
     @ResponseStatus(HttpStatus.CREATED)
     public Species createSpecies(@RequestBody Species s) {
-        if (s == null)
+        if (!isSpeciesSavable(s))
             return null;
         return spRepo.save(s);
     }
@@ -97,7 +97,7 @@ public class SpeciesController {
                 .orElse(new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
     }
     
-    @PutMapping("/{speciesId}/asignarzona/{zoneId}")
+    @PutMapping("/{speciesId}/agregarzona/{zoneId}")
     public ResponseEntity<Species> assignZoneToSpecies(@PathVariable("speciesId") Integer speciesId, 
             @PathVariable("zoneId") Integer zoneId){
         Species s = spRepo.findById(speciesId).orElse(null);
@@ -123,7 +123,7 @@ public class SpeciesController {
         return new ResponseEntity(spRepo.save(s), HttpStatus.OK);
     }
     
-    @PutMapping("/{spcId}/asignarcuidador/{empId}")
+    @PutMapping("/{spcId}/agregarcuidador/{empId}")
     public ResponseEntity<SpeciesKeeper> assignKeeperToSpecies(@PathVariable("empId") Integer empId, 
             @PathVariable("spcId") Integer spcId){
         Employee e = empRepo.findById(empId).orElse(null);
@@ -154,7 +154,7 @@ public class SpeciesController {
         return new ResponseEntity(null, HttpStatus.OK);
     }
     
-    @PutMapping("/{spcId}/asignarcuidadores")
+    @PutMapping("/{spcId}/agregarcuidadores")
     public ResponseEntity<Species> assignKeepersToSpecies(@PathVariable("spcId") Integer spcId, 
             @RequestBody List<Integer> empIds){
         Species s = spRepo.findById(spcId).orElse(null);
@@ -289,5 +289,9 @@ public class SpeciesController {
             spRepo.deleteById(speciesId);
             return new ResponseEntity<>(s, HttpStatus.OK);
         }
+    }
+    
+    private boolean isSpeciesSavable(Species s){
+        return !(s == null || s.getName() == null || s.getScientificName() == null || s.getDescription() == null);
     }
 }

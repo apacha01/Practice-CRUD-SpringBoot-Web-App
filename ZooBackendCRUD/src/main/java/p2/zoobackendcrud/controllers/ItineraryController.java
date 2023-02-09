@@ -187,7 +187,7 @@ public class ItineraryController {
         return new ResponseEntity(i, HttpStatus.OK);
     }
     
-    @PutMapping("/{itinId}/asignarguia/{empId}")
+    @PutMapping("/{itinId}/agregarguia/{empId}")
     public ResponseEntity<GuideItinerary> assignGuideToItinerary(@PathVariable("empId") Integer empId, 
             @PathVariable("itinId") Integer itinId){
         Employee e = empRepo.findById(empId).orElse(null);
@@ -208,7 +208,7 @@ public class ItineraryController {
         return new ResponseEntity(gi, HttpStatus.OK);
     }
     
-    @PutMapping("/{itinId}/quitarguia/{empId}")
+    @PutMapping("/{itinId}/removerguia/{empId}")
     public ResponseEntity<GuideItinerary> removeGuideFromItinerary(@PathVariable("empId") Integer empId, 
             @PathVariable("itinId") Integer itinId){
         Employee e = empRepo.findById(empId).orElse(null);
@@ -243,13 +243,7 @@ public class ItineraryController {
     }
     
     private boolean isItinerarySavable(Itinerary i){
-        if (i == null)
-            return false;
-        
-        if(i.getCode() == null || i.getDuration() == null || i.getMaxPeople() == null 
-                || i.getNumSpeciesVisited() == null || i.getRouteLength() == null || i.getAssigned() == null)
-            return false;
-        
-        return true;
+        return !(i == null || i.getCode() == null || i.getDuration() == null || i.getMaxPeople() == null 
+                || i.getNumSpeciesVisited() == null || i.getRouteLength() == null || i.getAssigned() == null);
     }
 }
