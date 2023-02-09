@@ -21,7 +21,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer>{
     
     // https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation
     public List<Employee> findByNameContaining(String name);
-    public List<Employee> findByUserName(String userName);
+    public Employee findByUserName(String userName);
     
     @Query("SELECT e FROM Employee e WHERE e.type = :type")
     List<Employee> findByType(@Param("type") TYPE_ENUM name);

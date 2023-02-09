@@ -61,7 +61,7 @@ public class EmployeeController {
     public ResponseEntity<Employee> createEmployee(@RequestBody Employee e) {
         if (!isEmployeeSavable(e))
             return null;
-        if(empRepo.findByUserName(e.getUserName()).isEmpty())
+        if(empRepo.findByUserName(e.getUserName()) == null)
             return new ResponseEntity(empRepo.save(e), HttpStatus.CREATED);
         else return new ResponseEntity(null, HttpStatus.CONFLICT);
     }
@@ -88,11 +88,11 @@ public class EmployeeController {
     }
     
     @GetMapping("/obtenerpornombredeusuario/{nombreUsuario}")
-    public List<Employee> getEmployeeByUserName(@PathVariable("nombreUsuario") String employeeUserName){
+    public Employee getEmployeeByUserName(@PathVariable("nombreUsuario") String employeeUserName){
         try{
             return empRepo.findByUserName(URLDecoder.decode(employeeUserName, "UTF-8"));
         } catch (UnsupportedEncodingException ex) {
-            return new ArrayList<>();
+            return null;
         }
     }
     
