@@ -45,7 +45,7 @@ public class Employee implements Serializable{
     @Enumerated(EnumType.STRING)
     private TYPE_ENUM type;
     
-    @Column(name = "user_name", nullable = false, length = 16)
+    @Column(name = "user_name", nullable = false, length = 16, unique = true)
     private String userName;
     
     @Column(name = "password", nullable = false, length = 16)

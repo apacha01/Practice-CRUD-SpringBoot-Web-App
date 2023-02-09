@@ -58,11 +58,12 @@ public class EmployeeController {
     private SpeciesKeeperRepository skRepo;
     
     @PostMapping("/crear")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Employee createEmployee(@RequestBody Employee e) {
+    public ResponseEntity<Employee> createEmployee(@RequestBody Employee e) {
         if (!isEmployeeSavable(e))
             return null;
-        return empRepo.save(e);
+        if(empRepo.findByUserName(e.getUserName()).isEmpty())
+            return new ResponseEntity(empRepo.save(e), HttpStatus.CREATED);
+        else return new ResponseEntity(null, HttpStatus.CONFLICT);
     }
     
     @GetMapping("/obtenertodos")
@@ -81,6 +82,15 @@ public class EmployeeController {
     public List<Employee> getEmployeeByName(@PathVariable("nombre") String employeeName){
         try{
             return empRepo.findByNameContaining(URLDecoder.decode(employeeName, "UTF-8"));
+        } catch (UnsupportedEncodingException ex) {
+            return new ArrayList<>();
+        }
+    }
+    
+    @GetMapping("/obtenerpornombredeusuario/{nombreUsuario}")
+    public List<Employee> getEmployeeByUserName(@PathVariable("nombreUsuario") String employeeUserName){
+        try{
+            return empRepo.findByUserName(URLDecoder.decode(employeeUserName, "UTF-8"));
         } catch (UnsupportedEncodingException ex) {
             return new ArrayList<>();
         }
