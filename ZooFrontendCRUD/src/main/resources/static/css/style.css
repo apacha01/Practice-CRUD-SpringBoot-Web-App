@@ -1,0 +1,22 @@
+body{
+   background-color: #d6eaff;
+}
+
+h1{
+    font-size: 24px;
+    text-align: center;
+    margin-top: 24px;
+}
+
+.hidden{
+    display: none;
+}
+
+.visible{
+    display: block;
+}
+
+.clientes-container {
+    padding-right: 1rem;
+    padding-left: 1rem;
+}

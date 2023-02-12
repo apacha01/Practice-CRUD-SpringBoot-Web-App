@@ -13,5 +13,10 @@
     </head>
     <body>
         <h1>Hola ${name} bienvenido al sistema.</h1>
+        <a href="/empleados">Empleados</a>
+        <a href="/especies">Especies</a>
+        <a href="/zonas">Zonas</a>
+        <a href="/habitats">Habitats</a>
+        <a href="/itinerarios">Itinerarios</a>
     </body>
 </html>

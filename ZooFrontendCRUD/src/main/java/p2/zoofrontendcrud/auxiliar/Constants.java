@@ -14,5 +14,7 @@ public class Constants {
     public final static String EMPLOYEE_REQUEST_URL = "empleado/";
     public final static String CREATE_EMPLOYEE_REQUEST_URL = "crear";
     public final static String GET_EMPLOYEE_BY_USERNAME_REQUEST_URL = "obtenerpornombredeusuario/";
-    
+    public final static String GET_ALL_EMPLOYEES_REQUEST_URL = "obtenertodos";
+    public final static String GET_EMPLOYEE_BY_ID_REQUEST_URL = "obtenerporid/";
+    public final static String DELETE_EMPLOYEE_BY_ID_REQUEST_URL = "borrar/";
 }

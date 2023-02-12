@@ -4,14 +4,16 @@
  */
 package p2.zoofrontendcrud.controllers;
 
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import p2.zoofrontendcrud.auxiliar.Constants;
-import p2.zoofrontendcrud.auxiliar.TYPE_ENUM;
 import p2.zoofrontendcrud.entities.Employee;
 
 /**
@@ -62,5 +64,18 @@ public class EmployeeController {
         }
         m.addAttribute("errorMsg", "Error desconocido.");
             return "error";
+    }
+    
+    @GetMapping("/empleados")
+    public String employees(Model m) {
+        RestTemplate rt = new RestTemplate();
+        
+        List<Employee> employees = rt.getForObject(Constants.PREFIX_REQUEST_URL + 
+                        Constants.EMPLOYEE_REQUEST_URL + 
+                        Constants.GET_ALL_EMPLOYEES_REQUEST_URL
+                        , List.class);
+        
+        m.addAttribute("employees", employees);
+        return "employees";
     }
 }
