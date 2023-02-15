@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import p2.zoobackendcrud.auxiliar.TYPE_ENUM;
 import p2.zoobackendcrud.repositories.EmployeeRepository;
@@ -60,7 +59,7 @@ public class EmployeeController {
     @PostMapping("/crear")
     public ResponseEntity<Employee> createEmployee(@RequestBody Employee e) {
         if (!isEmployeeSavable(e))
-            return null;
+            return new ResponseEntity(null, HttpStatus.UNPROCESSABLE_ENTITY);
         if(empRepo.findByUserName(e.getUserName()) == null)
             return new ResponseEntity(empRepo.save(e), HttpStatus.CREATED);
         else return new ResponseEntity(null, HttpStatus.CONFLICT);
@@ -109,13 +108,15 @@ public class EmployeeController {
     public ResponseEntity<Employee> updateEmployeeById(@PathVariable("id") Integer employeeId, @RequestBody Employee e){
         return empRepo.findById(employeeId)
                 .map(savedEmployee -> {
-                    if (e.getType() != null) savedEmployee.setType(e.getType());
-                    if (e.getUserName() != null) savedEmployee.setUserName(e.getUserName());
-                    if (e.getPassword() != null) savedEmployee.setPassword(e.getPassword());
-                    if (e.getName() != null) savedEmployee.setName(e.getName());
-                    if (e.getAddress() != null) savedEmployee.setAddress(e.getAddress());
-                    if (e.getPhone() != null) savedEmployee.setPhone(e.getPhone());
-                    if (e.getFirstDay() != null) savedEmployee.setFirstDay(e.getFirstDay());
+                    if (isEmployeeSavable(e)){
+                        savedEmployee.setType(e.getType());
+                        savedEmployee.setUserName(e.getUserName());
+                        savedEmployee.setPassword(e.getPassword());
+                        savedEmployee.setName(e.getName());
+                        savedEmployee.setAddress(e.getAddress());
+                        savedEmployee.setPhone(e.getPhone());
+                        savedEmployee.setFirstDay(e.getFirstDay());
+                    }
                     Employee updatedEmployee = empRepo.save(savedEmployee);
                     return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
                 })
@@ -306,7 +307,7 @@ public class EmployeeController {
     }
     
     private boolean isEmployeeSavable(Employee e){
-        return !(e == null || e.getName() == null || e.getUserName() == null || e.getPassword() == null
-                || e.getAddress() == null || e.getPhone() == null || e.getFirstDay() == null);
+        return !(e == null  || e.getType() == null || e.getUserName() == null || e.getPassword() == null 
+                || e.getName() == null || e.getAddress() == null || e.getPhone() == null || e.getFirstDay() == null);
     }
 }
