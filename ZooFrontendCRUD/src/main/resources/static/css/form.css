@@ -1,35 +1,22 @@
-.simple-button {
-  border: none;
-  background-color: unset;
-  padding: 10px;
-  color: white;
-  border-radius: 10px;
-  background-color: #fff;
-}
-
-.button-container{
+.create_form , .login_form{
     display: flex;
-    position: absolute;
-    display: block;
-    height: 1rem;
-    width: 1rem;
-    top: 1.75rem;
-    right: 1.75rem;
+    width: 80%;
+    margin-left: 10%;
+    flex-direction: column;
+    gap: 24px;
+    align-items: center;
 }
 
-.simple-button--add {
-  background-color: #0071ea;
+.input_form {
+    width: 350px;
+    height: 20px;
 }
 
-.simple-button--delete {
-  background-color: #df2525;
+.button_form {
+    width: 350px;
+    height: 30px;
 }
 
-.simple-button--edit {
-  background-color: #047900;
-  width: 12px;
-}
-
-.simple-button--confirm{
-    background-color: #df2525;
+.button_form:hover {
+    cursor: pointer;
 }

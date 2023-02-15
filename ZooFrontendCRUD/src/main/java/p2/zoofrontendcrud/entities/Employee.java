@@ -4,6 +4,7 @@
  */
 package p2.zoofrontendcrud.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 import java.util.Set;
 import lombok.AllArgsConstructor;
@@ -22,12 +23,23 @@ import p2.zoofrontendcrud.auxiliar.TYPE_ENUM;
 public class Employee {
     private Integer id;
     private TYPE_ENUM type;
-    private String userName;
+    private String user_name;
     private String password;
     private String name;
     private String address;
     private String phone;
-    private Date firstDay;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    private Date first_day;
     Set<GuideItinerary> guidesItineraries;
     Set<SpeciesKeeper> speciesKeepers;
+
+    public Employee(TYPE_ENUM type, String userName, String password, String name, String address, String phone, Date firstDay) {
+        this.type = type;
+        this.user_name = userName;
+        this.password = password;
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.first_day = firstDay;
+    }
 }

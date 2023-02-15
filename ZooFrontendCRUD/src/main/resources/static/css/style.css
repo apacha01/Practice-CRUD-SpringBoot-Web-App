@@ -8,15 +8,40 @@ h1{
     margin-top: 24px;
 }
 
-.hidden{
-    display: none;
+.confirm_delete--container{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 150px;
+    width: 300px;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
+    border-radius: 50px;
+    background-color: #d6eaff;
 }
 
-.visible{
-    display: block;
+.confirm_delete--txt{
+    font-size: 18px;
+    color: black;
+    width: 80%;
+    text-align: center;
+}
+
+.hidden{
+    display: none;
 }
 
 .clientes-container {
     padding-right: 1rem;
     padding-left: 1rem;
+}
+
+.simple-link{
+    display: block;
+    font-size: 18px;
+    color: black;
+    margin: 5px;
 }

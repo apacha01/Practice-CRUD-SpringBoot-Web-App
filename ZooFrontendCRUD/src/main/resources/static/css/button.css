@@ -1,35 +1,52 @@
 .simple-button {
-  border: none;
-  background-color: unset;
-  padding: 10px;
-  color: white;
-  border-radius: 10px;
-  background-color: #fff;
+    border: none;
+    background-color: unset;
+    padding: 10px;
+    color: white;
+    border-radius: 10px;
+    background-color: #fff;
 }
 
-.button-container{
+.simple-button:hover{
+    cursor: pointer;
+}
+
+.button-container, .index_button-container{
     display: flex;
-    position: absolute;
-    display: block;
-    height: 1rem;
-    width: 1rem;
-    top: 1.75rem;
-    right: 1.75rem;
+    justify-content: space-around;
+    align-items: center;
+    width: 80%;
+    margin-left: 10%;
+}
+
+.index_button-container{
+    flex-direction: column;
+    height: 200px;
+    margin-top: 20%;
 }
 
 .simple-button--add {
-  background-color: #0071ea;
+    background-color: #0071ea;
 }
 
 .simple-button--delete {
-  background-color: #df2525;
+    background-color: #df2525;
 }
 
 .simple-button--edit {
-  background-color: #047900;
-  width: 12px;
+    background-color: #047900;
+    width: 12px;
 }
 
 .simple-button--confirm{
     background-color: #df2525;
+}
+
+.gray-button{
+    background-color: #bbbbbb;
+}
+
+.big-button{
+    padding: 20px;
+    font-size: 18px;
 }

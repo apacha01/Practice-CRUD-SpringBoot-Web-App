@@ -4,20 +4,60 @@
     Author     : Agustín Pacheco
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="p2.zoofrontendcrud.auxiliar.LoginSession"%>
+<%@page import="p2.zoofrontendcrud.auxiliar.TYPE_ENUM"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" session="true"%>
 <!DOCTYPE html>
 <html>
     <head>
         <title>Login</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="css/form.css"/>
+        <link rel="stylesheet" href="css/style.css"/>
     </head>
     <body>
         <h1>Ingrese su usuario y contraseña</h1>
-        <form method="post">
-            <input type="text" name="userName" placeholder="Nombre de Usuario" required>
-            <input type="password" name="password" placeholder="Contraseña" required>
-            <button>Ingresar</button>
-            <h2>${errorMsg}</h2>
+        <form class="login_form" method="post" action="login.jsp">
+            <input class="input_form" type="text" name="userName" placeholder="Nombre de Usuario" required>
+            <input class="input_form" type="password" name="password" placeholder="Contraseña" required>
+            <input class="button_form" type="submit" name="btnLogin" value="Ingresar">
         </form>
+        <h2>${errorMsg}</h2>
+        <%
+            LoginSession ls = new LoginSession();
+            HttpSession _session = request.getSession();
+            
+            if (request.getParameter("btnLogin") != null) {
+                String usName = request.getParameter("userName");
+                String pass = request.getParameter("password");
+                String loginMsg = ls.login(usName, pass);
+
+                if ("OK".equals(loginMsg)) {
+                    TYPE_ENUM type = ls.getEmployeeType(usName);
+                    _session.setAttribute("employeeUserName", usName);
+                    _session.setAttribute("employeeType", type);
+                    switch (type) {
+                        case ADMIN:
+                            response.sendRedirect("/menu_admin");
+                            break;
+                        case KEEPER:
+                            response.sendRedirect("/menu_cuidador");
+                            break;
+                        case GUIDE:
+                            response.sendRedirect("/menu_guia");
+                            break;
+                        default:
+                            response.sendRedirect("/error");
+                            break;
+                    }
+                }
+                else {
+                    out.print(loginMsg);
+                }
+            }
+            if (request.getParameter("cerrar") != null) {
+                session.invalidate();
+            }
+        %>
     </body>
 </html>

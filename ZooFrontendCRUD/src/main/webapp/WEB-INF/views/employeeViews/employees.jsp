@@ -3,8 +3,10 @@
     Created on : 12 feb 2023, 1:42:54
     Author     : Agustín Pacheco
 --%>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="p2.zoofrontendcrud.auxiliar.TYPE_ENUM"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" session="true"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,7 +19,16 @@
     </head>
 </head>
 <body>
+    <%
+        HttpSession _session = request.getSession();
+
+        if (_session.getAttribute("employeeUserName") == null || _session.getAttribute("employeeType") == null
+                || _session.getAttribute("employeeType") != TYPE_ENUM.ADMIN) {
+            out.print("<script>location.replace('/login');</script>");
+        }
+    %>
     <h1>Empleados</h1>
+    <h2>${errorMsg}</h2>
     <main class="clientes-container">
         <table class="table">
             <thead>
@@ -56,11 +67,11 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a
-                                        href="/eliminar_empleado/${employee.id}"
-                                        class="simple-button simple-button--delete">
+                                    <button class="simple-button simple-button--delete delete_employee"
+                                            id="${employee.id}"
+                                            name="delete_employee">
                                         Eliminar
-                                    </a>
+                                    </button>
                                 </li>
                             </ul>
                         </td>
@@ -68,5 +79,31 @@
                 </c:forEach>
             </tbody>
         </table>
+        <div class="confirm_delete--container hidden" id="confirm_delete">
+            <p class="confirm_delete--txt">¿Esta seguro que desea eliminar este empleado?</p>
+            <div class="button-container">
+                <form method="post" action="/error" id="delete_form">
+                    <input type="submit" class="simple-button simple-button--delete" value="Eliminar">
+                </form>
+                <button class="simple-button gray-button" id="cancel_delete">
+                    No Eliminar
+                </button>
+            </div>    
+        </div>
+        <script>
+            const btns = Array.from(document.getElementsByClassName('delete_employee'));
+            const container = document.getElementById('confirm_delete');
+            const btn_cancel = document.getElementById('cancel_delete');
+            const delete_form = document.getElementById('delete_form');
+            btns.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    delete_form.action = "/eliminar_empleado/" + btn.id;
+                    container.classList.remove('hidden');
+                });
+            });
+            btn_cancel.addEventListener('click', function () {
+                container.classList.add('hidden');
+            });
+        </script>
 </body>
 </html>

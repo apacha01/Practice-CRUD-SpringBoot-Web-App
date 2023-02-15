@@ -10,10 +10,17 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Inicio</title>
+        <link rel="stylesheet" href="css/style.css"/>
+        <link rel="stylesheet" href="css/button.css"/>
     </head>
     <body>
         <h1>Bienvenido al Sistema de Gestion de Información para Ecoparques</h1>
-        <button>Ver Información</button>
-        <button onclick="location.href='/login';">Ingresar al sistema</button>
+        <div class="index_button-container">
+            <button class="big-button simple-button simple-button--add" 
+                    onclick="location.href='/login';">
+                Ingresar al sistema
+            </button>
+            <button class="big-button simple-button gray-button">Ver Información</button>
+        </div>
     </body>
 </html>
