@@ -105,23 +105,35 @@ public class EmployeeController {
     }
     
     @GetMapping("{id}/obtenerespecies")
-    public List<SpeciesKeeper> getKeeperSpecies(@PathVariable("id") Integer id){
+    public List<Species> getKeeperSpecies(@PathVariable("id") Integer id){
         Employee e = empRepo.findById(id).orElse(null);
         
         if(e == null || !e.isKeeper())
             return new ArrayList<>();
         
-        return skRepo.findByEmployeeId(id);
+        List<SpeciesKeeper> sks = skRepo.findByEmployeeId(id);
+        List<Species> s = new ArrayList<>();
+        for (SpeciesKeeper sk : sks) {
+            s.add(sk.getSpecies());
+        }
+        
+        return s;
     }
     
     @GetMapping("{id}/obteneritinerarios")
-    public List<GuideItinerary> getGuideItineraries(@PathVariable("id") Integer id){
+    public List<Itinerary> getGuideItineraries(@PathVariable("id") Integer id){
         Employee e = empRepo.findById(id).orElse(null);
         
         if(e == null || !e.isGuide())
             return new ArrayList<>();
         
-        return giRepo.findByEmployeeId(id);
+        List<GuideItinerary> gis = giRepo.findByEmployeeId(id);
+        List<Itinerary> i = new ArrayList<>();
+        for (GuideItinerary gi : gis) {
+            i.add(gi.getItinerary());
+        }
+        
+        return i;
     }
     
     @PutMapping("/modificarporid/{id}")
