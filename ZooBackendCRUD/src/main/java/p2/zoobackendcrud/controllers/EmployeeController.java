@@ -106,11 +106,21 @@ public class EmployeeController {
     
     @GetMapping("{id}/obtenerespecies")
     public List<SpeciesKeeper> getKeeperSpecies(@PathVariable("id") Integer id){
+        Employee e = empRepo.findById(id).orElse(null);
+        
+        if(e == null || !e.isKeeper())
+            return new ArrayList<>();
+        
         return skRepo.findByEmployeeId(id);
     }
     
     @GetMapping("{id}/obteneritinerarios")
     public List<GuideItinerary> getGuideItineraries(@PathVariable("id") Integer id){
+        Employee e = empRepo.findById(id).orElse(null);
+        
+        if(e == null || !e.isGuide())
+            return new ArrayList<>();
+        
         return giRepo.findByEmployeeId(id);
     }
     
