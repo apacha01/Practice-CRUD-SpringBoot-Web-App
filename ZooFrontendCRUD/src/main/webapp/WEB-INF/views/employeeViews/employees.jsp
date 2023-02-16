@@ -36,7 +36,7 @@
                     <th class="table__column--s">ID</th>
                     <th class="table__column--s">Ocupación</th>
                     <th class="table__column--s">Nombre</th>
-                    <th class="table__column--m">Nombre de Usuario</th>
+                    <th class="table__column--s">Usuario</th>
                     <th class="table__column--s">Direccion</th>
                     <th class="table__column--s">Telefono</th>
                     <th class="table__column--s">Dia de alta</th>
@@ -112,7 +112,7 @@
                 <button class="simple-button gray-button" id="cancel_delete">
                     No Eliminar
                 </button>
-            </div>    
+            </div>
         </div>
         <script>
             const btns = Array.from(document.getElementsByClassName('delete_employee'));
