@@ -7,16 +7,16 @@
     align-items: center;
 }
 
-.input_form {
+.form_input {
     width: 350px;
     height: 20px;
 }
 
-.button_form {
+.form_button {
     width: 350px;
     height: 30px;
 }
 
-.button_form:hover {
+.form_button:hover {
     cursor: pointer;
 }

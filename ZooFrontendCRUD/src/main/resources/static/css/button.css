@@ -22,7 +22,7 @@
 .index_button-container{
     flex-direction: column;
     height: 200px;
-    margin-top: 20%;
+    margin-top: 10%;
 }
 
 .simple-button--add {
@@ -49,4 +49,12 @@
 .big-button{
     padding: 20px;
     font-size: 18px;
+}
+
+.species-button{
+    background-color: #00bb34;
+}
+
+.itineraries-button{
+    background-color: #00bbd4;
 }

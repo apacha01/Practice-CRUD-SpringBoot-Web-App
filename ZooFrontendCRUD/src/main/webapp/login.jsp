@@ -18,9 +18,9 @@
     <body>
         <h1>Ingrese su usuario y contraseña</h1>
         <form class="login_form" method="post" action="login.jsp">
-            <input class="input_form" type="text" name="userName" placeholder="Nombre de Usuario" required>
-            <input class="input_form" type="password" name="password" placeholder="Contraseña" required>
-            <input class="button_form" type="submit" name="btnLogin" value="Ingresar">
+            <input class="form_input" type="text" name="userName" placeholder="Nombre de Usuario" required>
+            <input class="form_input" type="password" name="password" placeholder="Contraseña" required>
+            <input class="form_button" type="submit" name="btnLogin" value="Ingresar">
         </form>
         <h2>${errorMsg}</h2>
         <%

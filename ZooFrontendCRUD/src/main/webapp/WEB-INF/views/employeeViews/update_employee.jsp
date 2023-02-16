@@ -26,18 +26,18 @@
         %>
         <h1>Edite los datos del empleado que desee actualizar</h1>
         <form method="post" action="/editar_empleado/${employee.id}" class="create_form">
-            <select class="input_form" name="type">
+            <select class="form_input" name="type" value="${employee.type}">
                 <c:forEach var="type" items="${TYPE_ENUM.values()}">
                     <option>${type.name}</option>
                 </c:forEach>
             </select>
-            <input class="input_form" type="text" name="userName" placeholder="Nombre de Usuario" value="${employee.user_name}" required>
-            <input class="input_form" type="password" name="password" placeholder="Contraseña" value="${employee.password}" required>
-            <input class="input_form" type="text" name="name" placeholder="Nombre" value="${employee.name}" required>
-            <input class="input_form" type="text" name="address" placeholder="Direccion" value="${employee.address}" required>
-            <input class="input_form" type="number" name="phone" placeholder="Telefono" value="${employee.phone}" required>
-            <input class="input_form" type="date" name="firstDay" placeholder="Dia de alta" value="${employee.first_day}" required>
-            <input class="button_form" type="submit">
+            <input class="form_input" type="text" name="userName" placeholder="Nombre de Usuario" value="${employee.user_name}" required>
+            <input class="form_input" type="password" name="password" placeholder="Contraseña" value="${employee.password}" required>
+            <input class="form_input" type="text" name="name" placeholder="Nombre" value="${employee.name}" required>
+            <input class="form_input" type="text" name="address" placeholder="Direccion" value="${employee.address}" required>
+            <input class="form_input" type="number" name="phone" placeholder="Telefono" value="${employee.phone}" required>
+            <input class="form_input" type="text" name="firstDay" value="${employee.first_day}" onfocus="this.type = 'date'" required>
+            <input class="form_button" type="submit">
         </form>
     </body>
 </html>

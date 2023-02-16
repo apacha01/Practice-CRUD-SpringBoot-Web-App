@@ -24,20 +24,20 @@
                 out.print("<script>location.replace('/login');</script>");
             }
         %>
-        <h1 class="title">Ingrese los datos del empleado</h1>
+        <h1>Ingrese los datos del empleado</h1>
         <form method="post" action="/crear_empleado" class="create_form">
-            <select class="input_form" name="type">
+            <select class="form_input" name="type">
                 <c:forEach var="type" items="${TYPE_ENUM.values()}">
                     <option>${type.name}</option>
                 </c:forEach>
             </select>
-            <input class="input_form" type="text" name="userName" placeholder="Nombre de Usuario" required>
-            <input class="input_form" type="password" name="password" placeholder="Contraseña" required>
-            <input class="input_form" type="text" name="name" placeholder="Nombre" required>
-            <input class="input_form" type="text" name="address" placeholder="Direccion" required>
-            <input class="input_form" type="number" name="phone" placeholder="Telefono" required>
-            <input class="input_form" type="date" name="firstDay" placeholder="Dia de alta" required>
-            <input class="button_form" type="submit">
+            <input class="form_input" type="text" name="userName" placeholder="Nombre de Usuario" required>
+            <input class="form_input" type="password" name="password" placeholder="Contraseña" required>
+            <input class="form_input" type="text" name="name" placeholder="Nombre" required>
+            <input class="form_input" type="text" name="address" placeholder="Direccion" required>
+            <input class="form_input" type="number" name="phone" required>
+            <input class="form_input" type="date" name="firstDay" required>
+            <input class="form_button" type="submit">
         </form>
         <br/>
         <p>${errorMsg}</p>

@@ -33,12 +33,14 @@
         <table class="table">
             <thead>
                 <tr>
+                    <th class="table__column--s">ID</th>
                     <th class="table__column--s">Ocupación</th>
                     <th class="table__column--s">Nombre</th>
                     <th class="table__column--m">Nombre de Usuario</th>
                     <th class="table__column--s">Direccion</th>
                     <th class="table__column--s">Telefono</th>
                     <th class="table__column--s">Dia de alta</th>
+                    <th class="table__column--s">A cargo de</th>
                     <th class="table__column--m table__align--right">
                         <a
                             href="/crear_empleado"
@@ -51,12 +53,34 @@
             <tbody>
                 <c:forEach var="employee" items="${employees}">
                     <tr>
+                        <td class="td">${employee.id}</td>
                         <td class="td">${employee.type}</td>
                         <td class="td">${employee.name}</td>
                         <td class="td">${employee.user_name}</td>
                         <td class="td">${employee.address}</td>
                         <td class="td">${employee.phone}</td>
                         <td class="td">${employee.first_day}</td>
+                        <td class="td">
+                            <c:choose>
+                                <c:when test="${employee.type == TYPE_ENUM.KEEPER}">
+                                    <button class="simple-button species-button"
+                                            id="${employee.id}"
+                                            name="get_employee_species">
+                                        Especies
+                                    </button>
+                                </c:when>
+                                <c:when test="${employee.type == TYPE_ENUM.GUIDE}">
+                                    <button class="simple-button itineraries-button"
+                                            id="${employee.id}"
+                                            name="get_employee_itineraries">
+                                        Itinerarios
+                                    </button>
+                                </c:when>
+                                <c:otherwise>
+                                    <p>-----</p>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
                         <td class="td">
                             <ul class="table__button-control">
                                 <li>
