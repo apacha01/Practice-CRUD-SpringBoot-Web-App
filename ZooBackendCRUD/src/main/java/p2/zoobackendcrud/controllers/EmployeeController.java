@@ -104,6 +104,16 @@ public class EmployeeController {
         }
     }
     
+    @GetMapping("{id}/obtenerespecies")
+    public List<SpeciesKeeper> getKeeperSpecies(@PathVariable("id") Integer id){
+        return skRepo.findByEmployeeId(id);
+    }
+    
+    @GetMapping("{id}/obteneritinerarios")
+    public List<GuideItinerary> getGuideItineraries(@PathVariable("id") Integer id){
+        return giRepo.findByEmployeeId(id);
+    }
+    
     @PutMapping("/modificarporid/{id}")
     public ResponseEntity<Employee> updateEmployeeById(@PathVariable("id") Integer employeeId, @RequestBody Employee e){
         return empRepo.findById(employeeId)
@@ -301,7 +311,10 @@ public class EmployeeController {
         if (optEmp.isEmpty())
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         else {
-            empRepo.deleteById(employeeId);
+            Employee e = optEmp.get();
+            if(e.isKeeper()) removeAllSpeciesFromKeeper(employeeId);
+            if(e.isGuide()) removeAllItinerariesFromGuide(employeeId);
+            empRepo.delete(e);
             return new ResponseEntity(optEmp.get(), HttpStatus.OK);
         }
     }
