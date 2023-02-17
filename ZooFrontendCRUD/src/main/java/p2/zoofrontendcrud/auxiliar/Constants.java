@@ -19,4 +19,6 @@ public class Constants {
     public final static String GET_EMPLOYEE_BY_ID_REQUEST_URL = "obtenerporid/";
     public final static String DELETE_EMPLOYEE_BY_ID_REQUEST_URL = "borrar/";
     public final static String UPDATE_EMPLOYEE_BY_ID_REQUEST_URL = "modificarporid/";
+    public final static String GET_EMPLOYEE_SPECIES_REQUEST_URL = "obtenerespecies";
+    public final static String GET_EMPLOYEE_ITINERARIES_REQUEST_URL = "obteneritinerarios";
 }

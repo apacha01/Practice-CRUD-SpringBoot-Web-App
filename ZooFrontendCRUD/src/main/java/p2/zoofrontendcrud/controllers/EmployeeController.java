@@ -7,7 +7,10 @@ package p2.zoofrontendcrud.controllers;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -23,6 +26,8 @@ import org.springframework.web.client.RestTemplate;
 import p2.zoofrontendcrud.auxiliar.Constants;
 import p2.zoofrontendcrud.auxiliar.TYPE_ENUM;
 import p2.zoofrontendcrud.entities.Employee;
+import p2.zoofrontendcrud.entities.Itinerary;
+import p2.zoofrontendcrud.entities.Species;
 
 /**
  *
@@ -35,12 +40,40 @@ public class EmployeeController {
     public String employeesPage(Model m) {
         RestTemplate rt = new RestTemplate();
 
-        List<Employee> employees = rt.getForObject(Constants.PREFIX_REQUEST_URL
+        List<Employee> employees = rt.exchange(Constants.PREFIX_REQUEST_URL
                 + Constants.EMPLOYEE_REQUEST_URL
                 + Constants.GET_ALL_EMPLOYEES_REQUEST_URL,
-                List.class);
-
+                HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<List<Employee>>(){}).getBody();
+        
+        Map<Integer, List<Species>> keepersSpecies = new HashMap();
+        Map<Integer, List<Itinerary>> guidesItineraries = new HashMap();
+        Map<Integer, String> formatedFirstDay = new HashMap();
+        
+        for (Employee employee : employees) {
+            formatedFirstDay.put(employee.getId(), employee.formatedFirstDayAsString());
+            if (employee.isAdmin()) {
+            } else if (employee.isKeeper()) {
+                List<Species> s = rt.getForObject(Constants.PREFIX_REQUEST_URL
+                        + Constants.EMPLOYEE_REQUEST_URL
+                        + employee.getId() + "/"
+                        + Constants.GET_EMPLOYEE_SPECIES_REQUEST_URL,
+                        List.class);
+                keepersSpecies.put(employee.getId(), s);
+            } else if (employee.isGuide()) {
+                List<Itinerary> s = rt.getForObject(Constants.PREFIX_REQUEST_URL
+                        + Constants.EMPLOYEE_REQUEST_URL
+                        + employee.getId() + "/"
+                        + Constants.GET_EMPLOYEE_ITINERARIES_REQUEST_URL,
+                        List.class);
+                guidesItineraries.put(employee.getId(), s);
+            }
+        }
+        
+        m.addAttribute("keepersSpecies", keepersSpecies);
+        m.addAttribute("guidesItineraries", guidesItineraries);
+        m.addAttribute("formatedFirstDay", formatedFirstDay);
         m.addAttribute("employees", employees);
+        
         return "employeeViews/employees";
     }
 

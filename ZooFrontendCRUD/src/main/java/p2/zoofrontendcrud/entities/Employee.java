@@ -5,6 +5,7 @@
 package p2.zoofrontendcrud.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
 import lombok.AllArgsConstructor;
@@ -53,5 +54,10 @@ public class Employee {
     
     public boolean isAdmin(){
         return type == TYPE_ENUM.ADMIN;
+    }
+    
+    public String formatedFirstDayAsString(){
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        return df.format(this.first_day);
     }
 }

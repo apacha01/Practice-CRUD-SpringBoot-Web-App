@@ -1,5 +1,5 @@
 body{
-   background-color: #d6eaff;
+    background-color: #d6eaff;
 }
 
 h1{
@@ -9,7 +9,7 @@ h1{
 }
 
 .confirm_delete--container{
-    position: absolute;
+    position: fixed;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -30,10 +30,6 @@ h1{
     text-align: center;
 }
 
-.hidden{
-    display: none;
-}
-
 .clientes-container {
     padding-right: 1rem;
     padding-left: 1rem;
@@ -44,4 +40,24 @@ h1{
     font-size: 18px;
     color: black;
     margin: 5px;
+}
+
+.species-container, .itineraries-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    position: fixed;
+    width: 40vw;
+    height: 65vh;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 20px;
+    background: aliceblue;
+}
+
+.hidden{
+    display: none;
 }
