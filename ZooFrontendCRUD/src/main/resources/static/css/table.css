@@ -66,14 +66,24 @@
     padding-bottom: 1.75rem;
 }
 
+tbody tr:nth-child(odd) {
+    background-color: #d0e4fb;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #dfefff;
+}
+
+thead tr:first-child{
+    background-color: white;
+}
+
 .table__button-control {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-}
-
-.table__button-control li:first-of-type {
-    margin-right: 2.25rem;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .td {

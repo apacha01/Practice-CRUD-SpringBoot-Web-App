@@ -20,7 +20,7 @@ h1{
     right: 50%;
     transform: translate(50%, -50%);
     border-radius: 50px;
-    background-color: #d6eaff;
+    background-color: #b6cadf;
 }
 
 .confirm_delete--txt{
@@ -60,4 +60,8 @@ h1{
 
 .hidden{
     display: none;
+}
+
+.date{
+    min-width: 200px;
 }

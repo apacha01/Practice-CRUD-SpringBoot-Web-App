@@ -13,8 +13,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Administracion de Empleados</title>
         <link rel="stylesheet" href="css/_reset.css"/>
-        <link rel="stylesheet" href="css/button.css"/>
         <link rel="stylesheet" href="css/table.css"/>
+        <link rel="stylesheet" href="css/button.css"/>
         <link rel="stylesheet" href="css/style.css"/>
     </head>
 </head>
@@ -54,7 +54,7 @@
                 <c:forEach var="employee" items="${employees}">
                     <tr>
                         <td class="td">${employee.id}</td>
-                        <td class="td">${employee.type}</td>
+                        <td class="td">${employee.type.name}</td>
                         <td class="td">${employee.name}</td>
                         <td class="td">${employee.user_name}</td>
                         <td class="td">${employee.address}</td>
@@ -137,19 +137,41 @@
                         </td>
                         <td class="td">
                             <ul class="table__button-control">
-                                <li>
-                                    <a
-                                        href="/editar_empleado/${employee.id}"
-                                        class="simple-button simple-button--edit">
-                                        Editar
-                                    </a>
-                                </li>
-                                <li>
-                                    <button class="simple-button simple-button--delete"
-                                            id="delete-${employee.id}"
-                                            name="delete_employee">
-                                        Eliminar
-                                    </button>
+                                <div class="UDops-button-container">
+                                    <li>
+                                        <a
+                                            href="/editar_empleado/${employee.id}"
+                                            class="simple-button simple-button--edit">
+                                            Editar
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <button class="simple-button simple-button--delete"
+                                                id="delete-${employee.id}"
+                                                name="delete_employee">
+                                            Eliminar
+                                        </button>
+                                    </li>
+                                </div>
+                                <li class="row-button">
+                                    <c:choose>
+                                        <c:when test="${employee.type == TYPE_ENUM.KEEPER}">
+                                            <a
+                                                href="/${employee.id}/asignarespecies"
+                                                class="simple-button UDbutton">
+                                                Asignar/Remover Especies
+                                            </a>
+                                        </c:when>
+                                        <c:when test="${employee.type == TYPE_ENUM.GUIDE}">
+                                            <a
+                                                href="/${employee.id}/asignaritinerarios"
+                                                class="simple-button UDbutton">
+                                                Asignar/Remover Itinerarios
+                                            </a>
+                                        </c:when>
+                                        <c:otherwise>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </li>
                             </ul>
                         </td>
@@ -197,19 +219,22 @@
                     const id = extractEmployeeId(btn.id);
                     const panel = document.getElementById('employeePanel-' + id);
                     const panels = Array.from(document.getElementsByName('employee_panel'));
-                    panels.forEach(function (p){if (!p.classList.contains('hidden')) p.classList.add('hidden')});
+                    panels.forEach(function (p) {
+                        if (!p.classList.contains('hidden'))
+                            p.classList.add('hidden')
+                    });
                     panel.classList.remove('hidden');
                 });
             });
             closePanelBtns.forEach(function (btn) {
                 btn.addEventListener('click', function () {
-                    const id=  extractEmployeeId(btn.id);
+                    const id = extractEmployeeId(btn.id);
                     const panel = document.getElementById('employeePanel-' + id);
                     panel.classList.add('hidden');
                 });
             });
-            
-            function extractEmployeeId(id){
+
+            function extractEmployeeId(id) {
                 return id.substring(id.indexOf("-") + 1, id.length);
             }
         </script>

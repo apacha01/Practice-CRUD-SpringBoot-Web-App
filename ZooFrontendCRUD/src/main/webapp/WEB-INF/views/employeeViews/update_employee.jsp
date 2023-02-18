@@ -1,5 +1,5 @@
 <%-- 
-    Document   : edit_employee
+    Document   : update_employee
     Created on : 15 feb 2023, 9:09:59
     Author     : Agustín Pacheco
 --%>
@@ -26,9 +26,14 @@
         %>
         <h1>Edite los datos del empleado que desee actualizar</h1>
         <form method="post" action="/editar_empleado/${employee.id}" class="create_form">
-            <select class="form_input" name="type" value="${employee.type}">
+            <select class="form_input" name="type">
                 <c:forEach var="type" items="${TYPE_ENUM.values()}">
-                    <option>${type.name}</option>
+                    <c:choose>
+                        <c:when test="${employee.type == type}">
+                            <option selected="selected">${type.name}</option>
+                        </c:when>
+                        <c:otherwise><option>${type.name}</option></c:otherwise>
+                    </c:choose>
                 </c:forEach>
             </select>
             <input class="form_input" type="text" name="userName" placeholder="Nombre de Usuario" value="${employee.user_name}" required>
@@ -36,7 +41,7 @@
             <input class="form_input" type="text" name="name" placeholder="Nombre" value="${employee.name}" required>
             <input class="form_input" type="text" name="address" placeholder="Direccion" value="${employee.address}" required>
             <input class="form_input" type="number" name="phone" placeholder="Telefono" value="${employee.phone}" required>
-            <input class="form_input" type="text" name="firstDay" value="${employee.first_day}" onfocus="this.type = 'date'" required>
+            <input class="form_input date" type="text" name="firstDay" value="${employee.first_day}" onfocus="this.type = 'date'" required>
             <input class="form_button" type="submit">
         </form>
     </body>

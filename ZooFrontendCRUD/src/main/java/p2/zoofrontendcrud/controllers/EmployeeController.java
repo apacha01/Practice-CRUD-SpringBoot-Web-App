@@ -234,4 +234,16 @@ public class EmployeeController {
         }
         return "error";
     }
+    
+    @GetMapping("/{id}/asignarespecies")
+    public String assignSpeciesPage(Model m, @PathVariable Integer id){
+        m.addAttribute("id", id);
+        return "employeeViews/assignSpecies";
+    }
+    
+    @GetMapping("/{id}/asignaritinerarios")
+    public String assignItinerariesPage(Model m, @PathVariable Integer id){
+        m.addAttribute("id", id);
+        return "employeeViews/assignSpecies";
+    }
 }

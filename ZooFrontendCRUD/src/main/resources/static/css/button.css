@@ -16,13 +16,12 @@
     justify-content: space-around;
     align-items: center;
     width: 80%;
-    margin-left: 10%;
 }
 
 .index_button-container{
     flex-direction: column;
     height: 200px;
-    margin-top: 10%;
+    margin: 10% 0 0 10%;
 }
 
 .simple-button--add {
@@ -59,4 +58,21 @@
 .itineraries-button{
     background-color: #00bbd4;
     width: 100%;
+}
+
+.row-button{
+    display: flex;
+    margin: 0;
+}
+
+.UDops-button-container{
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.UDbutton{
+    width: 100%;
+    background-color: #4d4d4d;
+    font-size: 12px;
 }
