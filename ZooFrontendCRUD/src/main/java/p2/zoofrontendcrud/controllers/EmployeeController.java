@@ -76,8 +76,8 @@ public class EmployeeController {
         return "employeeViews/employees";
     }
 
-    @PostMapping("/eliminar_empleado/{id}")
-    public String deleteEmployeeById(Model m, @PathVariable Integer id) {
+    @PostMapping("/eliminar_empleado")
+    public String deleteEmployeeById(Model m, @RequestParam Integer id) {
         RestTemplate rt = new RestTemplate();
         rt.delete(Constants.PREFIX_REQUEST_URL
                 + Constants.EMPLOYEE_REQUEST_URL

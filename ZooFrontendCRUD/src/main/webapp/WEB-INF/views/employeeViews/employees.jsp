@@ -183,6 +183,7 @@
             <p class="confirm_delete--txt">¿Esta seguro que desea eliminar este empleado?</p>
             <div class="button-container">
                 <form method="post" action="/error" id="delete_form">
+                    <input class="hidden" type="text" name="id" id="id" required>
                     <input type="submit" class="simple-button simple-button--delete" value="Eliminar">
                 </form>
                 <button class="simple-button gray-button" id="cancel_delete">
@@ -196,6 +197,7 @@
             const container = document.getElementById('confirm_delete');
             const btn_cancel = document.getElementById('cancel_delete');
             const delete_form = document.getElementById('delete_form');
+            const delete_id = document.getElementById('id');
 
             //EMPLOYEE PANEL CONSTS
             const panelBtns = Array.from(document.getElementsByName('show_employee_panel'));
@@ -205,7 +207,8 @@
             deleteBtns.forEach(function (btn) {
                 btn.addEventListener('click', function () {
                     const id = extractEmployeeId(btn.id);
-                    delete_form.action = "/eliminar_empleado/" + id;
+                    delete_form.action = "/eliminar_empleado";
+                    delete_id.value = id;
                     container.classList.remove('hidden');
                 });
             });
