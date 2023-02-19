@@ -41,7 +41,7 @@
             <input class="form_input" type="text" name="name" placeholder="Nombre" value="${employee.name}" required>
             <input class="form_input" type="text" name="address" placeholder="Direccion" value="${employee.address}" required>
             <input class="form_input" type="number" name="phone" placeholder="Telefono" value="${employee.phone}" required>
-            <input class="form_input date" type="text" name="firstDay" value="${employee.first_day}" onfocus="this.type = 'date'" required>
+            <input class="form_input" type="date" name="firstDay" value="${employee.first_day}" required>
             <input class="form_button" type="submit">
         </form>
     </body>

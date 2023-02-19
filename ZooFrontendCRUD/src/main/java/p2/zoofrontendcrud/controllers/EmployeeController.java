@@ -4,9 +4,7 @@
  */
 package p2.zoofrontendcrud.controllers;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,12 +41,13 @@ public class EmployeeController {
         List<Employee> employees = rt.exchange(Constants.PREFIX_REQUEST_URL
                 + Constants.EMPLOYEE_REQUEST_URL
                 + Constants.GET_ALL_EMPLOYEES_REQUEST_URL,
-                HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<List<Employee>>(){}).getBody();
-        
+                HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<List<Employee>>() {
+        }).getBody();
+
         Map<Integer, List<Species>> keepersSpecies = new HashMap();
         Map<Integer, List<Itinerary>> guidesItineraries = new HashMap();
         Map<Integer, String> formatedFirstDay = new HashMap();
-        
+
         for (Employee employee : employees) {
             formatedFirstDay.put(employee.getId(), employee.formatedFirstDayAsString());
             if (employee.isAdmin()) {
@@ -68,12 +67,12 @@ public class EmployeeController {
                 guidesItineraries.put(employee.getId(), s);
             }
         }
-        
+
         m.addAttribute("keepersSpecies", keepersSpecies);
         m.addAttribute("guidesItineraries", guidesItineraries);
         m.addAttribute("formatedFirstDay", formatedFirstDay);
         m.addAttribute("employees", employees);
-        
+
         return "employeeViews/employees";
     }
 
@@ -101,15 +100,14 @@ public class EmployeeController {
             @RequestParam String address,
             @RequestParam Number phone,
             @RequestParam String firstDay) {
-
-        SimpleDateFormat df = new SimpleDateFormat();
-        Date d = new Date();
+        
+        LocalDate ld = null;
         try {
-            d = df.parse(firstDay);
-        } catch (ParseException ex) {
-            m.addAttribute("exception", ex.toString());
+            ld = LocalDate.parse(firstDay);
+        } catch(RuntimeException e) {
+            m.addAttribute("excepcion", e);
         }
-
+        
         HttpEntity<Employee> request = new HttpEntity<>(
                 new Employee(TYPE_ENUM.getTypeFromSpanishString(type),
                         userName,
@@ -117,7 +115,7 @@ public class EmployeeController {
                         name,
                         address,
                         String.valueOf(phone),
-                        d));
+                        ld));
 
         RestTemplate rt = new RestTemplate();
         ResponseEntity<Employee> e = null;
@@ -189,15 +187,14 @@ public class EmployeeController {
             @RequestParam String address,
             @RequestParam Number phone,
             @RequestParam String firstDay) {
-
-        SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd");
-        Date d = new Date();
+        
+        LocalDate ld = null;
         try {
-            d = df.parse(firstDay);
-        } catch (ParseException ex) {
-            m.addAttribute("exception", ex.toString());
+            ld = LocalDate.parse(firstDay);
+        } catch(RuntimeException e) {
+            m.addAttribute("excepcion", e);
         }
-
+        
         HttpEntity<Employee> request = new HttpEntity<>(
                 new Employee(TYPE_ENUM.getTypeFromSpanishString(type),
                         userName,
@@ -205,7 +202,7 @@ public class EmployeeController {
                         name,
                         address,
                         String.valueOf(phone),
-                        d));
+                        ld));
 
         RestTemplate rt = new RestTemplate();
         ResponseEntity<Employee> e = null;
@@ -234,15 +231,15 @@ public class EmployeeController {
         }
         return "error";
     }
-    
+
     @GetMapping("/{id}/asignarespecies")
-    public String assignSpeciesPage(Model m, @PathVariable Integer id){
+    public String assignSpeciesPage(Model m, @PathVariable Integer id) {
         m.addAttribute("id", id);
         return "employeeViews/assignSpecies";
     }
-    
+
     @GetMapping("/{id}/asignaritinerarios")
-    public String assignItinerariesPage(Model m, @PathVariable Integer id){
+    public String assignItinerariesPage(Model m, @PathVariable Integer id) {
         m.addAttribute("id", id);
         return "employeeViews/assignSpecies";
     }

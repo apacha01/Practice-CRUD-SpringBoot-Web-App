@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -90,8 +92,9 @@ public class Employee implements Serializable{
     }
     
     public String formatedFirstDayAsString(){
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-        return df.format(this.firstDay);
+        DateTimeFormatter dtf = new DateTimeFormatterBuilder()
+                .append(DateTimeFormatter.ofPattern("dd-MM-yyyy")).toFormatter();
+        return this.firstDay.format(dtf);
     }
     
     public boolean isGuide(){
