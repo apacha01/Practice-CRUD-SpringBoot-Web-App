@@ -9,16 +9,24 @@ package p2.zoofrontendcrud.auxiliar;
  * @author Agustín Pacheco
  */
 public class Constants {
+    //Common requests path for backend controllers
     public final static String PREFIX_REQUEST_URL = "http://localhost:8080/";
+    public final static String CREATE_REQUEST_URL = "crear";
+    public final static String GET_ALL_REQUEST_URL = "obtenertodos";
+    public final static String GET_BY_ID_REQUEST_URL = "obtenerporid/";
+    public final static String DELETE_BY_ID_REQUEST_URL = "borrar/";
+    public final static String UPDATE_BY_ID_REQUEST_URL = "modificarporid/";
     
     //Backend Requests Paths for p2.zoobackendcrud.controllers.EmployeeController
     public final static String EMPLOYEE_REQUEST_URL = "empleado/";
-    public final static String CREATE_EMPLOYEE_REQUEST_URL = "crear";
     public final static String GET_EMPLOYEE_BY_USERNAME_REQUEST_URL = "obtenerpornombredeusuario/";
-    public final static String GET_ALL_EMPLOYEES_REQUEST_URL = "obtenertodos";
-    public final static String GET_EMPLOYEE_BY_ID_REQUEST_URL = "obtenerporid/";
-    public final static String DELETE_EMPLOYEE_BY_ID_REQUEST_URL = "borrar/";
-    public final static String UPDATE_EMPLOYEE_BY_ID_REQUEST_URL = "modificarporid/";
     public final static String GET_EMPLOYEE_SPECIES_REQUEST_URL = "obtenerespecies";
     public final static String GET_EMPLOYEE_ITINERARIES_REQUEST_URL = "obteneritinerarios";
+    public final static String ADD_EMPLOYEE_SPECIES_REQUEST_URL = "agregarespecies";
+    public final static String ADD_EMPLOYEE_ITINERARIES_REQUEST_URL = "agregaritinerarios";
+    public final static String REMOVE_EMPLOYEE_SPECIES_REQUEST_URL = "removerespecies";
+    public final static String REMOVE_EMPLOYEE_ITINERARIES_REQUEST_URL = "removeritinerarios";
+    
+    //Backend Requests Paths for p2.zoobackendcrud.controllers.SpeciesController
+    public final static String SPECIES_REQUEST_URL = "especie/";
 }
