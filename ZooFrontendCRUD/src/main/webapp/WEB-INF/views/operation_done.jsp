@@ -4,6 +4,7 @@
     Author     : Agustín Pacheco
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -14,6 +15,12 @@
     </head>
     <body>
         <h1>¡Operacion realizada con éxito!</h1>
+        <c:if test="${not empty msgs}">
+            <p>Aclaraciones/Advertencias:</p>
+            <c:forEach var="msg" items="${msgs}">
+                <p>${msg}</p>
+            </c:forEach>
+        </c:if>
         <a class="simple-link" href="/menu_admin">Volver al menu</a>
     </body>
 </html>
