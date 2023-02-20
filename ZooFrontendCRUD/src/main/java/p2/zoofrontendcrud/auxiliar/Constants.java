@@ -29,4 +29,7 @@ public class Constants {
     
     //Backend Requests Paths for p2.zoobackendcrud.controllers.SpeciesController
     public final static String SPECIES_REQUEST_URL = "especie/";
+    
+    //Backend Requests Paths for p2.zoobackendcrud.controllers.ItineraryController
+    public final static String ITINERARIES_REQUEST_URL = "itinerario/";
 }

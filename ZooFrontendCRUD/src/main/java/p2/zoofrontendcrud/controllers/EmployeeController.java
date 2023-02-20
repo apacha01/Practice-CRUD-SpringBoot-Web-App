@@ -38,12 +38,18 @@ public class EmployeeController {
     @GetMapping("/empleados")
     public String employeesPage(Model m) {
         RestTemplate rt = new RestTemplate();
-
-        List<Employee> employees = rt.exchange(Constants.PREFIX_REQUEST_URL
-                + Constants.EMPLOYEE_REQUEST_URL
-                + Constants.GET_ALL_REQUEST_URL,
-                HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<List<Employee>>() {
-        }).getBody();
+        List<Employee> employees = null;
+        
+        try {
+            employees = rt.exchange(Constants.PREFIX_REQUEST_URL
+                    + Constants.EMPLOYEE_REQUEST_URL
+                    + Constants.GET_ALL_REQUEST_URL,
+                    HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<List<Employee>>() {
+            }).getBody();
+        } catch (RestClientException ex) {
+            m.addAttribute("excepcion", ex.toString());
+            return "error";
+        }
 
         Map<Integer, List<Species>> keepersSpecies = new HashMap();
         Map<Integer, List<Itinerary>> guidesItineraries = new HashMap();
@@ -53,18 +59,30 @@ public class EmployeeController {
             formatedFirstDay.put(employee.getId(), employee.formatedFirstDayAsString());
             if (employee.isAdmin()) {
             } else if (employee.isKeeper()) {
-                List<Species> s = rt.getForObject(Constants.PREFIX_REQUEST_URL
-                        + Constants.EMPLOYEE_REQUEST_URL
-                        + employee.getId() + "/"
-                        + Constants.GET_EMPLOYEE_SPECIES_REQUEST_URL,
-                        List.class);
+                List<Species> s = null;
+                try {
+                    s = rt.getForObject(Constants.PREFIX_REQUEST_URL
+                            + Constants.EMPLOYEE_REQUEST_URL
+                            + employee.getId() + "/"
+                            + Constants.GET_EMPLOYEE_SPECIES_REQUEST_URL,
+                            List.class);
+                } catch (RestClientException ex) {
+                    m.addAttribute("excepcion", ex.toString());
+                    return "error";
+                }
                 keepersSpecies.put(employee.getId(), s);
             } else if (employee.isGuide()) {
-                List<Itinerary> s = rt.getForObject(Constants.PREFIX_REQUEST_URL
-                        + Constants.EMPLOYEE_REQUEST_URL
-                        + employee.getId() + "/"
-                        + Constants.GET_EMPLOYEE_ITINERARIES_REQUEST_URL,
-                        List.class);
+                List<Itinerary> s = null;
+                try {
+                    s = rt.getForObject(Constants.PREFIX_REQUEST_URL
+                            + Constants.EMPLOYEE_REQUEST_URL
+                            + employee.getId() + "/"
+                            + Constants.GET_EMPLOYEE_ITINERARIES_REQUEST_URL,
+                            List.class);
+                } catch (RestClientException ex) {
+                    m.addAttribute("excepcion", ex.toString());
+                    return "error";
+                }
                 guidesItineraries.put(employee.getId(), s);
             }
         }
@@ -80,10 +98,15 @@ public class EmployeeController {
     @PostMapping("/eliminar_empleado")
     public String deleteEmployeeById(Model m, @RequestParam Integer id) {
         RestTemplate rt = new RestTemplate();
-        rt.delete(Constants.PREFIX_REQUEST_URL
-                + Constants.EMPLOYEE_REQUEST_URL
-                + Constants.DELETE_BY_ID_REQUEST_URL
-                + id);
+        try {
+            rt.delete(Constants.PREFIX_REQUEST_URL
+                    + Constants.EMPLOYEE_REQUEST_URL
+                    + Constants.DELETE_BY_ID_REQUEST_URL
+                    + id);
+        } catch (RestClientException ex) {
+            m.addAttribute("excepcion", ex.toString());
+            return "error";
+        }
         return "operation_done";
     }
 
@@ -131,6 +154,7 @@ public class EmployeeController {
         } catch (RestClientException ex) {
             m.addAttribute("request", request);
             m.addAttribute("exception", ex.toString());
+            return "error";
         }
 
         if (e == null) {
@@ -166,6 +190,7 @@ public class EmployeeController {
                     Employee.class);
         } catch (RestClientException ex) {
             m.addAttribute("exception", ex.toString());
+            return "error";
         }
 
         if (e == null) {
@@ -224,6 +249,7 @@ public class EmployeeController {
         } catch (RestClientException ex) {
             m.addAttribute("request", request);
             m.addAttribute("exception", ex.toString());
+            return "error";
         }
 
         if (e == null) {
@@ -265,6 +291,7 @@ public class EmployeeController {
                     List.class);
         } catch (RestClientException ex) {
             m.addAttribute("exception", ex.toString());
+            return "error";
         }
 
         if (species == null || s == null) {
