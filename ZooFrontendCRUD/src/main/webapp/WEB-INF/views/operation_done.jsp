@@ -17,9 +17,13 @@
         <h1>¡Operacion realizada con éxito!</h1>
         <c:if test="${not empty msgs}">
             <p>Aclaraciones/Advertencias:</p>
-            <c:forEach var="msg" items="${msgs}">
-                <p>${msg}</p>
-            </c:forEach>
+            <ul>
+                <c:forEach var="msg" items="${msgs}">
+                    <li>
+                        ${msg}
+                    </li>
+                </c:forEach>
+            </ul>
         </c:if>
         <a class="simple-link" href="/menu_admin">Volver al menu</a>
     </body>

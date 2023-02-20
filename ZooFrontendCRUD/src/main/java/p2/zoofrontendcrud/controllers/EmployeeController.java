@@ -5,6 +5,7 @@
 package p2.zoofrontendcrud.controllers;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +41,7 @@ public class EmployeeController {
 
         List<Employee> employees = rt.exchange(Constants.PREFIX_REQUEST_URL
                 + Constants.EMPLOYEE_REQUEST_URL
-                + Constants.GET_ALL_EMPLOYEES_REQUEST_URL,
+                + Constants.GET_ALL_REQUEST_URL,
                 HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<List<Employee>>() {
         }).getBody();
 
@@ -81,7 +82,7 @@ public class EmployeeController {
         RestTemplate rt = new RestTemplate();
         rt.delete(Constants.PREFIX_REQUEST_URL
                 + Constants.EMPLOYEE_REQUEST_URL
-                + Constants.DELETE_EMPLOYEE_BY_ID_REQUEST_URL
+                + Constants.DELETE_BY_ID_REQUEST_URL
                 + id);
         return "operation_done";
     }
@@ -101,13 +102,15 @@ public class EmployeeController {
             @RequestParam Number phone,
             @RequestParam String firstDay) {
         
+        List<String> msgs = new ArrayList<>();
+        
         LocalDate ld = null;
         try {
             ld = LocalDate.parse(firstDay);
-        } catch(RuntimeException e) {
+        } catch (RuntimeException e) {
             m.addAttribute("excepcion", e);
         }
-        
+
         HttpEntity<Employee> request = new HttpEntity<>(
                 new Employee(TYPE_ENUM.getTypeFromSpanishString(type),
                         userName,
@@ -122,7 +125,7 @@ public class EmployeeController {
         try {
             e = rt.postForEntity(Constants.PREFIX_REQUEST_URL
                     + Constants.EMPLOYEE_REQUEST_URL
-                    + Constants.CREATE_EMPLOYEE_REQUEST_URL,
+                    + Constants.CREATE_REQUEST_URL,
                     request,
                     Employee.class);
         } catch (RestClientException ex) {
@@ -134,6 +137,8 @@ public class EmployeeController {
             return "error";
         }
         if (e.getStatusCode() == HttpStatus.CREATED) {
+            msgs.add(e.getBody().toString());
+            m.addAttribute("msgs", msgs);
             return "operation_done";
         }
         if (e.getStatusCode() == HttpStatus.CONFLICT) {
@@ -156,7 +161,7 @@ public class EmployeeController {
         try {
             e = rt.getForEntity(Constants.PREFIX_REQUEST_URL
                     + Constants.EMPLOYEE_REQUEST_URL
-                    + Constants.GET_EMPLOYEE_BY_ID_REQUEST_URL
+                    + Constants.GET_BY_ID_REQUEST_URL
                     + id,
                     Employee.class);
         } catch (RestClientException ex) {
@@ -187,14 +192,16 @@ public class EmployeeController {
             @RequestParam String address,
             @RequestParam Number phone,
             @RequestParam String firstDay) {
+
+        List<String> msgs = new ArrayList<>();
         
         LocalDate ld = null;
         try {
             ld = LocalDate.parse(firstDay);
-        } catch(RuntimeException e) {
+        } catch (RuntimeException e) {
             m.addAttribute("excepcion", e);
         }
-        
+
         HttpEntity<Employee> request = new HttpEntity<>(
                 new Employee(TYPE_ENUM.getTypeFromSpanishString(type),
                         userName,
@@ -209,7 +216,7 @@ public class EmployeeController {
         try {
             e = rt.exchange(Constants.PREFIX_REQUEST_URL
                     + Constants.EMPLOYEE_REQUEST_URL
-                    + Constants.UPDATE_EMPLOYEE_BY_ID_REQUEST_URL
+                    + Constants.UPDATE_BY_ID_REQUEST_URL
                     + id,
                     HttpMethod.PUT,
                     request,
@@ -223,6 +230,8 @@ public class EmployeeController {
             return "error";
         }
         if (e.getStatusCode() == HttpStatus.OK) {
+            msgs.add(e.getBody().toString());
+            m.addAttribute("msgs", msgs);
             return "operation_done";
         }
         if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
@@ -234,8 +243,109 @@ public class EmployeeController {
 
     @GetMapping("/{id}/asignarespecies")
     public String assignSpeciesPage(Model m, @PathVariable Integer id) {
-        m.addAttribute("id", id);
+        List<Species> species = null;
+        List<Species> s = null;
+        ResponseEntity<Employee> e = null;
+
+        RestTemplate rt = new RestTemplate();
+        try {
+            e = rt.getForEntity(Constants.PREFIX_REQUEST_URL
+                        + Constants.EMPLOYEE_REQUEST_URL
+                        + Constants.GET_BY_ID_REQUEST_URL
+                        + id,
+                    Employee.class);
+            species = rt.getForObject(Constants.PREFIX_REQUEST_URL
+                    + Constants.SPECIES_REQUEST_URL
+                    + Constants.GET_ALL_REQUEST_URL,
+                    List.class);
+            s = rt.getForObject(Constants.PREFIX_REQUEST_URL
+                    + Constants.EMPLOYEE_REQUEST_URL
+                    + id + "/"
+                    + Constants.GET_EMPLOYEE_SPECIES_REQUEST_URL,
+                    List.class);
+        } catch (RestClientException ex) {
+            m.addAttribute("exception", ex.toString());
+        }
+
+        if (species == null || s == null) {
+            return "error";
+        }
+
+        //remove duplicates
+        species.removeAll(s);
+        
+        if(e != null && e.getBody() != null) m.addAttribute("name", e.getBody().getName());
+        m.addAttribute("employeeSpecies", s);
+        m.addAttribute("species", species);
         return "employeeViews/assignSpecies";
+    }
+
+    @PostMapping("/{id}/asignarespecies")
+    public String assignSpecies(Model m,
+            @PathVariable("id") Integer id,
+            @RequestParam(name = "toBeRemoved", required = false) List<Integer> toBeRemovedIds,
+            @RequestParam(name = "alreadyAssigned", required = false) List<Integer> alreadyAssignedIds,
+            @RequestParam(name = "toBeAssigned", required = false) List<Integer> toBeAssignedIds) {
+
+        List<String> msgs = new ArrayList<>();
+        Boolean needRemove = toBeRemovedIds != null;
+        Boolean needAssign = toBeAssignedIds != null;
+        
+        //Requests
+        HttpEntity<List<Integer>> requestRemove = null;
+        HttpEntity<List<Integer>> requestAssign = null;
+        //Responses
+        ResponseEntity<Employee> responseRemove = null;
+        ResponseEntity<Employee> responseAssign = null;
+        
+        if(needRemove)
+            requestRemove = new HttpEntity<>(toBeRemovedIds);
+        if(needAssign)
+            requestAssign = new HttpEntity<>(toBeAssignedIds);
+
+        RestTemplate rt = new RestTemplate();
+        try {
+            
+            if(requestAssign != null){
+                responseAssign = rt.exchange(Constants.PREFIX_REQUEST_URL
+                        + Constants.EMPLOYEE_REQUEST_URL
+                        + id + "/"
+                        + Constants.ADD_EMPLOYEE_SPECIES_REQUEST_URL,
+                        HttpMethod.PUT,
+                        requestAssign,
+                        Employee.class);
+            }
+            
+            if(requestRemove != null){
+                responseRemove = rt.exchange(Constants.PREFIX_REQUEST_URL
+                        + Constants.EMPLOYEE_REQUEST_URL
+                        + id + "/"
+                        + Constants.REMOVE_EMPLOYEE_SPECIES_REQUEST_URL,
+                        HttpMethod.PUT,
+                        requestRemove,
+                        Employee.class);
+            }
+        }
+        catch (RestClientException ex) {
+            m.addAttribute("exception", ex.toString());
+            return "error";
+        }
+
+        if (responseAssign != null) {
+            if (responseAssign.getStatusCode() == HttpStatus.PARTIAL_CONTENT)
+                msgs.add("Algunas de las especies ya estaban asignadas, por lo que se evito la re-asignacion.");
+            if (responseAssign.getStatusCode() == HttpStatus.NOT_FOUND)
+                msgs.add("El empleado de id " + id + " no se encontro.");
+            if (responseAssign.getStatusCode() == HttpStatus.UNPROCESSABLE_ENTITY)
+                msgs.add("El empleado de id " + id + " no es un cuidador.");
+        }
+        else msgs.add("No se asigno ninguna especie.");
+        
+        if (responseRemove == null)
+            msgs.add("No se removio ninguna especie.");
+        
+        m.addAttribute("msgs", msgs);
+        return "operation_done";
     }
 
     @GetMapping("/{id}/asignaritinerarios")
