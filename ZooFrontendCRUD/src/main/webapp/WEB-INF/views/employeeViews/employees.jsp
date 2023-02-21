@@ -12,10 +12,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Administracion de Empleados</title>
-        <link rel="stylesheet" href="css/_reset.css"/>
-        <link rel="stylesheet" href="css/table.css"/>
-        <link rel="stylesheet" href="css/button.css"/>
-        <link rel="stylesheet" href="css/style.css"/>
+        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/_reset.css"/>
+        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/table.css"/>
+        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/button.css"/>
+        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/style.css"/>
     </head>
     <body>
         <%

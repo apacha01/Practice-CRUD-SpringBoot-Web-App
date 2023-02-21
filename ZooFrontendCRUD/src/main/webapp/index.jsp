@@ -10,8 +10,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Inicio</title>
-        <link rel="stylesheet" href="css/style.css"/>
-        <link rel="stylesheet" href="css/button.css"/>
+        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/style.css"/>
+        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/button.css"/>
     </head>
     <body>
         <h1>Bienvenido al Sistema de Gestion de Información para Ecoparques</h1>
