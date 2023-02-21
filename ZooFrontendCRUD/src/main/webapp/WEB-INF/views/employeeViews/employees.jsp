@@ -178,67 +178,68 @@
                     </c:forEach>
                 </tbody>
             </table>
-            <div class="confirm_delete--container hidden" id="confirm_delete">
-                <p class="confirm_delete--txt">¿Esta seguro que desea eliminar este empleado?</p>
-                <div class="button-container">
-                    <form method="post" action="/error" id="delete_form">
-                        <input class="hidden" type="text" name="id" id="id" required>
-                        <input type="submit" class="simple-button simple-button--delete" value="Eliminar">
-                    </form>
-                    <button class="simple-button gray-button" id="cancel_delete">
-                        No Eliminar
-                    </button>
-                </div>
+        </main>
+        <div class="confirm_delete--container hidden" id="confirm_delete">
+            <p class="confirm_delete--txt">¿Esta seguro que desea eliminar este empleado?</p>
+            <div class="button-container">
+                <form method="post" action="/error" id="delete_form">
+                    <input class="hidden" type="text" name="id" id="id" required>
+                    <input type="submit" class="simple-button simple-button--delete" value="Eliminar">
+                </form>
+                <button class="simple-button gray-button" id="cancel_delete">
+                    No Eliminar
+                </button>
             </div>
-            <script>
-                //CONFIRM DELETE CONSTS
-                const deleteBtns = Array.from(document.getElementsByName('delete_employee'));
-                const container = document.getElementById('confirm_delete');
-                const btn_cancel = document.getElementById('cancel_delete');
-                const delete_form = document.getElementById('delete_form');
-                const delete_id = document.getElementById('id');
+        </div>
+        <script>
+            //CONFIRM DELETE CONSTS
+            const deleteBtns = Array.from(document.getElementsByName('delete_employee'));
+            const container = document.getElementById('confirm_delete');
+            const btn_cancel = document.getElementById('cancel_delete');
+            const delete_form = document.getElementById('delete_form');
+            const delete_id = document.getElementById('id');
 
-                //EMPLOYEE PANEL CONSTS
-                const panelBtns = Array.from(document.getElementsByName('show_employee_panel'));
-                const closePanelBtns = Array.from(document.getElementsByName('close_panel'));
+            //EMPLOYEE PANEL CONSTS
+            const panelBtns = Array.from(document.getElementsByName('show_employee_panel'));
+            const closePanelBtns = Array.from(document.getElementsByName('close_panel'));
 
-                //CONFIRM DELETE PANEL
-                deleteBtns.forEach(function (btn) {
-                    btn.addEventListener('click', function () {
-                        const id = extractEmployeeId(btn.id);
-                        delete_form.action = "/eliminar_empleado";
-                        delete_id.value = id;
-                        container.classList.remove('hidden');
+            //CONFIRM DELETE PANEL
+            deleteBtns.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    const id = extractEmployeeId(btn.id);
+                    delete_form.action = "/eliminar_empleado";
+                    delete_id.value = id;
+                    container.classList.remove('hidden');
+                });
+            });
+            btn_cancel.addEventListener('click', function () {
+                container.classList.add('hidden');
+            });
+
+            //EMPLOYEE PANEL
+            panelBtns.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    const id = extractEmployeeId(btn.id);
+                    const panel = document.getElementById('employeePanel-' + id);
+                    const panels = Array.from(document.getElementsByName('employee_panel'));
+                    panels.forEach(function (p) {
+                        if (!p.classList.contains('hidden'))
+                            p.classList.add('hidden')
                     });
+                    panel.classList.remove('hidden');
                 });
-                btn_cancel.addEventListener('click', function () {
-                    container.classList.add('hidden');
+            });
+            closePanelBtns.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    const id = extractEmployeeId(btn.id);
+                    const panel = document.getElementById('employeePanel-' + id);
+                    panel.classList.add('hidden');
                 });
+            });
 
-                //EMPLOYEE PANEL
-                panelBtns.forEach(function (btn) {
-                    btn.addEventListener('click', function () {
-                        const id = extractEmployeeId(btn.id);
-                        const panel = document.getElementById('employeePanel-' + id);
-                        const panels = Array.from(document.getElementsByName('employee_panel'));
-                        panels.forEach(function (p) {
-                            if (!p.classList.contains('hidden'))
-                                p.classList.add('hidden')
-                        });
-                        panel.classList.remove('hidden');
-                    });
-                });
-                closePanelBtns.forEach(function (btn) {
-                    btn.addEventListener('click', function () {
-                        const id = extractEmployeeId(btn.id);
-                        const panel = document.getElementById('employeePanel-' + id);
-                        panel.classList.add('hidden');
-                    });
-                });
-
-                function extractEmployeeId(id) {
-                    return id.substring(id.indexOf("-") + 1, id.length);
-                }
-            </script>
+            function extractEmployeeId(id) {
+                return id.substring(id.indexOf("-") + 1, id.length);
+            }
+        </script>
     </body>
 </html>
