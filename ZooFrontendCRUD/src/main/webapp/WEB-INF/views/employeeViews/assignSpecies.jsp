@@ -52,13 +52,15 @@
                             </td>
                             <td class="td">${species.id}</td>
                             <td class="td">${species.name}</td>
-                            <td class="td">${species.scientificName}</td>
+                            <td class="td">${species.scientific_name}</td>
                             <td class="td">${species.description}</td>
                             <td class="td">${species.zone.name}</td>
                             <td class="td">
-                                <c:forEach var="habitat" items="${species.habitats}">
-                                    <p>${habitat.name} </p>
-                                </c:forEach>
+                                <p>
+                                    <c:forEach var="habitat" items="${species.habitats}" >
+                                        ${habitat.name}
+                                    </c:forEach>
+                                </p>
                             </td>
                         </tr>
                     </c:forEach>
@@ -72,7 +74,7 @@
                             </td>
                             <td class="td">${species.id}</td>
                             <td class="td">${species.name}</td>
-                            <td class="td">${species.scientificName}</td>
+                            <td class="td">${species.scientific_name}</td>
                             <td class="td">${species.description}</td>
                             <td class="td">${species.zone.name}</td>
                             <td class="td">
