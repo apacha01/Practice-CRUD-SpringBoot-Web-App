@@ -84,6 +84,18 @@ public class SpeciesController {
         }
     }
     
+    @GetMapping("/{id}/obtenercuidadores")
+    public List<Employee> getSpeciesKeepers(@PathVariable("id") Integer id) {
+        
+        List<SpeciesKeeper> sks = skRepo.findBySpeciesId(id);
+        List<Employee> e = new ArrayList<>();
+        for (SpeciesKeeper sk : sks) {
+            e.add(sk.getKeeper());
+        }
+        
+        return e;
+    }
+    
     @PutMapping("/modificarporid/{id}")
     public ResponseEntity<Species> updateSpeciesById(@PathVariable("id") Integer speciesId, @RequestBody Species s){
         return spRepo.findById(speciesId)
