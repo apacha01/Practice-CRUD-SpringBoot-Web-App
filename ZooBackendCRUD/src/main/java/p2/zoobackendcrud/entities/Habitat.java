@@ -54,7 +54,6 @@ public class Habitat implements Serializable{
         name = "habitats_continents",
         joinColumns = @JoinColumn(name = "id_habitat"),
         inverseJoinColumns = @JoinColumn(name = "id_continent"))
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Set<Continent> continents;
 
     public Habitat(){
