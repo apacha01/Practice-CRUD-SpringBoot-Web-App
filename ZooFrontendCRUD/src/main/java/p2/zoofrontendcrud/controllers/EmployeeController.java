@@ -377,7 +377,109 @@ public class EmployeeController {
 
     @GetMapping("/{id}/asignaritinerarios")
     public String assignItinerariesPage(Model m, @PathVariable Integer id) {
-        m.addAttribute("id", id);
-        return "employeeViews/assignSpecies";
+        List<Itinerary> itineraries = null;
+        List<Itinerary> i = null;
+        ResponseEntity<Employee> e = null;
+
+        RestTemplate rt = new RestTemplate();
+        try {
+            e = rt.getForEntity(Constants.PREFIX_REQUEST_URL
+                        + Constants.EMPLOYEE_REQUEST_URL
+                        + Constants.GET_BY_ID_REQUEST_URL
+                        + id,
+                    Employee.class);
+            itineraries = rt.getForObject(Constants.PREFIX_REQUEST_URL
+                    + Constants.ITINERARIES_REQUEST_URL
+                    + Constants.GET_ALL_REQUEST_URL,
+                    List.class);
+            i = rt.getForObject(Constants.PREFIX_REQUEST_URL
+                    + Constants.EMPLOYEE_REQUEST_URL
+                    + id + "/"
+                    + Constants.GET_EMPLOYEE_ITINERARIES_REQUEST_URL,
+                    List.class);
+        } catch (RestClientException ex) {
+            m.addAttribute("exception", ex.toString());
+            return "error";
+        }
+
+        if (itineraries == null || i == null) {
+            return "error";
+        }
+
+        //remove duplicates
+        itineraries.removeAll(i);
+        
+        if(e != null && e.getBody() != null) m.addAttribute("name", e.getBody().getName());
+        m.addAttribute("employeeItineraries", i);
+        m.addAttribute("itineraries", itineraries);
+        return "employeeViews/assignItineraries";
+    }
+    
+    @PostMapping("/{id}/asignaritinerarios")
+    public String assignItineraries(Model m,
+            @PathVariable("id") Integer id,
+            @RequestParam(name = "toBeRemoved", required = false) List<Integer> toBeRemovedIds,
+            @RequestParam(name = "alreadyAssigned", required = false) List<Integer> alreadyAssignedIds,
+            @RequestParam(name = "toBeAssigned", required = false) List<Integer> toBeAssignedIds) {
+
+        List<String> msgs = new ArrayList<>();
+        Boolean needRemove = toBeRemovedIds != null;
+        Boolean needAssign = toBeAssignedIds != null;
+        
+        //Requests
+        HttpEntity<List<Integer>> requestRemove = null;
+        HttpEntity<List<Integer>> requestAssign = null;
+        //Responses
+        ResponseEntity<Employee> responseRemove = null;
+        ResponseEntity<Employee> responseAssign = null;
+        
+        if(needRemove)
+            requestRemove = new HttpEntity<>(toBeRemovedIds);
+        if(needAssign)
+            requestAssign = new HttpEntity<>(toBeAssignedIds);
+
+        RestTemplate rt = new RestTemplate();
+        try {
+            
+            if(requestAssign != null){
+                responseAssign = rt.exchange(Constants.PREFIX_REQUEST_URL
+                        + Constants.EMPLOYEE_REQUEST_URL
+                        + id + "/"
+                        + Constants.ADD_EMPLOYEE_ITINERARIES_REQUEST_URL,
+                        HttpMethod.PUT,
+                        requestAssign,
+                        Employee.class);
+            }
+            
+            if(requestRemove != null){
+                responseRemove = rt.exchange(Constants.PREFIX_REQUEST_URL
+                        + Constants.EMPLOYEE_REQUEST_URL
+                        + id + "/"
+                        + Constants.REMOVE_EMPLOYEE_ITINERARIES_REQUEST_URL,
+                        HttpMethod.PUT,
+                        requestRemove,
+                        Employee.class);
+            }
+        }
+        catch (RestClientException ex) {
+            m.addAttribute("exception", ex.toString());
+            return "error";
+        }
+
+        if (responseAssign != null) {
+            if (responseAssign.getStatusCode() == HttpStatus.PARTIAL_CONTENT)
+                msgs.add("Algunas de los itinerarios ya estaban asignadas a otros guias, asique no se asignaron.");
+            if (responseAssign.getStatusCode() == HttpStatus.NOT_FOUND)
+                msgs.add("El empleado de id " + id + " no se encontro.");
+            if (responseAssign.getStatusCode() == HttpStatus.UNPROCESSABLE_ENTITY)
+                msgs.add("El empleado de id " + id + " no es un guia.");
+        }
+        else msgs.add("No se asigno ningun itinerario.");
+        
+        if (responseRemove == null)
+            msgs.add("No se removio ningun itinerario.");
+        
+        m.addAttribute("msgs", msgs);
+        return "operation_done";
     }
 }

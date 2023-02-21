@@ -19,7 +19,7 @@ import p2.zoobackendcrud.entities.Itinerary;
 @Repository
 public interface ItineraryRepository extends JpaRepository<Itinerary, Integer>{
     
-    @Query("SELECT DISTINCT i FROM Itinerary i JOIN FETCH i.coveredZones WHERE i.code = :code")
+    @Query("SELECT DISTINCT i FROM Itinerary i LEFT JOIN FETCH i.coveredZones WHERE i.code = :code")
     public List<Itinerary> findByCode(String code);
     
     @Override
@@ -27,6 +27,6 @@ public interface ItineraryRepository extends JpaRepository<Itinerary, Integer>{
     public List<Itinerary> findAll();
     
     @Override
-    @Query("SELECT i FROM Itinerary i JOIN FETCH i.coveredZones WHERE i.id = :id")
+    @Query("SELECT i FROM Itinerary i LEFT JOIN FETCH i.coveredZones WHERE i.id = :id")
     public Optional<Itinerary> findById(@Param("id") Integer id);
 }
