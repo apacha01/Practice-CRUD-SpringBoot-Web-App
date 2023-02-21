@@ -64,7 +64,6 @@ public class Itinerary implements Serializable{
         name = "itineraries_route",
         joinColumns = @JoinColumn(name = "id_itinerary"),
         inverseJoinColumns = @JoinColumn(name = "id_zone"))
-    @JsonProperty(access = Access.WRITE_ONLY)
     Set<Zone> coveredZones;
     
     @OneToMany(mappedBy = "itinerary", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
