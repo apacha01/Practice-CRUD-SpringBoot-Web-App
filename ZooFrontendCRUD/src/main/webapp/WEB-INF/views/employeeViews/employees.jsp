@@ -28,7 +28,7 @@
         %>
         <h1>Empleados</h1>
         <h2>${errorMsg}</h2>
-        <main class="clientes-container">
+        <main class="employees-container">
             <table class="table">
                 <thead>
                     <tr>
