@@ -65,3 +65,7 @@ h1{
 .date{
     min-width: 200px;
 }
+
+p{
+    margin: 0;
+}

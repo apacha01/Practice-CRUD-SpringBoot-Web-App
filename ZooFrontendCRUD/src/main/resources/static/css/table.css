@@ -19,12 +19,12 @@
 
 .table td:first-of-type,
 .table th:first-of-type {
-    padding-left: 1.75rem;
+    padding-left: 0.75rem;
 }
 
 .table td:last-of-type,
 .table th:last-of-type {
-    padding-right: 1.75rem;
+    padding-right: 0.75rem;
 }
 
 .table thead {
@@ -38,8 +38,8 @@
 }
 
 .table td {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
 }
 
 .table__align--right {
@@ -62,10 +62,6 @@
     width: 25%;
 }
 
-.table tr:last-of-type td {
-    padding-bottom: 1.75rem;
-}
-
 tbody tr:nth-child(odd) {
     background-color: #d0e4fb;
 }
@@ -84,6 +80,10 @@ thead tr:first-child{
     justify-content: flex-end;
     flex-direction: column;
     gap: 10px;
+    list-style: none;
+    padding: 0 14px 0 0px;
+    margin: 0;
+    width: 100%;
 }
 
 .td {

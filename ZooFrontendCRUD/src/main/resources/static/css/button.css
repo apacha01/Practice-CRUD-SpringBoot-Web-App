@@ -5,6 +5,7 @@
     color: white;
     border-radius: 10px;
     background-color: #fff;
+    text-decoration: none;
 }
 
 .simple-button:hover{
