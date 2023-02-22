@@ -19,9 +19,9 @@ import lombok.NoArgsConstructor;
 public class Species {
     private Integer id;
     private String name;
-    private String scientificName;
+    private String scientific_name;
     private String description;
     private Zone zone;
-    Set<SpeciesKeeper> speciesKeepers;
+    Set<SpeciesKeeper> species_keepers;
     Set<Habitat> habitats;
 }
