@@ -6,7 +6,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" session="true"%>
-<%@page import="p2.zoofrontendcrud.auxiliar.TYPE_ENUM"%>
+<c:import url="../sessionCheck.jsp"></c:import>
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,14 +16,6 @@
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/style.css"/>
     </head>
     <body>
-        <%
-            HttpSession _session = request.getSession();
-
-            if (_session.getAttribute("employeeUserName") == null || _session.getAttribute("employeeType") == null
-                    || _session.getAttribute("employeeType") != TYPE_ENUM.ADMIN) {
-                out.print("<script>location.replace('/login');</script>");
-            }
-        %>
         <h1>Los itinerarios de ${name} están tildados. Tilde los que desee agregar o destilde los que desee quitarle:</h1>
         <h3 style="color: cornflowerblue;">
             (Aclaración: si un itinerario está asignado no se puede asignar otra vez.)
