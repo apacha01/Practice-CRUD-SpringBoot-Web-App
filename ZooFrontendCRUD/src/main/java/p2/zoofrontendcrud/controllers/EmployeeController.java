@@ -92,7 +92,7 @@ public class EmployeeController {
         m.addAttribute("formatedFirstDay", formatedFirstDay);
         m.addAttribute("employees", employees);
 
-        return "employeeViews/employees";
+        return Constants.EMPLOYEE_VIEWS + "employees";
     }
 
     @PostMapping("/eliminar_empleado")
@@ -112,7 +112,7 @@ public class EmployeeController {
 
     @GetMapping("/crear_empleado")
     public String createEmployeePage() {
-        return "employeeViews/create_employee";
+        return Constants.EMPLOYEE_VIEWS + "create_employee";
     }
 
     @PostMapping("/crear_empleado")
@@ -167,11 +167,11 @@ public class EmployeeController {
         }
         if (e.getStatusCode() == HttpStatus.CONFLICT) {
             m.addAttribute("errorMsg", "Ese nombre de usuario ya existe, pruebe con otro.");
-            return "employeeViews/create_employee";
+            return Constants.EMPLOYEE_VIEWS + "create_employee";
         }
         if (e.getStatusCode() == HttpStatus.UNPROCESSABLE_ENTITY) {
             m.addAttribute("errorMsg", "El empleado no se pudo crear, revise que todos los datos hayan sido ingresados.");
-            return "employeeViews/create_employee";
+            return Constants.EMPLOYEE_VIEWS + "create_employee";
         }
         m.addAttribute("errorMsg", "Desconocido.");
         return "error";
@@ -198,11 +198,11 @@ public class EmployeeController {
         }
         if (e.getStatusCode() == HttpStatus.OK) {
             m.addAttribute("employee", e.getBody());
-            return "employeeViews/update_employee";
+            return Constants.EMPLOYEE_VIEWS + "update_employee";
         }
         if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
             m.addAttribute("errorMsg", "No existe ese usuario");
-            return "employeeViews/employees";
+            return Constants.EMPLOYEE_VIEWS + "employees";
         }
         return "error";
     }
@@ -262,7 +262,7 @@ public class EmployeeController {
         }
         if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
             m.addAttribute("errorMsg", "No existe ese usuario");
-            return "employeeViews/employees";
+            return Constants.EMPLOYEE_VIEWS + "employees";
         }
         return "error";
     }
@@ -304,7 +304,7 @@ public class EmployeeController {
         if(e != null && e.getBody() != null) m.addAttribute("name", e.getBody().getName());
         m.addAttribute("employeeSpecies", s);
         m.addAttribute("species", species);
-        return "employeeViews/assignSpecies";
+        return Constants.EMPLOYEE_VIEWS + "assignSpecies";
     }
 
     @PostMapping("/{id}/asignarespecies")
@@ -412,7 +412,7 @@ public class EmployeeController {
         if(e != null && e.getBody() != null) m.addAttribute("name", e.getBody().getName());
         m.addAttribute("employeeItineraries", i);
         m.addAttribute("itineraries", itineraries);
-        return "employeeViews/assignItineraries";
+        return Constants.EMPLOYEE_VIEWS + "assignItineraries";
     }
     
     @PostMapping("/{id}/asignaritinerarios")

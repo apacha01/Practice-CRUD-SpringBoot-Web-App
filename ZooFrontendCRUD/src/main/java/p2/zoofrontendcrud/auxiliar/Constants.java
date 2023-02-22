@@ -9,6 +9,12 @@ package p2.zoofrontendcrud.auxiliar;
  * @author Agustín Pacheco
  */
 public class Constants {
+    //Frontend paths for jsp pages
+    //Employee
+    public final static String EMPLOYEE_VIEWS = "employeeViews/";
+    //Species
+    public final static String SPECIES_VIEWS = "speciesViews/";
+    
     //Common requests path for backend controllers
     public final static String PREFIX_REQUEST_URL = "http://localhost:8080/";
     public final static String CREATE_REQUEST_URL = "crear";
@@ -20,6 +26,7 @@ public class Constants {
     //Backend Requests Paths for p2.zoobackendcrud.controllers.EmployeeController
     public final static String EMPLOYEE_REQUEST_URL = "empleado/";
     public final static String GET_EMPLOYEE_BY_USERNAME_REQUEST_URL = "obtenerpornombredeusuario/";
+    public final static String GET_EMPLOYEE_BY_TYPE_REQUEST_URL = "obtenerportipo/";
     public final static String GET_EMPLOYEE_SPECIES_REQUEST_URL = "obtenerespecies";
     public final static String GET_EMPLOYEE_ITINERARIES_REQUEST_URL = "obteneritinerarios";
     public final static String ADD_EMPLOYEE_SPECIES_REQUEST_URL = "agregarespecies";
