@@ -205,7 +205,7 @@
             //CONFIRM DELETE PANEL
             deleteBtns.forEach(function (btn) {
                 btn.addEventListener('click', function () {
-                    const id = extractEmployeeId(btn.id);
+                    const id = extractId(btn.id);
                     delete_form.action = "/eliminar_empleado";
                     delete_id.value = id;
                     container.classList.remove('hidden');
@@ -218,7 +218,7 @@
             //EMPLOYEE PANEL
             panelBtns.forEach(function (btn) {
                 btn.addEventListener('click', function () {
-                    const id = extractEmployeeId(btn.id);
+                    const id = extractId(btn.id);
                     const panel = document.getElementById('employeePanel-' + id);
                     const panels = Array.from(document.getElementsByName('employee_panel'));
                     panels.forEach(function (p) {
@@ -230,13 +230,13 @@
             });
             closePanelBtns.forEach(function (btn) {
                 btn.addEventListener('click', function () {
-                    const id = extractEmployeeId(btn.id);
+                    const id = extractId(btn.id);
                     const panel = document.getElementById('employeePanel-' + id);
                     panel.classList.add('hidden');
                 });
             });
 
-            function extractEmployeeId(id) {
+            function extractId(id) {
                 return id.substring(id.indexOf("-") + 1, id.length);
             }
         </script>
