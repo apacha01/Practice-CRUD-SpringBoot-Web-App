@@ -13,6 +13,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Asignar Itinerarios</title>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/table.css"/>
+        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/button.css"/>
+        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/form.css"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/style.css"/>
     </head>
     <body>
@@ -20,7 +22,7 @@
         <h3 style="color: cornflowerblue;">
             (Aclaración: si un itinerario está asignado no se puede asignar otra vez.)
         </h3>
-        <form onsubmit="return reviewItineraries();" method="post">
+        <form onsubmit="return reviewItineraries();" method="post"  class="assign_form">
             <table class="table">
                 <thead>
                     <tr>
@@ -102,7 +104,7 @@
                     </c:forEach>
                 </tbody>
             </table>
-            <input type="submit"/>
+            <input class="simple-button gray-button" type="submit"/>
         </form>
         <script>
             function reviewItineraries() {

@@ -13,12 +13,14 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Asignar Especies</title>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/table.css"/>
+        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/button.css"/>
+        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/form.css"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/style.css"/>
     </head>
     <body>
         <h1>Las especies de ${name} están tildadas. 
             Tilde las que desee agregar o destilde las que desee quitarle:</h1>
-        <form onsubmit="return reviewSpecies();" method="post">
+        <form onsubmit="return reviewSpecies();" method="post" class="assign_form">
             <table class="table">
                 <thead>
                     <tr>
@@ -80,7 +82,7 @@
                     </c:forEach>
                 </tbody>
             </table>
-            <input type="submit"/>
+            <input class="simple-button gray-button" type="submit"/>
         </form>
         <script>
             function reviewSpecies() {

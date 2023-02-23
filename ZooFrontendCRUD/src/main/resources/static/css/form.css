@@ -1,10 +1,15 @@
-.create_form , .login_form{
+.create_form , .login_form, .assign_form{
     display: flex;
     width: 80%;
     margin-left: 10%;
     flex-direction: column;
     gap: 24px;
     align-items: center;
+}
+
+.assign_form{
+    width: 90%;
+    margin-left: 5%;
 }
 
 .form_input {
