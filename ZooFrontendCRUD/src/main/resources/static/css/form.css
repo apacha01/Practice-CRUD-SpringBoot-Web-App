@@ -25,3 +25,8 @@
 .form_button:hover {
     cursor: pointer;
 }
+
+.form_textarea{
+    width: 350px;
+    height: 300px;
+}

@@ -27,6 +27,7 @@ import p2.zoofrontendcrud.auxiliar.Constants;
 import p2.zoofrontendcrud.auxiliar.TYPE_ENUM;
 import p2.zoofrontendcrud.entities.Employee;
 import p2.zoofrontendcrud.entities.Species;
+import p2.zoofrontendcrud.entities.Zone;
 
 /**
  *
@@ -75,6 +76,31 @@ public class SpeciesController {
         return Constants.SPECIES_VIEWS + "species";
     }
 
+    @GetMapping("/crear_especie")
+    public String createSpeciesPage(Model m){
+        RestTemplate rt = new RestTemplate();
+        List<Zone> zones = null;
+        
+        try {
+            zones = rt.getForObject(Constants.PREFIX_REQUEST_URL
+                    + Constants.ZONE_REQUEST_URL
+                    + Constants.GET_ALL_REQUEST_URL,
+                    List.class);
+        } catch (RestClientException ex) {
+            m.addAttribute("exception", ex.toString());
+            return "error";
+        }
+        
+        m.addAttribute("zones", zones);
+        
+        return Constants.SPECIES_VIEWS + "create_species";
+    }
+    
+    @PostMapping("/crear_especie")
+    public String createSpecies(Model m){
+        return "operation_done";
+    }
+    
     @GetMapping("/{id}/asignarcuidadores")
     public String assignKeeperPage(Model m, @PathVariable("id") Integer id) {
         RestTemplate rt = new RestTemplate();
