@@ -7,12 +7,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" session="true"%>
 <c:import url="../sessionCheck.jsp"></c:import>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Especies</title>
-        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/table.css"/>
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <title>Especies</title>
+            <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/table.css"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/button.css"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/style.css"/>
     </head>
@@ -48,18 +48,14 @@
                             <td class="td">${sp.description}</td>
                             <td class="td">${sp.zone.name}</td>
                             <td class="td">
-                                <p>
-                                    <c:forEach var="habitat" items="${sp.habitats}" >
-                                        ${habitat.name} 
-                                    </c:forEach>
-                                </p>
+                                <c:forEach var="habitat" items="${sp.habitats}" >
+                                    <p>${habitat.name}</p>
+                                </c:forEach>
                             </td>
                             <td class="td">
-                                <p>
-                                    <c:forEach var="keeper" items="${speciesKeepers[sp.id]}" >
-                                        ${keeper.name} 
-                                    </c:forEach>
-                                </p>
+                                <c:forEach var="keeper" items="${speciesKeepers[sp.id]}" >
+                                    <p>${keeper.name}</p>
+                                </c:forEach>
                             </td>
                             <td class="td">
                                 <ul class="table__button-control">
