@@ -5,8 +5,8 @@
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page import="p2.zoofrontendcrud.auxiliar.TYPE_ENUM"%>
 <%@page contentType="text/html" pageEncoding="UTF-8" session="true"%>
+<c:import url="../sessionCheck.jsp"></c:import>
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,14 +17,6 @@
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/style.css"/>
     </head>
     <body>
-        <%
-            HttpSession _session = request.getSession();
-
-            if (_session.getAttribute("employeeUserName") == null || _session.getAttribute("employeeType") == null
-                    || _session.getAttribute("employeeType") != TYPE_ENUM.ADMIN) {
-                out.print("<script>location.replace('/login');</script>");
-            }
-        %>
         <h1>Especies</h1>
         <h2>${errorMsg}</h2>
         <main class="employees-container">
@@ -42,7 +34,7 @@
                             <a
                                 href="/crear_especie"
                                 class="simple-button simple-button--add">
-                                Nuevo Empleado
+                                Nueva Especie
                             </a>
                         </th>
                     </tr>
@@ -89,7 +81,7 @@
                                     </div>
                                     <li class="row-button">
                                         <a
-                                            href="/${sp.id}/asignarcuidador"
+                                            href="/${sp.id}/asignarcuidadores"
                                             class="simple-button UDbutton">
                                             Asignar/Remover Cuidador
                                         </a>
