@@ -47,7 +47,7 @@ public class EmployeeController {
                     HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<List<Employee>>() {
             }).getBody();
         } catch (RestClientException ex) {
-            m.addAttribute("excepcion", ex.toString());
+            m.addAttribute("exception", ex.toString());
             return "error";
         }
 
@@ -80,7 +80,7 @@ public class EmployeeController {
                             + Constants.GET_EMPLOYEE_ITINERARIES_REQUEST_URL,
                             List.class);
                 } catch (RestClientException ex) {
-                    m.addAttribute("excepcion", ex.toString());
+                    m.addAttribute("exception", ex.toString());
                     return "error";
                 }
                 guidesItineraries.put(employee.getId(), s);
@@ -104,7 +104,7 @@ public class EmployeeController {
                     + Constants.DELETE_BY_ID_REQUEST_URL
                     + id);
         } catch (RestClientException ex) {
-            m.addAttribute("excepcion", ex.toString());
+            m.addAttribute("exception", ex.toString());
             return "error";
         }
         return "operation_done";
