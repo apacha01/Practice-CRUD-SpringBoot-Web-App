@@ -29,4 +29,7 @@ public interface SpeciesRepository extends JpaRepository<Species, Integer>{
     @Override
     @Query("SELECT s FROM Species s LEFT JOIN FETCH s.habitats WHERE s.id = :id")
     public Optional<Species> findById(@Param("id") Integer id);
+    
+    @Query("SELECT s FROM Species s WHERE s.zone.id = :zoneId")
+    public List<Species> findByZoneId(@Param("zoneId") Integer id);
 }

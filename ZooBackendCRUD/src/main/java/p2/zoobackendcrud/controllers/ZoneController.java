@@ -74,6 +74,11 @@ public class ZoneController {
         }
     }
     
+    @GetMapping("/{id}/obtenerespecies")
+    public List<Species> getZoneSpecies(@PathVariable("id") Integer zoneId){
+        return spRepo.findByZoneId(zoneId);
+    }
+    
     @PutMapping("/modificarporid/{id}")
     public ResponseEntity<Zone> updateZoneById(@PathVariable("id") Integer zoneId, @RequestBody Zone z){
         return znRepo.findById(zoneId)
