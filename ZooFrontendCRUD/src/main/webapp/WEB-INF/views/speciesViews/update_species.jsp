@@ -18,9 +18,9 @@
     </head>
     <body>
         <h1>Ingrese los datos de la especie</h1>
-        <form method="post" action="/crear_especie" class="create_form">
+        <form method="post" action="/editar_especie/${s.id}" class="create_form">
             <input class="form_input" type="text" name="name" placeholder="Nombre" value="${s.name}" required>
-            <input class="form_input" 
+            <input class="form_input"
                    type="text" 
                    name="scientificName"
                    placeholder="Nombre Cientifico" 
@@ -30,13 +30,13 @@
                       name="description" 
                       placeholder="Descripcion" 
                       required>${s.description}</textarea>
-            <select class="form_input" name="zone">
+            <select class="form_input" name="zoneName">
                 <c:forEach var="zone" items="${zones}">
                     <c:choose>
                         <c:when test="${zone.id == s.zone.id}">
-                            <option selected="selected">${zone.name}</option>
+                            <option selected="selected">${zone.name} (id=${zone.id})</option>
                         </c:when>
-                        <c:otherwise><option>${zone.name}</option></c:otherwise>
+                        <c:otherwise><option>${zone.name} (id=${zone.id})</option></c:otherwise>
                     </c:choose>
                 </c:forEach>
             </select>

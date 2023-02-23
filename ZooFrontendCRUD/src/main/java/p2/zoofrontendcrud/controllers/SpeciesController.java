@@ -9,8 +9,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import javax.servlet.http.HttpSession;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -186,7 +184,61 @@ public class SpeciesController {
     }
     
     @PostMapping("/editar_especie/{id}")
-    public String updateSpecies(Model m){
+    public String updateSpecies(Model m,
+            @PathVariable("id") Integer id,
+            @RequestParam String name,
+            @RequestParam String scientificName,
+            @RequestParam String description,
+            @RequestParam String zoneName){
+        
+        RestTemplate rt = new RestTemplate();
+        ResponseEntity<Zone> z = null;
+        ResponseEntity<Species> s = null;
+        
+        Integer zId = Integer.parseInt(zoneName.substring(zoneName.indexOf('=') + 1, zoneName.length() - 1));
+        
+        try {
+            List<Species> sps;
+            List<Employee> e;
+                        
+            z = rt.getForEntity(Constants.PREFIX_REQUEST_URL
+                    + Constants.ZONE_REQUEST_URL
+                    + Constants.GET_BY_ID_REQUEST_URL
+                    + zId,
+                    Zone.class);
+
+            sps = rt.getForObject(Constants.PREFIX_REQUEST_URL
+                    + Constants.ZONE_REQUEST_URL
+                    + zId + "/"
+                    + Constants.GET_SPECIES_REQUEST_URL,
+                    List.class);
+
+            Zone zn = z.getBody();
+            zn.setSpecies(new HashSet(sps));
+            
+            HttpEntity<Species> request = new HttpEntity(new Species(name, scientificName, description, zn));
+            
+            s = rt.exchange(Constants.PREFIX_REQUEST_URL
+                    + Constants.SPECIES_REQUEST_URL
+                    + Constants.UPDATE_BY_ID_REQUEST_URL
+                    + id,
+                    HttpMethod.PUT,
+                    request,
+                    Species.class);
+                    
+        } catch (RestClientException ex) {
+            m.addAttribute("exception", ex.toString());
+            return "error";
+        }
+        
+        if (s == null) {
+            m.addAttribute("errorMsg", "Esa especie no se puede crear, revise que todos los campos esten completos.");
+            return "error";
+        }
+        
+        if(s.getBody() != null)
+            m.addAttribute("msgs", List.of(s.getBody().toString()));
+        
         return "operation_done";
     }
     
