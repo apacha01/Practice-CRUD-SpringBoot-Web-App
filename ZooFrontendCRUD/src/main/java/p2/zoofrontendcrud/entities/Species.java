@@ -24,4 +24,11 @@ public class Species {
     private Zone zone;
     Set<SpeciesKeeper> species_keepers;
     Set<Habitat> habitats;
+
+    public Species(String name, String scientific_name, String description, Zone zone) {
+        this.name = name;
+        this.scientific_name = scientific_name;
+        this.description = description;
+        this.zone = zone;
+    }
 }

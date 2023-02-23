@@ -22,9 +22,9 @@
             <input class="form_input" type="text" name="name" placeholder="Nombre" required>
             <input class="form_input" type="text" name="scientificName" placeholder="Nombre Cientifico" required>
             <textarea class="form_textarea" type="text" name="description" placeholder="Descripcion" required></textarea>
-            <select class="form_input" name="zone">
+            <select class="form_input" name="zoneName">
                 <c:forEach var="zone" items="${zones}">
-                    <option>${zone.name}</option>
+                    <option>${zone.name} (id=${zone.id})</option>
                 </c:forEach>
             </select>
             <input class="form_button" type="submit">

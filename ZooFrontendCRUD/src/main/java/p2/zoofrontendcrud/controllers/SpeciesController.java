@@ -6,6 +6,7 @@ package p2.zoofrontendcrud.controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -97,7 +98,57 @@ public class SpeciesController {
     }
     
     @PostMapping("/crear_especie")
-    public String createSpecies(Model m){
+    public String createSpecies(Model m,
+            @RequestParam String name,
+            @RequestParam String scientificName,
+            @RequestParam String description,
+            @RequestParam String zoneName){
+        
+        RestTemplate rt = new RestTemplate();
+        ResponseEntity<Zone> z = null;
+        Species s = null;
+        
+        String zId = zoneName.substring(zoneName.indexOf('=') + 1, zoneName.length() - 1);
+        
+        try {
+            List<Species> sps;
+            
+            z = rt.getForEntity(Constants.PREFIX_REQUEST_URL
+                    + Constants.ZONE_REQUEST_URL
+                    + Constants.GET_BY_ID_REQUEST_URL
+                    + zId,
+                    Zone.class);
+            
+            sps = rt.getForObject(Constants.PREFIX_REQUEST_URL
+                    + Constants.ZONE_REQUEST_URL
+                    + zId + "/"
+                    + Constants.GET_SPECIES_REQUEST_URL,
+                    List.class);
+            
+            z.getBody().setSpecies(new HashSet(sps));
+            
+            HttpEntity<Species> request = new HttpEntity(
+                    new Species(name, scientificName, description, z.getBody())
+            );
+                    
+            s = rt.postForObject(Constants.PREFIX_REQUEST_URL
+                    + Constants.SPECIES_REQUEST_URL
+                    + Constants.CREATE_REQUEST_URL,
+                    request,
+                    Species.class);
+                    
+        } catch (RestClientException ex) {
+            m.addAttribute("exception", ex.toString());
+            return "error";
+        }
+        
+        if (s == null) {
+            m.addAttribute("errorMsg", "Esa especie no se puede crear, revise que todos los campos esten completos.");
+            return "error";
+        }
+        
+        m.addAttribute("msgs", List.of(s.toString()));
+        
         return "operation_done";
     }
     
@@ -132,6 +183,11 @@ public class SpeciesController {
         m.addAttribute("zones", zones);
         
         return Constants.SPECIES_VIEWS + "update_species";
+    }
+    
+    @PostMapping("/editar_especie/{id}")
+    public String updateSpecies(Model m){
+        return "operation_done";
     }
     
     @GetMapping("/{id}/asignarcuidadores")
