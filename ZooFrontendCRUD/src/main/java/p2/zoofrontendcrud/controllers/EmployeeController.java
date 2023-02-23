@@ -64,7 +64,7 @@ public class EmployeeController {
                     s = rt.getForObject(Constants.PREFIX_REQUEST_URL
                             + Constants.EMPLOYEE_REQUEST_URL
                             + employee.getId() + "/"
-                            + Constants.GET_EMPLOYEE_SPECIES_REQUEST_URL,
+                            + Constants.GET_SPECIES_REQUEST_URL,
                             List.class);
                 } catch (RestClientException ex) {
                     m.addAttribute("excepcion", ex.toString());
@@ -287,7 +287,7 @@ public class EmployeeController {
             s = rt.getForObject(Constants.PREFIX_REQUEST_URL
                     + Constants.EMPLOYEE_REQUEST_URL
                     + id + "/"
-                    + Constants.GET_EMPLOYEE_SPECIES_REQUEST_URL,
+                    + Constants.GET_SPECIES_REQUEST_URL,
                     List.class);
         } catch (RestClientException ex) {
             m.addAttribute("exception", ex.toString());
