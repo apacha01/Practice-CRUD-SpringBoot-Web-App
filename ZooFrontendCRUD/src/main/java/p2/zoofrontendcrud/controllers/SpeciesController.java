@@ -101,6 +101,39 @@ public class SpeciesController {
         return "operation_done";
     }
     
+    @GetMapping("/editar_especie/{id}")
+    public String updateSpeciesPage(Model m, @PathVariable("id") Integer id){
+        RestTemplate rt = new RestTemplate();
+        ResponseEntity<Species> s = null;
+        List<Zone> zones = null;
+        
+        try {
+            zones = rt.getForObject(Constants.PREFIX_REQUEST_URL
+                    + Constants.ZONE_REQUEST_URL
+                    + Constants.GET_ALL_REQUEST_URL,
+                    List.class);
+            
+            s = rt.getForEntity(Constants.PREFIX_REQUEST_URL
+                    + Constants.SPECIES_REQUEST_URL
+                    + Constants.GET_BY_ID_REQUEST_URL
+                    + id,
+                    Species.class);
+        } catch (RestClientException ex) {
+            m.addAttribute("exception", ex.toString());
+            return "error";
+        }
+        
+        if(s == null || s.getStatusCode() == HttpStatus.NOT_FOUND) {
+            m.addAttribute("errorMsg", "No se encontro esa especie.");
+            return "error";
+        }
+        
+        m.addAttribute("s", s.getBody());
+        m.addAttribute("zones", zones);
+        
+        return Constants.SPECIES_VIEWS + "update_species";
+    }
+    
     @GetMapping("/{id}/asignarcuidadores")
     public String assignKeeperPage(Model m, @PathVariable("id") Integer id) {
         RestTemplate rt = new RestTemplate();
