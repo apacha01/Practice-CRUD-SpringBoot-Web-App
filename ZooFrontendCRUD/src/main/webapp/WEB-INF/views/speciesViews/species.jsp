@@ -107,7 +107,7 @@
         </div>
         <script>
             //CONFIRM DELETE CONSTS
-            const deleteBtns = Array.from(document.getElementsByName('delete_employee'));
+            const deleteBtns = Array.from(document.getElementsByName('delete_species'));
             const container = document.getElementById('confirm_delete');
             const btn_cancel = document.getElementById('cancel_delete');
             const delete_form = document.getElementById('delete_form');
