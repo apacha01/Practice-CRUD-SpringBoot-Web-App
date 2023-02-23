@@ -290,6 +290,21 @@ public class SpeciesController {
         return Constants.SPECIES_VIEWS + "assignKeepers";
     }
     
+    @PostMapping("/eliminar_especie")
+    public String deleteSpecies(Model m, @RequestParam Integer id){
+        RestTemplate rt = new RestTemplate();
+        try {
+            rt.delete(Constants.PREFIX_REQUEST_URL
+                    + Constants.SPECIES_REQUEST_URL
+                    + Constants.DELETE_BY_ID_REQUEST_URL
+                    + id);
+        } catch (RestClientException ex) {
+            m.addAttribute("exception", ex.toString());
+            return "error";
+        }
+        return "operation_done";
+    }
+    
     @PostMapping("/{id}/asignarcuidadores")
     public String assignKeeper(Model m,
             @PathVariable("id") Integer id,
