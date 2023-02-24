@@ -19,7 +19,7 @@
     <body>
         <h1>Especies</h1>
         <h2>${errorMsg}</h2>
-        <main class="employees-container">
+        <main class="container">
             <table class="table">
                 <thead>
                     <tr>

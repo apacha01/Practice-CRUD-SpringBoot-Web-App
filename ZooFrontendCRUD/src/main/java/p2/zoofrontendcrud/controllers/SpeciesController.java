@@ -199,7 +199,6 @@ public class SpeciesController {
         
         try {
             List<Species> sps;
-            List<Employee> e;
                         
             z = rt.getForEntity(Constants.PREFIX_REQUEST_URL
                     + Constants.ZONE_REQUEST_URL

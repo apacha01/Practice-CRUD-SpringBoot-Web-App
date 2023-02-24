@@ -20,7 +20,7 @@
     <body>
         <h1>Empleados</h1>
         <h2>${errorMsg}</h2>
-        <main class="employees-container">
+        <main class="container">
             <table class="table">
                 <thead>
                     <tr>
