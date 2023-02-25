@@ -24,11 +24,11 @@ public class Itinerary{
     private Integer id;
     private String code;
     private Time duration;
-    private Double routeLength;
-    private Integer maxPeople;
-    private Integer numSpeciesVisited;
+    private Double route_length;
+    private Integer max_people;
+    private Integer num_species_visited;
     private Boolean assigned;
-    Set<Zone> coveredZones;
-    Set<GuideItinerary> guidesItineraries;
+    Set<Zone> covered_zones;
+    Set<GuideItinerary> guides_itineraries;
     
 }

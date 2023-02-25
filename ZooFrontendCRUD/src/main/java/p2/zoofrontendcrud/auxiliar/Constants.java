@@ -18,6 +18,8 @@ public class Constants {
     public final static String ZONE_VIEWS = "zoneViews/";
     //Zones
     public final static String HABITAT_VIEWS = "habitatViews/";
+    //Itinerary
+    public final static String ITINERARY_VIEWS = "itineraryViews/";
     
     //Common requests path for backend controllers
     public final static String PREFIX_REQUEST_URL = "http://localhost:8080/";
@@ -47,6 +49,7 @@ public class Constants {
     
     //Backend Requests Paths for p2.zoobackendcrud.controllers.ItineraryController
     public final static String ITINERARIES_REQUEST_URL = "itinerario/";
+    public final static String GET_ITINERARY_GUIDE_REQUEST_URL = "obtenerguia";
     
     //Backend Requests Paths for p2.zoobackendcrud.controllers.ZoneController
     public final static String ZONE_REQUEST_URL = "zona/";

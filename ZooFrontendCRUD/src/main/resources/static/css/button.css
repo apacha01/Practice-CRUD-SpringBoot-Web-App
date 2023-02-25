@@ -84,7 +84,7 @@
     justify-content: space-around;
 }
 
-.UDbutton, .UDbutton-big{
+.UDbutton, .UDbutton-medium, .UDbutton-big{
     width: 100%;
     background-color: #4d4d4d;
     font-size: 12px;
@@ -92,4 +92,8 @@
 
 .UDbutton-big, .bigger-button {
     font-size: 16px;
+}
+
+.UDbutton-medium{
+    font-size: 14px;
 }
