@@ -89,16 +89,14 @@ public class ItineraryController {
         }
     }
     
-    @GetMapping("/{id}/obtenerguias")
-    public List<Employee> getGuides(@PathVariable("id") Integer id) {
+    @GetMapping("/{id}/obtenerguia")
+    public Employee getGuides(@PathVariable("id") Integer id) {
         
-        List<GuideItinerary> gds = giRepo.findByItineraryId(id);
-        List<Employee> e = new ArrayList<>();
-        for (GuideItinerary gd : gds) {
-            e.add(gd.getGuide());
-        }
+        GuideItinerary gd = giRepo.findByItineraryId(id);
         
-        return e;
+        if (gd == null)
+            return null;
+        else return gd.getGuide();
     }
     
     @PutMapping("/modificarporid/{id}")

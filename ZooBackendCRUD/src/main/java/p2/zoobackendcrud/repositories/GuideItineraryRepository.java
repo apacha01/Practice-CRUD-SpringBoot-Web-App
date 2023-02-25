@@ -22,7 +22,7 @@ public interface GuideItineraryRepository extends JpaRepository<GuideItinerary, 
     List<GuideItinerary> findByEmployeeId(@Param("idEmployee") Integer idEmployee);
     
     @Query("SELECT g FROM GuideItinerary g JOIN FETCH g.guide WHERE g.itinerary.id = :idItinerary")
-    List<GuideItinerary> findByItineraryId(@Param("idItinerary") Integer idItinerary);
+    GuideItinerary findByItineraryId(@Param("idItinerary") Integer idItinerary);
     
     @Query("SELECT g FROM GuideItinerary g WHERE g.itinerary.id = :idItinerary AND g.guide.id = :idEmployee")
     GuideItinerary findByIds(@Param("idItinerary") Integer idItn, @Param("idEmployee") Integer idEmp);
