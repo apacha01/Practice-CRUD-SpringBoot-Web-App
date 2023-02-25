@@ -1,6 +1,6 @@
 <%-- 
-    Document   : zones
-    Created on : 24 feb 2023, 8:45:12
+    Document   : habitats
+    Created on : 25 feb 2023, 10:02:05
     Author     : Agustín Pacheco
 --%>
 
@@ -11,13 +11,13 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Zonas</title>
+        <title>Habitats</title>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/table.css"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/button.css"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/style.css"/>
     </head>
     <body>
-        <h1>Zonas</h1>
+        <h1>Habitats</h1>
         <h2>${errorMsg}</h2>
         <main class="container">
             <table class="table">
@@ -25,51 +25,53 @@
                     <tr>
                         <th class="table__column--es">ID</th>
                         <th class="table__column--s">Nombre</th>
-                        <th class="table__column--s">Extension</th>
-                        <th class="table__column--s">Especies</th>
+                        <th class="table__column--s">Clima</th>
+                        <th class="table__column--s">Vegetacion</th>
+                        <th class="table__column--s">Continentes donde se encuentra</th>
                         <th class="table__column--m table__align--center">
                             <a
-                                href="/crear_zona"
+                                href="/crear_habitat"
                                 class="simple-button simple-button--add">
-                                Nueva Zona
+                                Nuevo Habitat
                             </a>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="z" items="${zones}">
+                    <c:forEach var="h" items="${habitats}">
                         <tr>
-                            <td class="td">${z.id}</td>
-                            <td class="td">${z.name}</td>
-                            <td class="td">${z.extension}</td>
+                            <td class="td">${h.id}</td>
+                            <td class="td">${h.name}</td>
+                            <td class="td">${h.weather}</td>
+                            <td class="td">${h.vegetation}</td>
                             <td class="td">
-                                <c:forEach var="species" items="${z.species}" >
-                                    <p>${species.name}</p>
+                                <c:forEach var="continent" items="${h.continents}" >
+                                    <p>${continent.name}</p>
                                 </c:forEach>
                             </td>
                             <td class="td">
                                 <ul class="table__button-control">
-                                    <div class="UDops-zone-button-container">
+                                    <div class="UDops-habitat-button-container">
                                         <li>
                                             <a
-                                                href="/editar_zona/${z.id}"
+                                                href="/editar_habitat/${h.id}"
                                                 class="simple-button simple-button--edit bigger-button">
                                                 Editar
                                             </a>
                                         </li>
                                         <li>
                                             <button class="simple-button simple-button--delete bigger-button"
-                                                    id="delete-${z.id}"
-                                                    name="delete_zones">
+                                                    id="delete-${h.id}"
+                                                    name="delete_habitats">
                                                 Eliminar
                                             </button>
                                         </li>
                                     </div>
                                     <li class="row-button">
                                         <a
-                                            href="/${z.id}/asignarespecies"
+                                            href="/${h.id}/asignarcontinentes"
                                             class="simple-button UDbutton-big">
-                                            Asignar/Remover Especies
+                                            Asignar/Remover Continentes
                                         </a>
                                     </li>
                                 </ul>
@@ -93,7 +95,7 @@
         </div>
         <script>
             //CONFIRM DELETE CONSTS
-            const deleteBtns = Array.from(document.getElementsByName('delete_zones'));
+            const deleteBtns = Array.from(document.getElementsByName('delete_habitats'));
             const container = document.getElementById('confirm_delete');
             const btn_cancel = document.getElementById('cancel_delete');
             const delete_form = document.getElementById('delete_form');
@@ -103,7 +105,7 @@
             deleteBtns.forEach(function (btn) {
                 btn.addEventListener('click', function () {
                     const id = extractId(btn.id);
-                    delete_form.action = "/eliminar_zona";
+                    delete_form.action = "/eliminar_habitat";
                     delete_id.value = id;
                     container.classList.remove('hidden');
                 });

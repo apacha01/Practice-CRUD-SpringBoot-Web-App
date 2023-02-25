@@ -66,16 +66,22 @@
     margin: 0;
 }
 
-.UDops-button-container, .UDops-bigger-button-container{
+.UDops-button-container, .UDops-zone-button-container,
+.UDops-habitat-button-container{
     display: flex;
     align-items: center;
     gap: 25px;
 }
 
-.UDops-bigger-button-container{
+.UDops-zone-button-container{
     width: 100%;
     justify-content: space-evenly;
     gap: 0;
+}
+
+.UDops-habitat-button-container{
+    width: 100%;
+    justify-content: space-around;
 }
 
 .UDbutton, .UDbutton-big{

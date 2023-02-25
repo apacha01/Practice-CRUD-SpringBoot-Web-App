@@ -16,6 +16,8 @@ public class Constants {
     public final static String SPECIES_VIEWS = "speciesViews/";
     //Zones
     public final static String ZONE_VIEWS = "zoneViews/";
+    //Zones
+    public final static String HABITAT_VIEWS = "habitatViews/";
     
     //Common requests path for backend controllers
     public final static String PREFIX_REQUEST_URL = "http://localhost:8080/";
@@ -48,4 +50,7 @@ public class Constants {
     
     //Backend Requests Paths for p2.zoobackendcrud.controllers.ZoneController
     public final static String ZONE_REQUEST_URL = "zona/";
+    
+    //Backend Requests Paths for p2.zoobackendcrud.controllers.HabitatController
+    public final static String HABITAT_REQUEST_URL = "habitat/";
 }
