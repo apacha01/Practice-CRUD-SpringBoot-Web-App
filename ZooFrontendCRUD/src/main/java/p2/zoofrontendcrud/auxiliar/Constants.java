@@ -14,6 +14,8 @@ public class Constants {
     public final static String EMPLOYEE_VIEWS = "employeeViews/";
     //Species
     public final static String SPECIES_VIEWS = "speciesViews/";
+    //Zones
+    public final static String ZONE_VIEWS = "zoneViews/";
     
     //Common requests path for backend controllers
     public final static String PREFIX_REQUEST_URL = "http://localhost:8080/";

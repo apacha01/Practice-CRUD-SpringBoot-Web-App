@@ -32,7 +32,7 @@
                         <th class="table__column--s">Telefono</th>
                         <th class="table__column--s">Dia de alta</th>
                         <th class="table__column--s">A cargo de</th>
-                        <th class="table__column--m table__align--right">
+                        <th class="table__column--m table__align--center">
                             <a
                                 href="/crear_empleado"
                                 class="simple-button simple-button--add">

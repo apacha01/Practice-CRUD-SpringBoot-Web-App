@@ -66,14 +66,24 @@
     margin: 0;
 }
 
-.UDops-button-container{
+.UDops-button-container, .UDops-bigger-button-container{
     display: flex;
     align-items: center;
     gap: 25px;
 }
 
-.UDbutton{
+.UDops-bigger-button-container{
+    width: 100%;
+    justify-content: space-evenly;
+    gap: 0;
+}
+
+.UDbutton, .UDbutton-big{
     width: 100%;
     background-color: #4d4d4d;
     font-size: 12px;
+}
+
+.UDbutton-big, .bigger-button {
+    font-size: 16px;
 }

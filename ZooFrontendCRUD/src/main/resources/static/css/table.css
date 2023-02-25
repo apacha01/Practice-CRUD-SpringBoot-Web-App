@@ -42,8 +42,8 @@
     padding-bottom: 0.7rem;
 }
 
-.table__align--right {
-    text-align: right;
+.table__align--center {
+    text-align: center;
 }
 
 .table__column--es {
