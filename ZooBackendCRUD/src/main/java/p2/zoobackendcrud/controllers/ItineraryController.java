@@ -89,6 +89,18 @@ public class ItineraryController {
         }
     }
     
+    @GetMapping("/{id}/obtenerguias")
+    public List<Employee> getGuides(@PathVariable("id") Integer id) {
+        
+        List<GuideItinerary> gds = giRepo.findByItineraryId(id);
+        List<Employee> e = new ArrayList<>();
+        for (GuideItinerary gd : gds) {
+            e.add(gd.getGuide());
+        }
+        
+        return e;
+    }
+    
     @PutMapping("/modificarporid/{id}")
     public ResponseEntity<Itinerary> updateItineraryById(@PathVariable("id") Integer itineraryId, @RequestBody Itinerary i){
         return itRepo.findById(itineraryId)
