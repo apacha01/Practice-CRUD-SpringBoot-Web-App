@@ -97,3 +97,9 @@
 .UDbutton-medium{
     font-size: 14px;
 }
+
+.in-cell_UDbutton{
+    padding: 7px;
+    text-align: center;
+    margin-top: 5px;
+}

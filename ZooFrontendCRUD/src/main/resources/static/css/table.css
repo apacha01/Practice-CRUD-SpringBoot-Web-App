@@ -89,3 +89,9 @@ thead tr:first-child{
 .td {
     padding: 1rem;
 }
+
+.cell-button{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

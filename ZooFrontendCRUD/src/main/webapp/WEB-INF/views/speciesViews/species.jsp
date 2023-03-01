@@ -47,14 +47,19 @@
                             <td class="td">${sp.scientific_name}</td>
                             <td class="td">${sp.description}</td>
                             <td class="td">${sp.zone.name}</td>
-                            <td class="td">
+                            <td class="td cell-button">
                                 <c:forEach var="habitat" items="${sp.habitats}" >
-                                    <p>${habitat.name}</p>
+                                    <p class="table__align--center">${habitat.name}</p>
                                 </c:forEach>
+                                <a
+                                    href="/${sp.id}/asignarhabitats"
+                                    class="simple-button UDbutton in-cell_UDbutton">
+                                    Asignar/Remover Habitat
+                                </a>
                             </td>
                             <td class="td">
                                 <c:forEach var="keeper" items="${speciesKeepers[sp.id]}" >
-                                    <p>${keeper.name}</p>
+                                    <p class="table__align--center">${keeper.name}</p>
                                 </c:forEach>
                             </td>
                             <td class="td">
