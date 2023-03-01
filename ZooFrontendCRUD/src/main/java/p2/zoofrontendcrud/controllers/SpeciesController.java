@@ -25,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 import p2.zoofrontendcrud.auxiliar.Constants;
 import p2.zoofrontendcrud.auxiliar.TYPE_ENUM;
 import p2.zoofrontendcrud.entities.Employee;
+import p2.zoofrontendcrud.entities.Habitat;
 import p2.zoofrontendcrud.entities.Species;
 import p2.zoofrontendcrud.entities.Zone;
 
@@ -368,5 +369,44 @@ public class SpeciesController {
         
         m.addAttribute("msgs", msgs);
         return "operation_done";
+    }
+    
+    @GetMapping("/{id}/asignarhabitats")
+    public String assignHabitatPage(Model m, @PathVariable("id") Integer id){
+        ResponseEntity<Species> s = null;
+        List<Habitat> speciesHabitats = null;
+        List<Habitat> habitats = null;
+        RestTemplate rt = new RestTemplate();
+        
+        try {
+            s = rt.getForEntity(Constants.PREFIX_REQUEST_URL
+                    + Constants.SPECIES_REQUEST_URL
+                    + Constants.GET_BY_ID_REQUEST_URL
+                    + id,
+                    Species.class);
+            
+            habitats = rt.getForObject(Constants.PREFIX_REQUEST_URL
+                    + Constants.HABITAT_REQUEST_URL
+                    + Constants.GET_ALL_REQUEST_URL,
+                    List.class);
+            
+        } catch (RestClientException ex) {
+            m.addAttribute("exception", ex.toString());
+            return "error";
+        }
+        
+        if (s.getStatusCode() == HttpStatus.NOT_FOUND) {
+            m.addAttribute("errorMsgs", List.of("No existe la especie con el id: " + id));
+            return "error";
+        }
+
+        speciesHabitats = List.copyOf(s.getBody().getHabitats());
+        habitats.removeAll(speciesHabitats);
+        
+        m.addAttribute("name", s.getBody().getName());
+        m.addAttribute("speciesHabitats", speciesHabitats);
+        m.addAttribute("habitats", habitats);
+        
+        return Constants.SPECIES_VIEWS + "assignHabitats";
     }
 }
