@@ -82,7 +82,7 @@
             </table>
         </main>
         <div class="confirm_delete--container hidden" id="confirm_delete">
-            <p class="confirm_delete--txt">¿Esta seguro que desea eliminar esta especie?</p>
+            <p class="confirm_delete--txt">¿Esta seguro que desea eliminar este habitat?</p>
             <div class="button-container">
                 <form method="post" action="/error" id="delete_form">
                     <input class="hidden" type="text" name="id" id="id" required>
