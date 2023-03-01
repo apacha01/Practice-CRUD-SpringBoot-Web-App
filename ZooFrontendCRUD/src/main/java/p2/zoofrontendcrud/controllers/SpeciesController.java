@@ -374,8 +374,8 @@ public class SpeciesController {
     @GetMapping("/{id}/asignarhabitats")
     public String assignHabitatPage(Model m, @PathVariable("id") Integer id){
         ResponseEntity<Species> s = null;
-        List<Habitat> speciesHabitats = null;
-        List<Habitat> habitats = null;
+        List<Habitat> speciesHabitats = new ArrayList<>();
+        List<Habitat> habitats = new ArrayList<>();
         RestTemplate rt = new RestTemplate();
         
         try {
@@ -385,10 +385,13 @@ public class SpeciesController {
                     + id,
                     Species.class);
             
-            habitats = rt.getForObject(Constants.PREFIX_REQUEST_URL
+            habitats = rt.exchange(Constants.PREFIX_REQUEST_URL
                     + Constants.HABITAT_REQUEST_URL
                     + Constants.GET_ALL_REQUEST_URL,
-                    List.class);
+                    HttpMethod.GET,
+                    HttpEntity.EMPTY,
+                    new ParameterizedTypeReference<List<Habitat>>() {
+            }).getBody();
             
         } catch (RestClientException ex) {
             m.addAttribute("exception", ex.toString());
@@ -408,5 +411,19 @@ public class SpeciesController {
         m.addAttribute("habitats", habitats);
         
         return Constants.SPECIES_VIEWS + "assignHabitats";
+    }
+    
+    @PostMapping("/{id}/asignarhabitats")
+    public String assignHabitat(Model m,
+            @PathVariable("id") Integer id,
+            @RequestParam(name = "toBeRemoved", required = false) List<Integer> toBeRemovedIds,
+            @RequestParam(name = "alreadyAssigned", required = false) List<Integer> alreadyAssignedIds,
+            @RequestParam(name = "toBeAssigned", required = false) List<Integer> toBeAssignedIds){
+        
+        m.addAttribute("msgs", List.of( (toBeRemovedIds == null ? "" : toBeRemovedIds.toString()) ,
+                (alreadyAssignedIds == null ? "" : alreadyAssignedIds.toString()),
+                (toBeAssignedIds == null ? "" : toBeAssignedIds.toString()) ));
+                
+        return "operation_done";
     }
 }
