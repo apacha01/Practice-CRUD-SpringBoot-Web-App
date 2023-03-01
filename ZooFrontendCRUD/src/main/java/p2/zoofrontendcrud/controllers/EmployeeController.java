@@ -173,7 +173,6 @@ public class EmployeeController {
             m.addAttribute("errorMsg", "El empleado no se pudo crear, revise que todos los datos hayan sido ingresados.");
             return Constants.EMPLOYEE_VIEWS + "create_employee";
         }
-        m.addAttribute("errorMsg", "Desconocido.");
         return "error";
     }
 
