@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestClientException;
@@ -111,5 +112,79 @@ public class ZoneController {
         }
         
         return "error";
+    }
+    
+    @GetMapping("/editar_zona/{id}")
+    public String updateZonePage(Model m, @PathVariable Integer id){
+        RestTemplate rt = new RestTemplate();
+        ResponseEntity<Zone> z = null;
+
+        try {
+            z = rt.getForEntity(Constants.PREFIX_REQUEST_URL
+                    + Constants.ZONE_REQUEST_URL
+                    + Constants.GET_BY_ID_REQUEST_URL
+                    + id,
+                    Zone.class);
+        } catch (RestClientException ex) {
+            m.addAttribute("exception", ex.toString());
+            return "error";
+        }
+        
+        m.addAttribute("z", z.getBody());
+        
+        return Constants.ZONE_VIEWS + "update_zone";
+    }
+    
+    @PostMapping("/editar_zona/{id}")
+    public String updateZone(Model m, 
+            @PathVariable Integer id, 
+            @RequestParam String name, 
+            @RequestParam String extension){
+        
+        RestTemplate rt = new RestTemplate();
+        ResponseEntity<Zone> z = null;
+        Double newExtension;
+        
+        try{
+            newExtension = Double.parseDouble(extension.replaceAll("\\s", ""));
+        }catch(NumberFormatException ex){
+            m.addAttribute("errorMsg", "ERROR: El numero ingresado no es valido. Recuerde usar el '.' para numeros con coma y no ingrese signos de puntuacion para separar decenas, centenas etc...");
+            return Constants.ZONE_VIEWS + "update_zone";
+        }catch(NullPointerException ex){
+            m.addAttribute("exception", ex.toString());
+            return "error";
+        }
+        
+        if (newExtension <= 0) {
+            m.addAttribute("errorMsg", "ERROR: El numero ingresado no es valido. Debe ser mayor a 0.");
+            return Constants.ZONE_VIEWS + "update_zone";
+        }
+        
+        HttpEntity<Zone> request = new HttpEntity<>(new Zone(name, newExtension));
+        
+        try {
+            z = rt.exchange(Constants.PREFIX_REQUEST_URL
+                    + Constants.ZONE_REQUEST_URL
+                    + Constants.UPDATE_BY_ID_REQUEST_URL
+                    + id,
+                    HttpMethod.PUT,
+                    request,
+                    Zone.class);
+        } catch (RestClientException ex) {
+            m.addAttribute("exception", ex.toString());
+            return "error";
+        }
+        
+        if (z == null) {
+            return "error";
+        }
+        if (z.getStatusCode() == HttpStatus.NOT_FOUND) {
+            m.addAttribute("errorMsg", "Zona con el id '" + id + "' no existe.");
+            return "error";
+        }
+        
+        m.addAttribute("msgs", List.of(z.getBody().toString()));
+        
+        return "operation_done";
     }
 }
