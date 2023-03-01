@@ -46,6 +46,8 @@ public class Constants {
     public final static String GET_SPECIES_KEEPERS_REQUEST_URL = "obtenercuidadores";
     public final static String ADD_SPECIES_KEEPERS_REQUEST_URL = "agregarcuidadores";
     public final static String REMOVE_SPECIES_KEEPERS_REQUEST_URL = "removercuidadores";
+    public final static String ADD_SPECIES_HABITATS_REQUEST_URL = "agregarhabitats";
+    public final static String REMOVE_SPECIES_HABITATS_REQUEST_URL = "removerhabitats";
     
     //Backend Requests Paths for p2.zoobackendcrud.controllers.ItineraryController
     public final static String ITINERARIES_REQUEST_URL = "itinerario/";

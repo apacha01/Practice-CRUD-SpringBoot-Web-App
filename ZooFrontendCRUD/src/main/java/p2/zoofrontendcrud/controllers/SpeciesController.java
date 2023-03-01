@@ -420,10 +420,60 @@ public class SpeciesController {
             @RequestParam(name = "alreadyAssigned", required = false) List<Integer> alreadyAssignedIds,
             @RequestParam(name = "toBeAssigned", required = false) List<Integer> toBeAssignedIds){
         
-        m.addAttribute("msgs", List.of( (toBeRemovedIds == null ? "" : toBeRemovedIds.toString()) ,
-                (alreadyAssignedIds == null ? "" : alreadyAssignedIds.toString()),
-                (toBeAssignedIds == null ? "" : toBeAssignedIds.toString()) ));
-                
+        List<String> msgs = new ArrayList<>();
+        Boolean needRemove = toBeRemovedIds != null;
+        Boolean needAssign = toBeAssignedIds != null;
+        
+        //Requests
+        HttpEntity<List<Integer>> requestRemove = null;
+        HttpEntity<List<Integer>> requestAssign = null;
+        //Responses
+        ResponseEntity<Species> responseRemove = null;
+        ResponseEntity<Species> responseAssign = null;
+        
+        if(needRemove)
+            requestRemove = new HttpEntity<>(toBeRemovedIds);
+        if(needAssign)
+            requestAssign = new HttpEntity<>(toBeAssignedIds);
+
+        RestTemplate rt = new RestTemplate();
+        try {
+            
+            if(requestAssign != null){
+                responseAssign = rt.exchange(Constants.PREFIX_REQUEST_URL
+                        + Constants.SPECIES_REQUEST_URL
+                        + id + "/"
+                        + Constants.ADD_SPECIES_HABITATS_REQUEST_URL,
+                        HttpMethod.PUT,
+                        requestAssign,
+                        Species.class);
+            }
+            
+            if(requestRemove != null){
+                responseRemove = rt.exchange(Constants.PREFIX_REQUEST_URL
+                        + Constants.SPECIES_REQUEST_URL
+                        + id + "/"
+                        + Constants.REMOVE_SPECIES_HABITATS_REQUEST_URL,
+                        HttpMethod.PUT,
+                        requestRemove,
+                        Species.class);
+            }
+        }
+        catch (RestClientException ex) {
+            m.addAttribute("exception", ex.toString());
+            return "error";
+        }
+
+        if (responseAssign != null) {
+            if (responseAssign.getStatusCode() == HttpStatus.NOT_FOUND)
+                msgs.add("La especie de id " + id + " no se encontro.");
+        }
+        else msgs.add("No se asigno ningun habitat.");
+        
+        if (responseRemove == null)
+            msgs.add("No se removio ningun habitat.");
+        
+        m.addAttribute("msgs", msgs);
         return "operation_done";
     }
 }

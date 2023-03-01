@@ -16,7 +16,7 @@
     <body>
         <h1>¡Operacion realizada con éxito!</h1>
         <c:if test="${not empty msgs}">
-            <p>Aclaraciones/Advertencias:</p>
+            <h4>Aclaraciones/Advertencias:</h4>
             <ul>
                 <c:forEach var="msg" items="${msgs}">
                     <li>
