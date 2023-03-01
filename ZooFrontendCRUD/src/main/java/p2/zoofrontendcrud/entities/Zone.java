@@ -23,4 +23,9 @@ public class Zone {
     private Double extension;
     Set<Itinerary> coveredItineraries;
     Set<Species> species;
+
+    public Zone(String name, Double extension) {
+        this.name = name;
+        this.extension = extension;
+    }
 }

@@ -12,12 +12,12 @@
     margin-left: 5%;
 }
 
-.form_input {
+.form_input, .form_input_large{
     width: 350px;
     height: 20px;
 }
 
-.form_button {
+.form_button, .form_button_large {
     width: 350px;
     height: 30px;
 }
@@ -29,4 +29,8 @@
 .form_textarea{
     width: 350px;
     height: 300px;
+}
+
+.form_input_large, .form_button_large{
+    width: 400px;
 }
