@@ -33,7 +33,7 @@
         <c:when test="${empty request}">
         </c:when>
         <c:otherwise>
-            <p>Request Body: ${request}</p>
+            <p>Request: ${request}</p>
         </c:otherwise>
     </c:choose>
     <%
