@@ -4,7 +4,9 @@
  */
 package p2.zoofrontendcrud.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import p2.zoofrontendcrud.auxiliar.Constants;
+import p2.zoofrontendcrud.entities.Continent;
 import p2.zoofrontendcrud.entities.Habitat;
 
 /**
@@ -163,6 +166,107 @@ public class HabitatController {
             m.addAttribute("exception", ex.toString());
             return "error";
         }
+        return "operation_done";
+    }
+    
+    @GetMapping("/{id}/asignarcontinentes")
+    public String assignContinentsPage(Model m, @PathVariable("id") Integer id){
+        List<Continent> c = null;
+        List<Continent> continents = null;
+        ResponseEntity<Habitat> h = null;
+
+        RestTemplate rt = new RestTemplate();
+        try {
+            h = rt.getForEntity(Constants.PREFIX_REQUEST_URL
+                        + Constants.HABITAT_REQUEST_URL
+                        + Constants.GET_BY_ID_REQUEST_URL
+                        + id,
+                    Habitat.class);
+            continents = rt.exchange(Constants.PREFIX_REQUEST_URL
+                    + Constants.CONTINENT_REQUEST_URL
+                    + Constants.GET_ALL_REQUEST_URL,
+                    HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<List<Continent>>() {
+            }).getBody();
+        } catch (RestClientException ex) {
+            m.addAttribute("exception", ex.toString());
+            return "error";
+        }
+
+        if (continents == null || h == null || h.getBody() == null)
+            return "error";
+        
+        c = new ArrayList<>(h.getBody().getContinents());
+        
+        //remove duplicates
+        continents.removeAll(c);
+        
+        m.addAttribute("name", h.getBody().getName());
+        m.addAttribute("assignedContinents", c);
+        m.addAttribute("continents", continents);
+        return Constants.ASSIGN_VIEWS + "assignContinents";
+    }
+    
+    @PostMapping("/{id}/asignarcontinentes")
+    public String assignContinent(Model m,
+            @PathVariable("id") Integer id,
+            @RequestParam(name = "toBeRemoved", required = false) List<Integer> toBeRemovedIds,
+            @RequestParam(name = "alreadyAssigned", required = false) List<Integer> alreadyAssignedIds,
+            @RequestParam(name = "toBeAssigned", required = false) List<Integer> toBeAssignedIds) {
+
+        List<String> msgs = new ArrayList<>();
+        Boolean needRemove = toBeRemovedIds != null;
+        Boolean needAssign = toBeAssignedIds != null;
+        
+        //Requests
+        HttpEntity<List<Integer>> requestRemove = null;
+        HttpEntity<List<Integer>> requestAssign = null;
+        //Responses
+        ResponseEntity<Habitat> responseRemove = null;
+        ResponseEntity<Habitat> responseAssign = null;
+        
+        if(needRemove)
+            requestRemove = new HttpEntity<>(toBeRemovedIds);
+        if(needAssign)
+            requestAssign = new HttpEntity<>(toBeAssignedIds);
+
+        RestTemplate rt = new RestTemplate();
+        try {
+            
+            if(requestAssign != null){
+                responseAssign = rt.exchange(Constants.PREFIX_REQUEST_URL
+                        + Constants.HABITAT_REQUEST_URL
+                        + id + "/"
+                        + Constants.ADD_HABITAT_CONTINENTS_REQUEST_URL,
+                        HttpMethod.PUT,
+                        requestAssign,
+                        Habitat.class);
+            }
+            
+            if(requestRemove != null){
+                responseRemove = rt.exchange(Constants.PREFIX_REQUEST_URL
+                        + Constants.HABITAT_REQUEST_URL
+                        + id + "/"
+                        + Constants.REMOVE_HABITAT_CONTINENTS_REQUEST_URL,
+                        HttpMethod.PUT,
+                        requestRemove,
+                        Habitat.class);
+            }
+        }
+        catch (RestClientException ex) {
+            m.addAttribute("exception", ex.toString());
+            return "error";
+        }
+
+        if (responseAssign != null){
+            if (responseAssign.getStatusCode() == HttpStatus.NOT_FOUND)
+                msgs.add("El habitat de id " + id + " no se encontro.");
+        }
+        else msgs.add("No se asigno ningun continente.");
+        
+        if (responseRemove == null)
+            msgs.add("No se removio ningun continente.");
+        
+        m.addAttribute("msgs", msgs);
         return "operation_done";
     }
 }

@@ -60,4 +60,9 @@ public class Constants {
     
     //Backend Requests Paths for p2.zoobackendcrud.controllers.HabitatController
     public final static String HABITAT_REQUEST_URL = "habitat/";
+    public final static String ADD_HABITAT_CONTINENTS_REQUEST_URL = "agregarcontinentes";
+    public final static String REMOVE_HABITAT_CONTINENTS_REQUEST_URL = "removercontinentes";
+    
+    //Backend Requests Paths for p2.zoobackendcrud.controllers.ContinentController
+    public final static String CONTINENT_REQUEST_URL = "continente/";
 }
