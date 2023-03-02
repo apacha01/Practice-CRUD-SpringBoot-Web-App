@@ -28,9 +28,6 @@
                         <th class="table__column--s">ID</th>
                         <th class="table__column--s">Nombre</th>
                         <th class="table__column--s">Nombre Cientifico</th>
-                        <th class="table__column--m">Descripcion</th>
-                        <th class="table__column--s">Zona</th>
-                        <th class="table__column--m">Habitats</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,15 +44,6 @@
                             <td class="td">${species.id}</td>
                             <td class="td">${species.name}</td>
                             <td class="td">${species.scientific_name}</td>
-                            <td class="td">${species.description}</td>
-                            <td class="td">${species.zone.name}</td>
-                            <td class="td">
-                                <p>
-                                    <c:forEach var="habitat" items="${species.habitats}" >
-                                        ${habitat.name}
-                                    </c:forEach>
-                                </p>
-                            </td>
                         </tr>
                     </c:forEach>
                     <c:forEach var="species" items="${species}" >
@@ -69,15 +57,6 @@
                             <td class="td">${species.id}</td>
                             <td class="td">${species.name}</td>
                             <td class="td">${species.scientific_name}</td>
-                            <td class="td">${species.description}</td>
-                            <td class="td">${species.zone.name}</td>
-                            <td class="td">
-                                <p>
-                                    <c:forEach var="habitat" items="${species.habitats}" >
-                                        ${habitat.name}
-                                    </c:forEach>
-                                </p>
-                            </td>
                         </tr>
                     </c:forEach>
                 </tbody>

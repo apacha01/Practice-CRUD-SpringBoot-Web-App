@@ -338,7 +338,7 @@ public class EmployeeController {
                 responseAssign = rt.exchange(Constants.PREFIX_REQUEST_URL
                         + Constants.EMPLOYEE_REQUEST_URL
                         + id + "/"
-                        + Constants.ADD_EMPLOYEE_SPECIES_REQUEST_URL,
+                        + Constants.ADD_SPECIES_REQUEST_URL,
                         HttpMethod.PUT,
                         requestAssign,
                         Employee.class);
@@ -348,7 +348,7 @@ public class EmployeeController {
                 responseRemove = rt.exchange(Constants.PREFIX_REQUEST_URL
                         + Constants.EMPLOYEE_REQUEST_URL
                         + id + "/"
-                        + Constants.REMOVE_EMPLOYEE_SPECIES_REQUEST_URL,
+                        + Constants.REMOVE_SPECIES_REQUEST_URL,
                         HttpMethod.PUT,
                         requestRemove,
                         Employee.class);

@@ -32,15 +32,15 @@ public class Constants {
     public final static String DELETE_BY_ID_REQUEST_URL = "borrar/";
     public final static String UPDATE_BY_ID_REQUEST_URL = "modificarporid/";
     public final static String GET_SPECIES_REQUEST_URL = "obtenerespecies";
+    public final static String ADD_SPECIES_REQUEST_URL = "agregarespecies";
+    public final static String REMOVE_SPECIES_REQUEST_URL = "removerespecies";
     
     //Backend Requests Paths for p2.zoobackendcrud.controllers.EmployeeController
     public final static String EMPLOYEE_REQUEST_URL = "empleado/";
     public final static String GET_EMPLOYEE_BY_USERNAME_REQUEST_URL = "obtenerpornombredeusuario/";
     public final static String GET_EMPLOYEE_BY_TYPE_REQUEST_URL = "obtenerportipo/";
     public final static String GET_EMPLOYEE_ITINERARIES_REQUEST_URL = "obteneritinerarios";
-    public final static String ADD_EMPLOYEE_SPECIES_REQUEST_URL = "agregarespecies";
     public final static String ADD_EMPLOYEE_ITINERARIES_REQUEST_URL = "agregaritinerarios";
-    public final static String REMOVE_EMPLOYEE_SPECIES_REQUEST_URL = "removerespecies";
     public final static String REMOVE_EMPLOYEE_ITINERARIES_REQUEST_URL = "removeritinerarios";
     
     //Backend Requests Paths for p2.zoobackendcrud.controllers.SpeciesController
