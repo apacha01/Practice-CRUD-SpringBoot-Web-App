@@ -24,4 +24,10 @@ public class Habitat {
     private String vegetation;
     Set<Species> species;
     Set<Continent> continents;
+
+    public Habitat(String name, String weather, String vegetation) {
+        this.name = name;
+        this.weather = weather;
+        this.vegetation = vegetation;
+    }
 }

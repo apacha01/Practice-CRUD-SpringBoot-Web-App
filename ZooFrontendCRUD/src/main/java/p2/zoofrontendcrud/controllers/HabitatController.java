@@ -5,10 +5,15 @@
 package p2.zoofrontendcrud.controllers;
 
 import java.util.List;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import p2.zoofrontendcrud.auxiliar.Constants;
@@ -41,5 +46,40 @@ public class HabitatController {
         m.addAttribute("habitats", hbs);
 
         return Constants.HABITAT_VIEWS + "habitats";
+    }
+    
+    @GetMapping("/crear_habitat")
+    public String createHabitatPage(Model m){
+        return Constants.HABITAT_VIEWS + "create_habitat";
+    }
+    
+    @PostMapping("/crear_habitat")
+    public String createHabitat(Model m,
+            @RequestParam String name,
+            @RequestParam String weather,
+            @RequestParam String vegetation){
+        
+        HttpEntity<Habitat> request = new HttpEntity<>(new Habitat(name, weather, vegetation));
+        
+        RestTemplate rt = new RestTemplate();
+        ResponseEntity<Habitat> h = null;
+        try {
+            h = rt.postForEntity(Constants.PREFIX_REQUEST_URL
+                    + Constants.HABITAT_REQUEST_URL
+                    + Constants.CREATE_REQUEST_URL,
+                    request,
+                    Habitat.class);
+        } catch (RestClientException ex) {
+            m.addAttribute("request", request);
+            m.addAttribute("exception", ex.toString());
+            return "error";
+        }
+        
+        if (h != null && h.getStatusCode() == HttpStatus.CREATED) {
+            m.addAttribute("msgs", List.of(h.getBody().toString()));
+            return "operation_done";
+        }
+        
+        return "error";
     }
 }
