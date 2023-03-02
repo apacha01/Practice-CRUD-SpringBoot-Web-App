@@ -235,6 +235,9 @@ public class ZoneController {
         if (optZn.isEmpty())
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         else {
+            for (Species zSp : getZoneSpecies(zoneId)) {
+                zSp.setZone(null);
+            }
             znRepo.deleteById(zoneId);
             return new ResponseEntity<>(optZn.get(), HttpStatus.OK);
         }
