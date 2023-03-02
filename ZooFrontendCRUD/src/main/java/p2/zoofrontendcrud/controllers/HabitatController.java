@@ -150,4 +150,19 @@ public class HabitatController {
         
         return "error";
     }
+    
+    @PostMapping("/eliminar_habitat")
+    public String deleteHabitat(Model m, @RequestParam Integer id) {
+        RestTemplate rt = new RestTemplate();
+        try {
+            rt.delete(Constants.PREFIX_REQUEST_URL
+                    + Constants.HABITAT_REQUEST_URL
+                    + Constants.DELETE_BY_ID_REQUEST_URL
+                    + id);
+        } catch (RestClientException ex) {
+            m.addAttribute("exception", ex.toString());
+            return "error";
+        }
+        return "operation_done";
+    }
 }
