@@ -7,9 +7,11 @@ package p2.zoobackendcrud.repositories;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import p2.zoobackendcrud.entities.Species;
 
 /**
@@ -32,4 +34,9 @@ public interface SpeciesRepository extends JpaRepository<Species, Integer>{
     
     @Query("SELECT s FROM Species s WHERE s.zone.id = :zoneId")
     public List<Species> findByZoneId(@Param("zoneId") Integer id);
+    
+    @Modifying
+    @Transactional
+    @Query("UPDATE Species s SET s.zone = :newZoneId WHERE s.zone.id = :zoneId")
+    public void updateSpeciesZoneByZoneId(@Param("zoneId") Integer zoneId, @Param("newZoneId") Integer newZoneId);
 }
