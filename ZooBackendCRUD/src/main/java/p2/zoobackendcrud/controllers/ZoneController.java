@@ -7,8 +7,10 @@ package p2.zoobackendcrud.controllers;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -218,6 +220,22 @@ public class ZoneController {
     }
     
     @PutMapping("/{zoneId}/removerespecies")
+    public ResponseEntity<Zone> removeSpeciesFromZone(@PathVariable("zoneId") Integer zoneId,
+            @RequestBody List<Integer> spsId){
+        Zone z = znRepo.findById(zoneId).orElse(null);
+        
+        if (z == null)
+            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+        
+        //Avoid java.util.ConcurrentModificationException by creating new Set
+        Set<Species> sps = new HashSet<>(z.getSpecies()); 
+        for (Species s : sps)
+            if (spsId.contains(s.getId())) z.removeSpecies(s);
+        
+        return new ResponseEntity(znRepo.save(z), HttpStatus.OK);
+    }
+    
+    @PutMapping("/{zoneId}/removerespecies/todas")
     public ResponseEntity<Zone> removeAllSpeciesFromZone(@PathVariable("zoneId") Integer zoneId){
         Zone z = znRepo.findById(zoneId).orElse(null);
         
