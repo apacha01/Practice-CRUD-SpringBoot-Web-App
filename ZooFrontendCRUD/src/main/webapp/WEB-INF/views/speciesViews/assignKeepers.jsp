@@ -21,7 +21,7 @@
         <h1>Los cuidadores de la especie: "${name}" están tildadas. 
             Tilde las que desee agregar o destilde las que desee quitarle:
         </h1>
-            <form onsubmit="return reviewKeepers();" method="post" class="assign_form">
+        <form onsubmit="return reviewKeepers();" method="post" class="assign_form">
             <table class="table">
                 <thead>
                     <tr>

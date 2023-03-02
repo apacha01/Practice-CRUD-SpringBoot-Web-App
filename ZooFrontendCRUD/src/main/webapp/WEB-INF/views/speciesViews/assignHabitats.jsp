@@ -21,7 +21,7 @@
         <h1>Los habitats de la especie: "${name}" están tildadas. 
             Tilde los que desee agregar o destilde los que desee quitarle:
         </h1>
-            <form onsubmit="return reviewHabitats();" method="post" class="assign_form">
+        <form onsubmit="return reviewHabitats();" method="post" class="assign_form">
             <table class="table">
                 <thead>
                     <tr>
