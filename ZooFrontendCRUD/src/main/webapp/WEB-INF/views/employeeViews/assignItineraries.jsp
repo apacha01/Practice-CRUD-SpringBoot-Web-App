@@ -22,7 +22,7 @@
         <h3 style="color: cornflowerblue;">
             (Aclaración: si un itinerario está asignado no se puede asignar otra vez.)
         </h3>
-        <form onsubmit="return reviewItineraries();" method="post"  class="assign_form">
+        <form onsubmit="return reviewItineraries();" method="post" class="assign_form">
             <table class="table">
                 <thead>
                     <tr>

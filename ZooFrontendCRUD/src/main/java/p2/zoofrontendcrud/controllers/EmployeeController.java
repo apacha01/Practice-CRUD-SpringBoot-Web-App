@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -33,6 +34,7 @@ import p2.zoofrontendcrud.entities.Species;
  * @author Agustín Pacheco
  */
 @Controller
+@RequestMapping("/empleado")
 public class EmployeeController {
 
     @GetMapping("/empleados")

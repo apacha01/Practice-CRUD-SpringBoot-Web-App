@@ -18,7 +18,7 @@
     </head>
     <body>
         <h1>Ingrese los datos del empleado</h1>
-        <form method="post" action="/crear_empleado" class="create_form">
+        <form method="post" class="create_form">
             <select class="form_input" name="type">
                 <c:forEach var="type" items="${TYPE_ENUM.values()}">
                     <option>${type.name}</option>

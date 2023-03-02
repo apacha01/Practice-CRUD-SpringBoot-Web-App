@@ -18,7 +18,7 @@
     </head>
     <body>
         <h1>Edite los datos del empleado que desee actualizar</h1>
-        <form method="post" action="/editar_empleado/${employee.id}" class="create_form">
+        <form method="post" class="create_form">
             <select class="form_input" name="type">
                 <c:forEach var="type" items="${TYPE_ENUM.values()}">
                     <c:choose>

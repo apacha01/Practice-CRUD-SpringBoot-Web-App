@@ -34,7 +34,7 @@
                         <th class="table__column--s">A cargo de</th>
                         <th class="table__column--m table__align--center">
                             <a
-                                href="/crear_empleado"
+                                href="./crear_empleado"
                                 class="simple-button simple-button--add">
                                 Nuevo Empleado
                             </a>
@@ -68,15 +68,15 @@
                                                     <tr>
                                                         <th class="table__column--s">ID</th>
                                                         <th class="table__column--s">Nombre</th>
-                                                        <th class="table__column--s">Zona</th>
+                                                        <th class="table__column--m">Nombre Cientifico</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <c:forEach var="sp" items="${keepersSpecies[employee.id]}">
                                                         <tr>
-                                                            <td class="td">${sp.id}</th>
-                                                            <td class="td">${sp.name}</th>
-                                                            <td class="td">${sp.zone.name}</th>
+                                                            <td class="td">${sp.id}</td>
+                                                            <td class="td">${sp.name}</td>
+                                                            <td class="td">${sp.scientific_name}</td>
                                                         </tr>
                                                     </c:forEach>
                                                 </tbody>
@@ -108,8 +108,8 @@
                                                 <tbody>
                                                     <c:forEach var="iti" items="${guidesItineraries[employee.id]}">
                                                         <tr>
-                                                            <td class="td">${iti.id}</th>
-                                                            <td class="td">${iti.code}</th>
+                                                            <td class="td">${iti.id}</td>
+                                                            <td class="td">${iti.code}</td>
                                                         </tr>
                                                     </c:forEach>
                                                 </tbody>
@@ -131,7 +131,7 @@
                                     <div class="UDops-button-container">
                                         <li>
                                             <a
-                                                href="/editar_empleado/${employee.id}"
+                                                href="./editar_empleado/${employee.id}"
                                                 class="simple-button simple-button--edit">
                                                 Editar
                                             </a>
@@ -148,14 +148,14 @@
                                         <c:choose>
                                             <c:when test="${employee.type == TYPE_ENUM.KEEPER}">
                                                 <a
-                                                    href="/${employee.id}/asignarespecies"
+                                                    href="./${employee.id}/asignarespecies"
                                                     class="simple-button UDbutton">
                                                     Asignar/Remover Especies
                                                 </a>
                                             </c:when>
                                             <c:when test="${employee.type == TYPE_ENUM.GUIDE}">
                                                 <a
-                                                    href="/${employee.id}/asignaritinerarios"
+                                                    href="./${employee.id}/asignaritinerarios"
                                                     class="simple-button UDbutton">
                                                     Asignar/Remover Itinerarios
                                                 </a>
@@ -199,7 +199,7 @@
             deleteBtns.forEach(function (btn) {
                 btn.addEventListener('click', function () {
                     const id = extractId(btn.id);
-                    delete_form.action = "/eliminar_empleado";
+                    delete_form.action = "./eliminar_empleado";
                     delete_id.value = id;
                     container.classList.remove('hidden');
                 });
