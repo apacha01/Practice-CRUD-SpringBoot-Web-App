@@ -34,7 +34,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="species" items="${employeeSpecies}" >
+                    <c:forEach var="species" items="${assignedSpecies}" >
                         <tr>
                             <td class="td">
                                 <input type="hidden" name="toBeRemoved" value="${species.id}" id="${species.id}"/>

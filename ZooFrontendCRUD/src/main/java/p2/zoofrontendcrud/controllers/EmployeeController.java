@@ -303,9 +303,9 @@ public class EmployeeController {
         species.removeAll(s);
         
         if(e != null && e.getBody() != null) m.addAttribute("name", e.getBody().getName());
-        m.addAttribute("employeeSpecies", s);
+        m.addAttribute("assignedSpecies", s);
         m.addAttribute("species", species);
-        return Constants.EMPLOYEE_VIEWS + "assignSpecies";
+        return Constants.ASSIGN_VIEWS + "assignSpecies";
     }
 
     @PostMapping("/{id}/asignarespecies")
@@ -411,9 +411,9 @@ public class EmployeeController {
         itineraries.removeAll(i);
         
         if(e != null && e.getBody() != null) m.addAttribute("name", e.getBody().getName());
-        m.addAttribute("employeeItineraries", i);
+        m.addAttribute("assignedItineraries", i);
         m.addAttribute("itineraries", itineraries);
-        return Constants.EMPLOYEE_VIEWS + "assignItineraries";
+        return Constants.ASSIGN_VIEWS + "assignItineraries";
     }
     
     @PostMapping("/{id}/asignaritinerarios")

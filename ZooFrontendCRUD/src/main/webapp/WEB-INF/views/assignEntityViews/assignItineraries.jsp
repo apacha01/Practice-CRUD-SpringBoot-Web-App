@@ -38,7 +38,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="itinerary" items="${employeeItineraries}" >
+                    <c:forEach var="itinerary" items="${assignedItineraries}" >
                         <tr>
                             <td class="td">
                                 <input type="hidden" 
@@ -57,7 +57,7 @@
                             <td class="td">${itinerary.route_length}</td>
                             <td class="td">${itinerary.max_people}</td>
                             <td class="td">${itinerary.num_species_visited}</td>
-                            <td class="td">Si</td>
+                            <td class="td"><p>Si</p></td>
                             <td class="td">
                                 <p>
                                     <c:forEach var="zone" items="${itinerary.covered_zones}">

@@ -20,6 +20,8 @@ public class Constants {
     public final static String HABITAT_VIEWS = "habitatViews/";
     //Itinerary
     public final static String ITINERARY_VIEWS = "itineraryViews/";
+    //Assigning Entities to one another
+    public final static String ASSIGN_VIEWS = "assignEntityViews/";
     
     //Common requests path for backend controllers
     public final static String PREFIX_REQUEST_URL = "http://localhost:8080/";

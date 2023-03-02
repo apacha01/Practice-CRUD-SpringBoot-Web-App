@@ -286,10 +286,10 @@ public class SpeciesController {
         keepers.removeAll(speciesKeepers);
         
         m.addAttribute("name", s.getBody().getName());
-        m.addAttribute("speciesKeepers", speciesKeepers);
+        m.addAttribute("assignedKeepers", speciesKeepers);
         m.addAttribute("keepers", keepers);
         
-        return Constants.SPECIES_VIEWS + "assignKeepers";
+        return Constants.ASSIGN_VIEWS + "assignKeepers";
     }
     
     @PostMapping("/eliminar_especie")
@@ -409,10 +409,10 @@ public class SpeciesController {
         habitats.removeAll(speciesHabitats);
         
         m.addAttribute("name", s.getBody().getName());
-        m.addAttribute("speciesHabitats", speciesHabitats);
+        m.addAttribute("assignedHabitats", speciesHabitats);
         m.addAttribute("habitats", habitats);
         
-        return Constants.SPECIES_VIEWS + "assignHabitats";
+        return Constants.ASSIGN_VIEWS + "assignHabitats";
     }
     
     @PostMapping("/{id}/asignarhabitats")
