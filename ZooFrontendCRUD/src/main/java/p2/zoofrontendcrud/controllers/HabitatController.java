@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import p2.zoofrontendcrud.auxiliar.Constants;
@@ -19,6 +20,7 @@ import p2.zoofrontendcrud.entities.Habitat;
  */
 
 @Controller
+@RequestMapping("/habitat")
 public class HabitatController {
     @GetMapping("/habitats")
     public String habitatPage(Model m) {

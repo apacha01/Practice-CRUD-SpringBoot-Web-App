@@ -17,7 +17,7 @@
     </head>
     <body>
         <h1>Ingrese los datos del empleado</h1>
-        <form method="post" action="/crear_zona" class="create_form">
+        <form method="post" class="create_form">
             <input class="form_input_large" type="text" name="name" placeholder="Nombre" required>
             <input class="form_input_large" type="text" name="extension" placeholder="Extension en m2 (utilize el '.' para expresar decimales. Ej: 125.37)" required>
             <input class="form_button_large" type="submit">

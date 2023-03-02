@@ -29,7 +29,7 @@
                         <th class="table__column--s">Especies</th>
                         <th class="table__column--m table__align--center">
                             <a
-                                href="/crear_zona"
+                                href="./crear_zona"
                                 class="simple-button simple-button--add">
                                 Nueva Zona
                             </a>
@@ -52,7 +52,7 @@
                                     <div class="UDops-zone-button-container">
                                         <li>
                                             <a
-                                                href="/editar_zona/${z.id}"
+                                                href="./editar_zona/${z.id}"
                                                 class="simple-button simple-button--edit bigger-button">
                                                 Editar
                                             </a>
@@ -67,7 +67,7 @@
                                     </div>
                                     <li class="row-button">
                                         <a
-                                            href="/${z.id}/asignarespecies"
+                                            href="./${z.id}/asignarespecies"
                                             class="simple-button UDbutton-big">
                                             Asignar/Remover Especies
                                         </a>
@@ -103,7 +103,7 @@
             deleteBtns.forEach(function (btn) {
                 btn.addEventListener('click', function () {
                     const id = extractId(btn.id);
-                    delete_form.action = "/eliminar_zona";
+                    delete_form.action = "./eliminar_zona";
                     delete_id.value = id;
                     container.classList.remove('hidden');
                 });

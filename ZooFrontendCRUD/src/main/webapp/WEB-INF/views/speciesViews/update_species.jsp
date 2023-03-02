@@ -18,7 +18,7 @@
     </head>
     <body>
         <h1>Ingrese los datos de la especie</h1>
-        <form method="post" action="/editar_especie/${s.id}" class="create_form">
+        <form method="post" class="create_form">
             <input class="form_input" type="text" name="name" placeholder="Nombre" value="${s.name}" required>
             <input class="form_input"
                    type="text" 

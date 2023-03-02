@@ -18,9 +18,9 @@
         <h1>Hola <% out.print(session.getAttribute("employeeUserName")); %>, bienvenido al sistema.</h1>
         <a class="simple-link" href='/login?cerrar=true'>Cerra Sesion</a>
         <a class="simple-link" href="/empleado/empleados">Empleados</a>
-        <a class="simple-link" href="/especies">Especies</a>
-        <a class="simple-link" href="/zonas">Zonas</a>
-        <a class="simple-link" href="/habitats">Habitats</a>
-        <a class="simple-link" href="/itinerarios">Itinerarios</a>
+        <a class="simple-link" href="/especie/especies">Especies</a>
+        <a class="simple-link" href="/zona/zonas">Zonas</a>
+        <a class="simple-link" href="/habitat/habitats">Habitats</a>
+        <a class="simple-link" href="/itinerario/itinerarios">Itinerarios</a>
     </body>
 </html>

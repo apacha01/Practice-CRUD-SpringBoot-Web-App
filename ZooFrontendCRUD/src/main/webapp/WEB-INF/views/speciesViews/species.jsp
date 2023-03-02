@@ -32,7 +32,7 @@
                         <th class="table__column--s">Cuidadores</th>
                         <th class="table__column--m table__align--center">
                             <a
-                                href="/crear_especie"
+                                href="./crear_especie"
                                 class="simple-button simple-button--add">
                                 Nueva Especie
                             </a>
@@ -52,7 +52,7 @@
                                     <p class="table__align--center">${habitat.name}</p>
                                 </c:forEach>
                                 <a
-                                    href="/${sp.id}/asignarhabitats"
+                                    href="./${sp.id}/asignarhabitats"
                                     class="simple-button UDbutton in-cell_UDbutton">
                                     Asignar/Remover Habitat
                                 </a>
@@ -67,7 +67,7 @@
                                     <div class="UDops-button-container">
                                         <li>
                                             <a
-                                                href="/editar_especie/${sp.id}"
+                                                href="./editar_especie/${sp.id}"
                                                 class="simple-button simple-button--edit">
                                                 Editar
                                             </a>
@@ -82,7 +82,7 @@
                                     </div>
                                     <li class="row-button">
                                         <a
-                                            href="/${sp.id}/asignarcuidadores"
+                                            href="./${sp.id}/asignarcuidadores"
                                             class="simple-button UDbutton">
                                             Asignar/Remover Cuidador
                                         </a>
@@ -118,7 +118,7 @@
             deleteBtns.forEach(function (btn) {
                 btn.addEventListener('click', function () {
                     const id = extractId(btn.id);
-                    delete_form.action = "/eliminar_especie";
+                    delete_form.action = "./eliminar_especie";
                     delete_id.value = id;
                     container.classList.remove('hidden');
                 });

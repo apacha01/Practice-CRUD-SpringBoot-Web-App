@@ -30,7 +30,7 @@
                         <th class="table__column--s">Continentes donde se encuentra</th>
                         <th class="table__column--m table__align--center">
                             <a
-                                href="/crear_habitat"
+                                href="./crear_habitat"
                                 class="simple-button simple-button--add">
                                 Nuevo Habitat
                             </a>
@@ -54,7 +54,7 @@
                                     <div class="UDops-habitat-button-container">
                                         <li>
                                             <a
-                                                href="/editar_habitat/${h.id}"
+                                                href="./editar_habitat/${h.id}"
                                                 class="simple-button simple-button--edit bigger-button">
                                                 Editar
                                             </a>
@@ -69,7 +69,7 @@
                                     </div>
                                     <li class="row-button">
                                         <a
-                                            href="/${h.id}/asignarcontinentes"
+                                            href="./${h.id}/asignarcontinentes"
                                             class="simple-button UDbutton-big">
                                             Asignar/Remover Continentes
                                         </a>
@@ -105,7 +105,7 @@
             deleteBtns.forEach(function (btn) {
                 btn.addEventListener('click', function () {
                     const id = extractId(btn.id);
-                    delete_form.action = "/eliminar_habitat";
+                    delete_form.action = "./eliminar_habitat";
                     delete_id.value = id;
                     container.classList.remove('hidden');
                 });

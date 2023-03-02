@@ -18,7 +18,7 @@
     </head>
     <body>
         <h1>Ingrese los datos de la especie</h1>
-        <form method="post" action="/crear_especie" class="create_form">
+        <form method="post" class="create_form">
             <input class="form_input" type="text" name="name" placeholder="Nombre" required>
             <input class="form_input" type="text" name="scientificName" placeholder="Nombre Cientifico" required>
             <textarea class="form_textarea" type="text" name="description" placeholder="Descripcion" required></textarea>

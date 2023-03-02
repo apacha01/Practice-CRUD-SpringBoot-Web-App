@@ -33,7 +33,7 @@
                         <th class="table__column--g">Zonas recorridas</th>
                         <th class="table__column--g table__align--center">
                             <a
-                                href="/crear_itinerario"
+                                href="./crear_itinerario"
                                 class="simple-button simple-button--add">
                                 Nuevo Itinerario
                             </a>
@@ -70,7 +70,7 @@
                                     <div class="UDops-button-container">
                                         <li>
                                             <a
-                                                href="/editar_itnierario/${i.id}"
+                                                href="./editar_itnierario/${i.id}"
                                                 class="simple-button simple-button--edit">
                                                 Editar
                                             </a>
@@ -85,7 +85,7 @@
                                     </div>
                                     <li class="row-button">
                                         <a
-                                            href="/${i.id}/asignarzonas"
+                                            href="./${i.id}/asignarzonas"
                                             class="simple-button UDbutton-medium">
                                             Asignar/Remover Zonas
                                         </a>
@@ -121,7 +121,7 @@
             deleteBtns.forEach(function (btn) {
                 btn.addEventListener('click', function () {
                     const id = extractId(btn.id);
-                    delete_form.action = "/eliminar_itinerario";
+                    delete_form.action = "./eliminar_itinerario";
                     delete_id.value = id;
                     container.classList.remove('hidden');
                 });
