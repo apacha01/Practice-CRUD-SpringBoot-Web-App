@@ -6,11 +6,13 @@ package p2.zoofrontendcrud.controllers;
 
 import java.util.List;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -78,6 +80,72 @@ public class HabitatController {
         if (h != null && h.getStatusCode() == HttpStatus.CREATED) {
             m.addAttribute("msgs", List.of(h.getBody().toString()));
             return "operation_done";
+        }
+        
+        return "error";
+    }
+    
+    @GetMapping("/editar_habitat/{id}")
+    public String updateHabitatPage(Model m, @PathVariable("id") Integer id){
+        RestTemplate rt = new RestTemplate();
+        ResponseEntity<Habitat> h = null;
+
+        try {
+            h = rt.getForEntity(Constants.PREFIX_REQUEST_URL
+                    + Constants.HABITAT_REQUEST_URL
+                    + Constants.GET_BY_ID_REQUEST_URL
+                    + "/" + id,
+                    Habitat.class);
+        } catch (RestClientException ex) {
+            m.addAttribute("exception", ex.toString());
+            return "error";
+        }
+        
+        if (h == null || h.getStatusCode() == HttpStatus.NOT_FOUND){
+            m.addAttribute("errorMsg", "No existe ese usuario");
+            return Constants.HABITAT_VIEWS + "habitats";
+        }
+        if (h.getStatusCode() == HttpStatus.OK)
+            m.addAttribute("h", h.getBody());
+        
+        return Constants.HABITAT_VIEWS + "update_habitat";
+    }
+    
+    @PostMapping("/editar_habitat/{id}")
+    public String updateHabitat(Model m,
+            @PathVariable("id") Integer id,
+            @RequestParam String name,
+            @RequestParam String weather,
+            @RequestParam String vegetation){
+        
+        HttpEntity<Habitat> request = new HttpEntity<>(new Habitat(name, weather, vegetation));
+        
+        RestTemplate rt = new RestTemplate();
+        ResponseEntity<Habitat> h = null;
+        try {
+            h = rt.exchange(Constants.PREFIX_REQUEST_URL
+                    + Constants.HABITAT_REQUEST_URL
+                    + Constants.UPDATE_BY_ID_REQUEST_URL
+                    + id,
+                    HttpMethod.PUT,
+                    request,
+                    Habitat.class);
+        } catch (RestClientException ex) {
+            m.addAttribute("request", request);
+            m.addAttribute("exception", ex.toString());
+            return "error";
+        }
+
+        if (h == null) {
+            return "error";
+        }
+        if (h.getStatusCode() == HttpStatus.OK) {
+            m.addAttribute("msgs", List.of(h.getBody().toString()));
+            return "operation_done";
+        }
+        if (h.getStatusCode() == HttpStatus.NOT_FOUND) {
+            m.addAttribute("errorMsg", "No existe ese usuario");
+            return Constants.HABITAT_VIEWS + "habitats";
         }
         
         return "error";
