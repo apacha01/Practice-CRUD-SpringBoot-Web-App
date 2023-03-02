@@ -235,9 +235,19 @@ public class ZoneController {
         if (optZn.isEmpty())
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         else {
+            Zone z = optZn.get();
+            
+            //Deleting relationships of non owning side.
+            //Deleting relationship with itineraries
+            z.removeAllItineraries();
+            znRepo.save(z);
+            
+            //Deleting relationship with species
             spRepo.updateSpeciesZoneByZoneId(zoneId, null);
-            znRepo.deleteById(zoneId);
-            return new ResponseEntity<>(optZn.get(), HttpStatus.OK);
+            
+            //Delete the entity
+            znRepo.delete(z);
+            return new ResponseEntity<>(z, HttpStatus.OK);
         }
     }
     
