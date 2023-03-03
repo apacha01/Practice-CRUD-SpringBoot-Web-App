@@ -70,7 +70,7 @@
                                     <div class="UDops-button-container">
                                         <li>
                                             <a
-                                                href="./editar_itnierario/${i.id}"
+                                                href="./editar_itinerario/${i.id}"
                                                 class="simple-button simple-button--edit">
                                                 Editar
                                             </a>
