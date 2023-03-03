@@ -37,6 +37,8 @@
         <br/>
         <p>${errorMsg}</p>
         <script>
+            hideGuides();
+
             function hideGuides(){
                 const assignedSelect = document.getElementById('assignedSelector');
                 const guideSelect = document.getElementById('guideSelector');
