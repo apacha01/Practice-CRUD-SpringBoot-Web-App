@@ -28,6 +28,7 @@ import p2.zoofrontendcrud.auxiliar.TYPE_ENUM;
 import p2.zoofrontendcrud.entities.Employee;
 import p2.zoofrontendcrud.entities.GuideItinerary;
 import p2.zoofrontendcrud.entities.Itinerary;
+import p2.zoofrontendcrud.entities.Zone;
 
 /**
  *
@@ -348,6 +349,109 @@ public class ItineraryController {
             m.addAttribute("exception", ex.toString());
             return "error";
         }
+        return "operation_done";
+    }
+    
+    @GetMapping("/{id}/asignarzonas")
+    public String assignZonesPage(Model m, @PathVariable Integer id){
+        List<Zone> zones = null;
+        List<Zone> z = null;
+        ResponseEntity<Itinerary> i = null;
+
+        RestTemplate rt = new RestTemplate();
+        try {
+            i = rt.getForEntity(Constants.PREFIX_REQUEST_URL
+                        + Constants.ITINERARY_REQUEST_URL
+                        + Constants.GET_BY_ID_REQUEST_URL
+                        + id,
+                    Itinerary.class);
+            zones = rt.exchange(Constants.PREFIX_REQUEST_URL
+                    + Constants.ZONE_REQUEST_URL
+                    + Constants.GET_ALL_REQUEST_URL,
+                    HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<List<Zone>>() {
+            }).getBody();
+        } catch (RestClientException ex) {
+            m.addAttribute("exception", ex.toString());
+            return "error";
+        }
+        
+        if (i.getStatusCode() == HttpStatus.NOT_FOUND) {
+            m.addAttribute("errorMsg", "El itinerario de id: '" + id + "' no existe.");
+            return "error";
+        }
+        
+        z = new ArrayList<>(i.getBody().getCovered_zones());
+        
+        //remove duplicates
+        zones.removeAll(z);
+        
+        m.addAttribute("name", i.getBody().getCode());
+        m.addAttribute("assignedZones", z);
+        m.addAttribute("zones", zones);
+        return Constants.ASSIGN_VIEWS + "assignZones";
+    }
+    
+    @PostMapping("/{id}/asignarzonas")
+    public String assignItineraries(Model m,
+            @PathVariable("id") Integer id,
+            @RequestParam(name = "toBeRemoved", required = false) List<Integer> toBeRemovedIds,
+            @RequestParam(name = "alreadyAssigned", required = false) List<Integer> alreadyAssignedIds,
+            @RequestParam(name = "toBeAssigned", required = false) List<Integer> toBeAssignedIds) {
+
+        List<String> msgs = new ArrayList<>();
+        Boolean needRemove = toBeRemovedIds != null;
+        Boolean needAssign = toBeAssignedIds != null;
+        
+        //Requests
+        HttpEntity<List<Integer>> requestRemove = null;
+        HttpEntity<List<Integer>> requestAssign = null;
+        //Responses
+        ResponseEntity<Itinerary> responseRemove = null;
+        ResponseEntity<Itinerary> responseAssign = null;
+        
+        if(needRemove)
+            requestRemove = new HttpEntity<>(toBeRemovedIds);
+        if(needAssign)
+            requestAssign = new HttpEntity<>(toBeAssignedIds);
+
+        RestTemplate rt = new RestTemplate();
+        try {
+            
+            if(requestAssign != null){
+                responseAssign = rt.exchange(Constants.PREFIX_REQUEST_URL
+                        + Constants.ITINERARY_REQUEST_URL
+                        + id + "/"
+                        + Constants.ADD_ITINERARY_ZONE_REQUEST_URL,
+                        HttpMethod.PUT,
+                        requestAssign,
+                        Itinerary.class);
+            }
+            
+            if(requestRemove != null){
+                responseRemove = rt.exchange(Constants.PREFIX_REQUEST_URL
+                        + Constants.ITINERARY_REQUEST_URL
+                        + id + "/"
+                        + Constants.REMOVE_ITINERARY_ZONE_REQUEST_URL,
+                        HttpMethod.PUT,
+                        requestRemove,
+                        Itinerary.class);
+            }
+        }
+        catch (RestClientException ex) {
+            m.addAttribute("exception", ex.toString());
+            return "error";
+        }
+
+        if (responseAssign != null) {
+            if (responseAssign.getStatusCode() == HttpStatus.NOT_FOUND)
+                msgs.add("El empleado de id " + id + " no se encontro.");
+        }
+        else msgs.add("No se asigno ninguna zona.");
+        
+        if (responseRemove == null)
+            msgs.add("No se removio ninguna zona.");
+        
+        m.addAttribute("msgs", msgs);
         return "operation_done";
     }
     

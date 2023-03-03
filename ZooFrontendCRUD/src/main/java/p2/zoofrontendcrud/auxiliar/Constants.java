@@ -56,6 +56,8 @@ public class Constants {
     public final static String GET_ITINERARY_GUIDE_REQUEST_URL = "obtenerguia";
     public final static String ADD_ITINERARY_GUIDE_REQUEST_URL = "agregarguia/";
     public final static String REMOVE_ITINERARY_GUIDE_REQUEST_URL = "removerguia/";
+    public final static String ADD_ITINERARY_ZONE_REQUEST_URL = "agregarzonas";
+    public final static String REMOVE_ITINERARY_ZONE_REQUEST_URL = "removerzonas";
     
     //Backend Requests Paths for p2.zoobackendcrud.controllers.ZoneController
     public final static String ZONE_REQUEST_URL = "zona/";
