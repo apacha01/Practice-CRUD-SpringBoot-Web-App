@@ -198,7 +198,7 @@ public class SpeciesController {
         ResponseEntity<Zone> z = null;
         ResponseEntity<Species> s = null;
         
-        Integer zId = Integer.parseInt(zoneName.substring(zoneName.indexOf('=') + 1, zoneName.length() - 1));
+        Integer zId = Integer.valueOf(zoneName.substring(zoneName.indexOf('=') + 1, zoneName.length() - 1));
         
         try {
             List<Species> sps;
