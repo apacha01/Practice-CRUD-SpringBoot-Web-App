@@ -77,7 +77,7 @@ public class ZoneController {
         Double newExtension;
         
         try{
-            newExtension = Double.parseDouble(extension.replaceAll("\\s", ""));
+            newExtension = Double.valueOf(extension.replaceAll("\\s", ""));
         }catch(NumberFormatException ex){
             m.addAttribute("errorMsg", "ERROR: El numero ingresado no es valido. Recuerde usar el '.' para numeros con coma y no ingrese signos de puntuacion para separar decenas, centenas etc...");
             return Constants.ZONE_VIEWS + "create_zone";
