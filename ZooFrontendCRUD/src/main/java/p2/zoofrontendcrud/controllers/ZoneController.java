@@ -219,14 +219,15 @@ public class ZoneController {
             return "error";
         }
 
-        if (species == null || s == null) {
+        if (z.getStatusCode() == HttpStatus.NOT_FOUND) {
+            m.addAttribute("errorMsgs", List.of("No existe la zona con el id: " + id));
             return "error";
         }
 
         //remove duplicates
         species.removeAll(s);
         
-        if(z != null && z.getBody() != null) m.addAttribute("name", z.getBody().getName());
+        m.addAttribute("name", z.getBody().getName());
         m.addAttribute("assignedSpecies", s);
         m.addAttribute("species", species);
         return Constants.ASSIGN_VIEWS + "assignSpecies";

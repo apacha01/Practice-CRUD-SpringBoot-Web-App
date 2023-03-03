@@ -64,30 +64,22 @@
 .row-button{
     display: flex;
     margin: 0;
+    width: 80%;
 }
 
 .UDops-button-container, .UDops-zone-button-container,
 .UDops-habitat-button-container{
+    width: 80%;
     display: flex;
     align-items: center;
-    gap: 25px;
-}
-
-.UDops-zone-button-container{
-    width: 100%;
-    justify-content: space-evenly;
-    gap: 0;
-}
-
-.UDops-habitat-button-container{
-    width: 100%;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .UDbutton, .UDbutton-medium, .UDbutton-big{
     width: 100%;
     background-color: #4d4d4d;
     font-size: 12px;
+    text-align: center;
 }
 
 .UDbutton-big, .bigger-button {

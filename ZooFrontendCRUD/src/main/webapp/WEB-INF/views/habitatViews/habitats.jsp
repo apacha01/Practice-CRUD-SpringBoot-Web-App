@@ -44,10 +44,15 @@
                             <td class="td">${h.name}</td>
                             <td class="td">${h.weather}</td>
                             <td class="td">${h.vegetation}</td>
-                            <td class="td">
+                            <td class="td cell-button">
                                 <c:forEach var="continent" items="${h.continents}" >
-                                    <p>${continent.name}</p>
+                                    <p class="table__align--center">${continent.name}</p>
                                 </c:forEach>
+                                <a
+                                    href="./${h.id}/asignarcontinentes"
+                                    class="simple-button UDbutton in-cell_UDbutton">
+                                    Asignar/Remover Continentes
+                                </a>
                             </td>
                             <td class="td">
                                 <ul class="table__button-control">
@@ -69,9 +74,9 @@
                                     </div>
                                     <li class="row-button">
                                         <a
-                                            href="./${h.id}/asignarcontinentes"
+                                            href="./${h.id}/asignarespecies"
                                             class="simple-button UDbutton-big">
-                                            Asignar/Remover Continentes
+                                            Asignar/Remover Especies
                                         </a>
                                     </li>
                                 </ul>

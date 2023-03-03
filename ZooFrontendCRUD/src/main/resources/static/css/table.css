@@ -90,6 +90,10 @@ thead tr:first-child{
     padding: 1rem;
 }
 
+.td:last-child{
+    min-width: 200px;
+}
+
 .cell-button{
     display: flex;
     flex-direction: column;
