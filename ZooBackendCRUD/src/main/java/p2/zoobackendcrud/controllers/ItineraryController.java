@@ -218,20 +218,15 @@ public class ItineraryController {
         return new ResponseEntity(gi, HttpStatus.OK);
     }
     
-    @PutMapping("/{itinId}/removerguia/{empId}")
-    public ResponseEntity<GuideItinerary> removeGuideFromItinerary(@PathVariable("empId") Integer empId, 
-            @PathVariable("itinId") Integer itinId){
-        Employee e = empRepo.findById(empId).orElse(null);
+    @PutMapping("/{itinId}/removerguia")
+    public ResponseEntity<GuideItinerary> removeGuideFromItinerary(@PathVariable("itinId") Integer itinId){
         Itinerary i = itRepo.findById(itinId).orElse(null);
         GuideItinerary gi = null;
         
-        if (e == null || i == null)
+        if (i == null)
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         
-        if(!e.isGuide())
-            return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
-        
-        gi = giRepo.findByIds(itinId, empId);
+        gi = giRepo.findByItineraryId(itinId);
         
         if(gi != null){
             i.setAssigned(false);
