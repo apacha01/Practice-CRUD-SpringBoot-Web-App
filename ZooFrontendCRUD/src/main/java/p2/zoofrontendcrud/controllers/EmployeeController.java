@@ -390,7 +390,7 @@ public class EmployeeController {
                         + id,
                     Employee.class);
             itineraries = rt.getForObject(Constants.PREFIX_REQUEST_URL
-                    + Constants.ITINERARIES_REQUEST_URL
+                    + Constants.ITINERARY_REQUEST_URL
                     + Constants.GET_ALL_REQUEST_URL,
                     List.class);
             i = rt.getForObject(Constants.PREFIX_REQUEST_URL
