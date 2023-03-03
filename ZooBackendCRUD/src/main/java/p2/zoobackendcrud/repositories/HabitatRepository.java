@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import p2.zoobackendcrud.entities.Habitat;
+import p2.zoobackendcrud.entities.Species;
 
 /**
  *
@@ -29,4 +30,7 @@ public interface HabitatRepository extends JpaRepository<Habitat, Integer>{
     @Override
     @Query("SELECT h FROM Habitat h LEFT JOIN FETCH h.continents WHERE h.id = :id")
     public Optional<Habitat> findById(@Param("id") Integer id);
+    
+    @Query("SELECT DISTINCT h.species FROM Habitat h JOIN h.species WHERE h.id = :id")
+    public List<Species> getHabitatSpecies(@Param("id") Integer id);
 }

@@ -72,6 +72,11 @@ public class HabitatController {
         }
     }
     
+    @GetMapping("/{id}/obtenerespecies")
+    public List<Species> getHabitatSpecies(@PathVariable("id") Integer id){
+        return hbRepo.getHabitatSpecies(id);
+    }
+    
     @PutMapping("/modificarporid/{id}")
     public ResponseEntity<Habitat> updateHabitatById(@PathVariable("id") Integer habitatId, @RequestBody Habitat h){
         return hbRepo.findById(habitatId)
