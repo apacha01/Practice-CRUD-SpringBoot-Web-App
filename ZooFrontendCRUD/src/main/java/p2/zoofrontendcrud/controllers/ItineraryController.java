@@ -337,7 +337,7 @@ public class ItineraryController {
     }
     
     @PostMapping("/eliminar_itinerario")
-    public String updateItinerary(Model m, @RequestParam Integer id){
+    public String deleteItinerary(Model m, @RequestParam Integer id){
         RestTemplate rt = new RestTemplate();
         try {
             rt.delete(Constants.PREFIX_REQUEST_URL
