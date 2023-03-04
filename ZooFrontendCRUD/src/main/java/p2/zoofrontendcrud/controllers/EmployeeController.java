@@ -483,4 +483,41 @@ public class EmployeeController {
         m.addAttribute("msgs", msgs);
         return "operation_done";
     }
+    
+    @GetMapping("/{userName}/consultardatos")
+    public String getEmployeeData(Model m, @PathVariable("userName") String userName){
+        RestTemplate rt = new RestTemplate();
+        Employee e = null;
+        List<?> empResp = null;
+        
+        try {
+            e = rt.getForObject(Constants.PREFIX_REQUEST_URL
+                    + Constants.EMPLOYEE_REQUEST_URL
+                    + Constants.GET_EMPLOYEE_BY_USERNAME_REQUEST_URL
+                    + userName,
+                Employee.class);
+            
+            empResp = rt.getForObject(Constants.PREFIX_REQUEST_URL
+                    + Constants.EMPLOYEE_REQUEST_URL
+                    + userName + "/"
+                    + Constants.GET_EMPLOYEE_DATA_REQUEST_URL,
+                List.class);
+        } catch (RestClientException ex) {
+            m.addAttribute("exception", ex.toString());
+            return "error";
+        }
+        
+        if (e == null) {
+            m.addAttribute("errorMsg", "El empleado '" + userName + "' no existe.");
+            return "error";
+        }
+        
+        if (empResp != null) System.out.println(empResp.toString());
+        
+        m.addAttribute("employee", e);
+        m.addAttribute("formatedFirstDay", e.formatedFirstDayAsString());
+        m.addAttribute("empResp", empResp);
+        
+        return Constants.EMPLOYEE_VIEWS + "employeeData";
+    }
 }

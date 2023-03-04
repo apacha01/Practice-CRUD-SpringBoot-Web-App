@@ -42,6 +42,7 @@ public class Constants {
     public final static String GET_EMPLOYEE_ITINERARIES_REQUEST_URL = "obteneritinerarios";
     public final static String ADD_EMPLOYEE_ITINERARIES_REQUEST_URL = "agregaritinerarios";
     public final static String REMOVE_EMPLOYEE_ITINERARIES_REQUEST_URL = "removeritinerarios";
+    public final static String GET_EMPLOYEE_DATA_REQUEST_URL = "obtenerdatos";
     
     //Backend Requests Paths for p2.zoobackendcrud.controllers.SpeciesController
     public final static String SPECIES_REQUEST_URL = "especie/";

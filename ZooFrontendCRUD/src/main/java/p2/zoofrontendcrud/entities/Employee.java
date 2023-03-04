@@ -33,8 +33,8 @@ public class Employee {
     private String phone;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate first_day;
-    Set<GuideItinerary> guidesItineraries;
-    Set<SpeciesKeeper> speciesKeepers;
+    Set<GuideItinerary> guides_itineraries;
+    Set<SpeciesKeeper> species_keepers;
 
     public Employee(TYPE_ENUM type, String userName, String password, String name, String address, String phone, LocalDate firstDay) {
         this.type = type;
