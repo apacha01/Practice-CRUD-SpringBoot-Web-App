@@ -17,7 +17,7 @@
 
             if (_session.getAttribute("employeeUserName") == null || _session.getAttribute("employeeType") == null
                     || (_session.getAttribute("employeeType") != TYPE_ENUM.GUIDE
-                    && _session.getAttribute("employeeType") != TYPE_ENUM.KEEPER) ) {
+                    && _session.getAttribute("employeeType") != TYPE_ENUM.KEEPER)) {
                 out.print("<script>location.replace('/login');</script>");
             }
         %>
@@ -27,8 +27,10 @@
     </head>
     <body>
         <h1>Hola <% out.print(session.getAttribute("employeeUserName")); %> bienvenido al sistema.</h1>
-        <a class="simple-link" href='/login?cerrar=true'>Cerra Sesion</a>
-        <a class="simple-link" 
-           href='empleado/<%out.print(session.getAttribute("employeeUserName"));%>/consultardatos'>Consultar Datos</a>
+        <div class="link-container">
+            <a class="simple-link" href='/login?cerrar=true'>Cerra Sesion</a>
+            <a class="simple-link" 
+               href='empleado/<%out.print(session.getAttribute("employeeUserName"));%>/consultardatos'>Consultar Datos</a>
+        </div>
     </body>
 </html>
