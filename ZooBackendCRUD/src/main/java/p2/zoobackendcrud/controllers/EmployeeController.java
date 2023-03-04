@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,6 +127,29 @@ public class EmployeeController {
         }
         
         return i;
+    }
+    
+    @GetMapping("{userName}/obtenerdatos")
+    public List<?> getDataByUserName(@PathVariable("userName") String userName){
+        Employee e = null;
+        try{
+             e = empRepo.findByUserName(URLDecoder.decode(userName, "UTF-8"));
+        } catch (UnsupportedEncodingException ex) {
+            return new ArrayList<>();
+        }
+        
+        if (e == null)
+            return new ArrayList<>();
+        else if (e.isAdmin())
+            return new ArrayList<>();
+        else if (e.isGuide()){
+            List<GuideItinerary> gis = giRepo.findByEmployeeId(e.getId());
+            return gis;
+        }
+        else {
+            List<SpeciesKeeper> spk = skRepo.findByEmployeeId(e.getId());
+            return spk;
+        }
     }
     
     @PutMapping("/modificarporid/{id}")
