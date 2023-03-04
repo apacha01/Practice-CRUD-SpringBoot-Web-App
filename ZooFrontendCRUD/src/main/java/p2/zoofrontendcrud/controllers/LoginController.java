@@ -26,16 +26,11 @@ public class LoginController {
     
     @GetMapping("/menu_admin")
     public String menuAdminPage(){
-        return "employeeViews/menuAdmin";
+        return Constants.EMPLOYEE_VIEWS + "/menuAdmin";
     }
     
-    @GetMapping("/menu_cuidador")
+    @GetMapping("/menu_empleado")
     public String menuKeeperPage(){
-        return "employeeViews/menuKeeper";
-    }
-    
-    @GetMapping("/menu_guia")
-    public String menuGuidePage(){
-        return "employeeViews/menuGuide";
+        return Constants.EMPLOYEE_VIEWS + "/menuNonAdmin";
     }
 }

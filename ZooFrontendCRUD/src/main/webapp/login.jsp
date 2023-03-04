@@ -36,20 +36,11 @@
                     TYPE_ENUM type = ls.getEmployeeType(usName);
                     _session.setAttribute("employeeUserName", usName);
                     _session.setAttribute("employeeType", type);
-                    switch (type) {
-                        case ADMIN:
-                            response.sendRedirect("/menu_admin");
-                            break;
-                        case KEEPER:
-                            response.sendRedirect("/menu_cuidador");
-                            break;
-                        case GUIDE:
-                            response.sendRedirect("/menu_guia");
-                            break;
-                        default:
-                            response.sendRedirect("/error");
-                            break;
-                    }
+                    
+                    if (type == TYPE_ENUM.ADMIN)
+                        response.sendRedirect("/menu_admin");
+                    else
+                        response.sendRedirect("/menu_empleado");
                 }
                 else {
                     out.print(loginMsg);
